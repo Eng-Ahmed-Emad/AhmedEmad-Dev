@@ -101,7 +101,7 @@ const Home = (): JSX.Element => {
             I'm a <span className={styles.typingHighlight}></span>
           </h3>
           <p>
-            CyberSecurity Trainee @ITI | SOC Analyst Trainee @Global Knowledge | Incdient Response Analyst @AMIT
+            CyberSecurity Trainee @ITI | Info Sec Trainee @DEPI | IR Analyst @AMIT
           </p>
 
           <motion.div className={styles.socialIcon} variants={itemVariants}>
