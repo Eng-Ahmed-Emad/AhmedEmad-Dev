@@ -90,17 +90,17 @@
 
     0%,
     20% {
-        content: " Soc Analyst T1";
+        content: "Soc Analyst";
     }
 
     21%,
     40% {
-        content: "Incdient Response Analyst";
+        content: "Tier 1 Soc Operations";
     }
 
     41%,
     60% {
-        content: "Cybersecurity Engineer";
+        content: "Incdient Response Analyst";
     }
 
     61%,
