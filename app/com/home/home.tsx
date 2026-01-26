@@ -65,7 +65,7 @@ const Home = (): JSX.Element => {
   const handleDownload = (lang: "en" | "ar") => {
     const file =
       lang === "en"
-        ? "Assets/cv/AhmedEmad_SOC_Analyst_CV.pdf"
+        ? "Assets/cv/AhmedEmad_SOC & IR_Analyst_CV.pdf"
         : "Assets/cv/السيره الذاتيه.pdf";
     const link = document.createElement("a");
     link.href = file;
