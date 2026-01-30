@@ -125,7 +125,7 @@ const Home = (): JSX.Element => {
 
             <a
               aria-label="Go to WhatsApp"
-              href="https://wa.me/201013972690"
+              href="https://wa.me/201018166445"
               target="_blank"
               rel="noopener noreferrer"
             >
