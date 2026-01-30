@@ -106,7 +106,7 @@ const Home = (): JSX.Element => {
 
           <motion.div className={styles.socialIcon} variants={itemVariants}>
             <a
-              href="https://www.linkedin.com/in/0x3omda/"
+              href="https://www.linkedin.com/in/ahmedemad-nasr/"
               target="_blank"
               rel="noopener noreferrer"
               title="Linkedin"
