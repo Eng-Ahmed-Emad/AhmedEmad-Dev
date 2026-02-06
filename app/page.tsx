@@ -6,7 +6,7 @@ import ContactMeSection from "@/app/com/contact_me/sensei-contact";
 import LoadingScreen from "@/app/com/loader/sensei_loader";
 import AnimatedBackground from "@/app/com/animated_background/animated_background";
 import SenseiProjects from "./com/services/sensei-projects";
-
+import SenseiArt from "@/app/com/art_gallery/sensei-art"
 
 
 /*
@@ -24,7 +24,7 @@ function Main() {
             {/*<ServicesSection />*/}
             <ExperienceSection />
             <SenseiProjects />
-            {/*<SenseiArt />*/}
+            <SenseiArt />
             <ContactMeSection />
         </>
     );
