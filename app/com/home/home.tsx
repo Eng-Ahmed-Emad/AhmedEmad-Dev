@@ -66,7 +66,7 @@ const Home = (): JSX.Element => {
     const file =
       lang === "en"
         ? "Assets/cv/AhmedEmad_SOC_And_IR_Analyst_CV.pdf"
-        : "Assets/cv/السيره الذاتيه.pdf";
+        : "Assets/cv/AhmedEmad_SOC_And_IR_Analyst_Resume.pdf";
     const link = document.createElement("a");
     link.href = file;
     link.download = file.split("/").pop() || "CV.pdf";
@@ -193,20 +193,20 @@ const Home = (): JSX.Element => {
                 />
               </motion.div>
 
-              <h2><p>Choose Language Of CV 📄</p></h2>
+              <h2><p>Choose CV or Resume 📄</p></h2>
 
               <div className={styles.popupButtons}>
                 <button
                   onClick={() => handleDownload("en")}
                   className={`${styles.btn} ${styles.popupBtn}`}
                 >
-                  English
+                  Cv
                 </button>
                 <button
                   onClick={() => handleDownload("ar")}
                   className={`${styles.btn} ${styles.popupBtn}`}
                 >
-                  العربية
+                  Resume
                 </button>
               </div>
 
