@@ -33,6 +33,7 @@ const SenseiHeader = (): React.ReactElement => {
      * The state of the active section, which is the section that is currently in view.
      */
     const [activeSection, setActiveSection] = useState<string>('Home');
+    const [isMounted, setIsMounted] = useState<boolean>(false);
 
     const toggleMenu = (): void => {
         setIsMenuOpen((prevState) => !prevState);
@@ -57,17 +58,24 @@ const SenseiHeader = (): React.ReactElement => {
         });
         if (current) {
             setActiveSection(current);
-            localStorage.setItem('activeSection', current);
+            if (typeof window !== 'undefined') {
+                localStorage.setItem('activeSection', current);
+            }
         }
     };
 
     useEffect(() => {
-        const savedSection = localStorage.getItem('activeSection');
-        if (savedSection) {
-            setActiveSection(savedSection);
-            const element = document.getElementById(savedSection);
-            if (element) {
-                element.scrollIntoView({ behavior: 'smooth' });
+        setIsMounted(true);
+
+        // Retrieve saved section only on client
+        if (typeof window !== 'undefined') {
+            const savedSection = localStorage.getItem('activeSection');
+            if (savedSection) {
+                setActiveSection(savedSection);
+                const element = document.getElementById(savedSection);
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                }
             }
         }
 
@@ -122,7 +130,9 @@ const SenseiHeader = (): React.ReactElement => {
                         aria-current={activeSection === section ? 'page' : undefined}
                         onClick={() => {
                             setActiveSection(section);
-                            localStorage.setItem('activeSection', section);
+                            if (typeof window !== 'undefined') {
+                                localStorage.setItem('activeSection', section);
+                            }
                             if (window.innerWidth <= 994) setIsMenuOpen(false);
                         }}
                     >

@@ -1,12 +1,17 @@
 {
   "name": "sensei-106",
   "version": "0.1.0",
+  "description": "Ahmed Emad - Cybersecurity Specialist Portfolio",
+  "author": "Ahmed_Sensei",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "lint:fix": "next lint --fix",
+    "type-check": "tsc --noEmit",
+    "analyze": "ANALYZE=true next build"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^7.1.0",
