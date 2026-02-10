@@ -7,44 +7,50 @@ import React from "react";
 import "./globals.css";
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { config } from '@fortawesome/fontawesome-svg-core';
+import { Overlock, Yuji_Syuku } from 'next/font/google';
 import type { Metadata } from "next";
 
-/*
-*@Author: Ahmed_Sensei
-*@Description: A responsive experience component with a menu that highlights the active section of the page.
- */
+// Google Fonts Configuration
+const overlock = Overlock({
+    subsets: ['latin'],
+    weight: ['400', '700'],
+    variable: '--font-overlock',
+    display: 'swap',
+});
 
-// Custom Metadata
-type CustomMetadata = Metadata & {
-    description: string;
-    keywords: string;
-    author: string;
-    charset: string;
-    viewport: string;
-};
+const yujiSyuku = Yuji_Syuku({
+    subsets: ['latin'],
+    weight: '400',
+    variable: '--font-yuji-syuku',
+    display: 'swap',
+});
 
 // Metadata configuration
-export const metadata: CustomMetadata = {
-    description: "Hello! I'm Ahmed Emad, I am a Computer Science Student at BFCAI , Certfied CCNA Engineer , Specializing in Information Security and Digital Forensics.",
-    keywords: "Ahmed Emad,Information Security and Digital Forensics ",
-    author: "Ahmed_Sensei",
-    charset: "UTF-8",
+export const metadata: Metadata = {
+    title: "Eng Ahmed Emad",
+    description: "Hello! I'm Ahmed Emad, I am a Computer Science Student at BFCAI, Certified CCNA Engineer, Specializing in Information Security and Digital Forensics.",
+    keywords: ["Ahmed Emad", "Information Security", "Digital Forensics", "CCNA", "Cybersecurity"],
+    authors: [{ name: "Ahmed_Sensei" }],
     viewport: "width=device-width, initial-scale=1.0",
+    charset: "UTF-8",
+    openGraph: {
+        title: "Eng Ahmed Emad - Cybersecurity Specialist",
+        description: "A Computer Science Student specializing in Information Security and Digital Forensics",
+        type: "website",
+    },
+    robots: "index, follow",
 };
 
 config.autoAddCss = false;
 
 export default function RootLayout({ children }: { children: React.ReactNode; }) {
     return (
-        <html lang="en" dir="ltr">
+        <html lang="en" dir="ltr" className={`${overlock.variable} ${yujiSyuku.variable}`}>
             <head>
-                <title>Eng Ahmed Emad</title>
                 <meta charSet="UTF-8" />
-                <meta name="description" content={metadata.description} />
-                <meta name="keywords" content={metadata.keywords} />
-                <meta name="author" content={metadata.author} />
-                <meta name="viewport" content={metadata.viewport} />
-                <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu&amp;family=Overlock&amp;family=Yuji+Syuku&amp;display=swap" rel="stylesheet" />
+                <link rel="canonical" href="https://ahmedemad-dev.com" />
+                <meta name="robots" content="index, follow" />
+                <meta name="theme-color" content="#000000" />
             </head>
             <body className="bg-black text-white">
                 {children}

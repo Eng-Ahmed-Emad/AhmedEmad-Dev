@@ -9,8 +9,7 @@
     text-decoration: none;
     border: none;
     outline: none;
-    scroll-behavior: smooth;
-    font-family: 'Overlock', serif;
+    font-family: var(--font-overlock, 'Overlock'), serif;
 }
 
 :root {
@@ -20,36 +19,31 @@
     --main-color: #fcf0e1;
 }
 
-
-
-
-html[lang="en"] body {
-    font-family: 'Overlock', sans-serif;
-
-}
-
-html[lang="ja"] body {
-    font-family: 'Yuji Syuku', serif;
-}
-
-[lang="en"] {
-    font-family: 'Overlock', sans-serif;
-
-}
-
-[lang="ja"] {
-    font-family: 'Yuji Syuku', serif;
-}
-
-
 html {
     font-size: 62.5%;
     overflow-x: hidden;
+    scroll-behavior: smooth;
+}
+
+html[lang="en"] body {
+    font-family: var(--font-overlock, 'Overlock'), sans-serif;
+}
+
+html[lang="ja"] body {
+    font-family: var(--font-yuji-syuku, 'Yuji Syuku'), serif;
+}
+
+[lang="en"] {
+    font-family: var(--font-overlock, 'Overlock'), sans-serif;
+}
+
+[lang="ja"] {
+    font-family: var(--font-yuji-syuku, 'Yuji Syuku'), serif;
 }
 
 body {
     background-color: var(--second-bg-color);
-    font-family: 'Overlock', serif;
+    font-family: var(--font-overlock, 'Overlock'), serif;
     color: var(--text-color);
     overflow-x: hidden;
 }

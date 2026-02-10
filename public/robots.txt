@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /.next/
+Disallow: /api/
+
+Sitemap: https://ahmedemad-dev.com/sitemap.xml
+
+# Crawl delay
+Crawl-delay: 1

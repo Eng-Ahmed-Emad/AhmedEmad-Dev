@@ -1,14 +1,14 @@
-<h1 align="center">Eng-Ahmed-Emad (0x3omda) Portfolio</h1>
-<p align="center"><img src="screenshots/home.png" alt="project-image"></p>
+<h1 align="center">Ahmed Emad (0x3omda) - Cybersecurity Portfolio</h1>
+<p align="center"><img src="screenshots/home.png" alt="Ahmed Emad Portfolio"></p>
 <p align="center">
-  <strong>Explore a world of innovative Software Development and creative problem-solving.</strong>
+  <strong>Computer Science Student | CCNA Engineer | Information Security & Digital Forensics Specialist</strong>
 </p>
 <p align="center">
   <a href="#about">About</a> •
   <a href="#features">Features</a> •
-  <a href="#demo">Demo</a> •
-  <a href="#installation">Installation</a> •
-  <a href="#technologies">Technologies</a> •
+  <a href="#tech-stack">Tech Stack</a> •
+  <a href="#getting-started">Getting Started</a> •
+  <a href="#performance">Performance</a> •
   <a href="#contributing">Contributing</a> •
   <a href="#license">License</a>
 </p>
@@ -16,94 +16,182 @@
 ---
 
 ## About
-Welcome to Eng-Ahmed-Emad(0x3omda)-Dev , my personal portfolio showcasing a journey through the realms of Software Development and creative problem-solving. This portfolio is a testament to my skills, projects, and contributions to the open-source community. Dive in to experience an interactive and vibrant showcase of my work!
+
+Welcome to my personal portfolio - a modern, performant showcase of my work in **Software Development**, **Cybersecurity**, and **Digital Forensics**. Built with cutting-edge web technologies, this portfolio demonstrates both technical skills and creative problem-solving.
+
+**Key Highlights:**
+- 🎓 Computer Science Student at BFCAI
+- 🔐 Certified CCNA Engineer
+- 🛡️ Specializing in Information Security & Digital Forensics
+- 🚀 Full-stack Development Experience
 
 ## Features
-🌟 Here are some of the standout features of this portfolio:
 
-1. **Stunning Visual Design**:
-    - Visually appealing interface with smooth animations
-    - Cohesive color scheme creating a harmonious browsing experience
+✨ **Advanced Features:**
 
-2. **Fully Responsive Layout**:
-    - Seamless experience across all devices - from mobile phones to desktop computers
+1. **High-Performance Design**
+   - GPU-accelerated animations with `translateZ(0)`
+   - CSS containment for optimized rendering
+   - Lazy loading of components
+   - Next.js 16 with App Router
 
-3. **Interactive Project Showcase**:
-    - Explore a diverse range of projects
-    - Detailed descriptions and live demos where available
+2. **Fully Responsive Layout**
+   - Mobile-first design
+   - Supports all modern browsers
+   - Touch-optimized interactions
+   - Accessible navigation
 
-4. **Image Processing**:
-    - Dynamic image gallery automatically optimized for performance
-    - Custom Python script for converting and adjusting images for web
-    - Image compression at various levels
-    - Extraction of images from a specified path
+3. **Interactive Project Showcase**
+   - Dynamic project filtering
+   - Lightbox gallery with smooth animations
+   - Project categorization
+   - Live demo links
 
-5. **Interactive Landing Section**:
-    - Attractive and modern design with interactive animations
+4. **Modern Tech Stack**
+   - React 19 with TypeScript
+   - Next.js 13+ App Router
+   - Framer Motion for animations
+   - FontAwesome icons
+   - CSS Modules for styling
 
-6. **Specialized Sections**:
-    - Services: Clear and organized presentation of offered services
-    - Projects: Showcase of past and current projects
-    - Education and Languages: Information on educational experiences and language proficiencies
-    - Programming Languages: Display of utilized programming languages
-    - Image Gallery: Attractive presentation of images and graphics
-    - Design: Samples of design work
-    - Contact: Form for client communication
-    - Footer: Additional information and important links
+5. **SEO & Performance Optimized**
+   - Meta tags and Open Graph
+   - XML Sitemap & Robots.txt
+   - Image optimization
+   - Zero JavaScript hydration mismatches
+   - Core Web Vitals optimized
 
-7. **Customizable Interface**:
-    - Easy-to-use customization options to tailor the viewing experience to your preferences
+6. **Specialized Sections**
+   - Professional Experience Timeline
+   - Skills & Expertise
+   - Project Portfolio
+   - Art Gallery
+   - Direct Contact Form
+## Getting Started
 
-## Screenshots
-<p align="center">
-  <img src="screenshots/home.png" width="80%" alt="Screenshot 1">
-  <img src="screenshots/art_gallery.png" width="80%" alt="Screenshot 2">
-</p>
+### Prerequisites
+- Node.js 18.17 or later
+- npm 9+ or yarn 4+
 
-## Demo
-Experience the Eng-Ahmed-Emad(0x3omda) Dev  portfolio live:
-🚀 [Eng-Ahmed-Emad(0x3omda) Dev  Live Demo](https://eng-ahmed-emad.github.io/AhmedEmad-Dev/#Home)
+### Installation
 
-## Installation
-Get Eng-Ahmed-Emad(0x3omda) Dev  up and running on your local machine in just a few steps:
-
-1. Ensure you have [Node.js](https://nodejs.org/en/download/package-manager) installed on your system.
-2. Clone the repository:
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/Eng-Ahmed-Emad/AhmedEmad-Dev.git
+   cd AhmedEmad-Dev
    ```
-   git clone https://github.com/Eng-Ahmed-Emad/AhmedEmad-Dev
-   ```
-3. Navigate to the project directory and install dependencies:
-   ```
-   cd AhmedEmad-Dev 
+
+2. **Install dependencies:**
+   ```bash
    npm install
+   # or
+   yarn install
    ```
-4. Install Python requirements:
+
+3. **Set up environment variables:**
+   ```bash
+   cp .env.example .env.local
    ```
-   cd app/image_optmization
-   pip install -r requirements.txt
-   ```
-5. Use the Python script for image optimization:
-    - Place your images in the designated folder within the `public/Assets/art-gallery/Images/image_display` directory.
-    - Run the Python script:
-      ```
-      python image_optimizer.py
-      ```
-    - Follow the on-screen instructions to optimize your images.
-6. Start the development server:
-   ```
+   
+   Edit `.env.local` with your configuration.
+
+4. **Run development server:**
+   ```bash
    npm run dev
+   # or
+   yarn dev
    ```
-7. Open your browser and visit `http://localhost:3000` to see the portfolio in action!
 
-## Technologies
-This portfolio is built with cutting-edge technologies:
+5. **Open your browser:**
+   Navigate to [http://localhost:3000](http://localhost:3000)
 
-- **Next.js 14**: For server-side rendering and optimal performance
-- **TypeScript**: Ensuring type safety and improved developer experience
-- **Python**: Powering scripts for image optimization and data processing
-- **CSS**: Styling with modern CSS techniques for a polished look
+### Build for Production
+
+```bash
+npm run build
+npm start
+```
+
+## Tech Stack
+
+**Frontend:**
+- **Next.js 16** - React framework with App Router
+- **React 19** - UI library
+- **TypeScript** - Type-safe development
+- **Framer Motion** - Advanced animations
+- **FontAwesome** - Icon library
+- **CSS Modules** - Scoped styling
+
+**Performance:**
+- **GPU Acceleration** - Transform & backface-visibility optimizations
+- **CSS Containment** - Layout isolation
+- **Next/Font** - Optimized Google Fonts loading
+
+**Development:**
+- **ESLint + TypeScript** - Code quality
+- **CSS Variables** - Dynamic theming
+
+## Performance
+
+### Optimizations Implemented
+
+✅ **Rendering Performance:**
+- GPU-accelerated transforms with `translateZ(0)`
+- CSS containment for paint/layout isolation
+- Backface visibility to prevent flickering
+- Specific transition properties (no `transition: all`)
+- Strategic `will-change` usage
+
+✅ **Loading Performance:**
+- Next/Font for optimized typography loading
+- Static export for fast deployments
+- Image optimization with next/image
+- Minified CSS and JavaScript
+
+✅ **Best Practices:**
+- Hydration mismatch prevention
+- localStorage checks for SSR safety
+- Responsive design with mobile-first approach
+- Accessibility support (prefers-reduced-motion)
+- SEO-optimized with meta tags & sitemap
+
+### Core Web Vitals
+- **LCP** (Largest Contentful Paint): < 2.5s
+- **FID** (First Input Delay): < 100ms  
+- **CLS** (Cumulative Layout Shift): < 0.1
 
 ## Contributing
+
+Contributions are welcome! Please follow these steps:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+Please ensure:
+- Code follows the existing style
+- TypeScript types are properly defined
+- ESLint passes (`npm run lint`)
+- Components are documented
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Contact
+
+📧 **Email:** [Your Email]
+🔗 **LinkedIn:** [Your LinkedIn Profile]
+🐙 **GitHub:** [@Eng-Ahmed-Emad](https://github.com/Eng-Ahmed-Emad)
+🌐 **Website:** [https://ahmedemad-dev.com](https://ahmedemad-dev.com)
+
+---
+
+<p align="center">
+  <strong>Made with ❤️ by Ahmed Emad (0x3omda)</strong>
+</p>## Contributing
 Your contributions are welcome! Here's how you can help improve Eng-Ahmed-Emad(0x3omda) Dev :
 
 1. Fork the repository
