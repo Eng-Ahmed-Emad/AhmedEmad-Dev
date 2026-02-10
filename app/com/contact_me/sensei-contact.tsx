@@ -3,9 +3,16 @@ import styles from './sensei-contact.module.css';
 import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLinkedin, faTelegram } from "@fortawesome/free-brands-svg-icons";
+import {
+    faLinkedin,
+    faTelegram,
+    faWhatsapp,
+    faSquareFacebook,
+    faInstagram,
+    faGithub,
+    faTwitter,
+} from "@fortawesome/free-brands-svg-icons";
 import { faUserSecret, faFilePdf } from "@fortawesome/free-solid-svg-icons";
-import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 
 
 //**
@@ -69,7 +76,7 @@ const SenseiContact = (): JSX.Element => {
                                         target="_blank"
                                         rel="noopener noreferrer"
                                     >
-                                        <i className="fa-brands fa-square-facebook"></i>
+                                        <FontAwesomeIcon icon={faSquareFacebook} />
                                     </a>
                                     <a
                                         aria-label="Go to Instagram"
@@ -77,8 +84,7 @@ const SenseiContact = (): JSX.Element => {
                                         target="_blank"
                                         rel="noopener noreferrer"
                                     >
-                                        {/* Instagram icon */}
-                                        <i className="fa-brands fa-instagram"></i>
+                                        <FontAwesomeIcon icon={faInstagram} />
                                     </a>
                                     <a
                                         aria-label="Go to Linkedin"
@@ -86,8 +92,7 @@ const SenseiContact = (): JSX.Element => {
                                         target="_blank"
                                         rel="noopener noreferrer"
                                     >
-                                        {/* LinkedIn icon */}
-                                        <i className="fa-brands fa-linkedin"></i>
+                                        <FontAwesomeIcon icon={faLinkedin} />
                                     </a>
                                     <a
                                         aria-label="Go to x"
@@ -95,8 +100,7 @@ const SenseiContact = (): JSX.Element => {
                                         target="_blank"
                                         rel="noopener noreferrer"
                                     >
-                                        {/* Telegram icon */}
-                                        <i className="fa-brands fa-x-twitter"></i>
+                                        <FontAwesomeIcon icon={faTwitter} />
                                     </a>
                                     <a
                                         aria-label="Go to Telegram"
@@ -113,8 +117,7 @@ const SenseiContact = (): JSX.Element => {
                                         target="_blank"
                                         rel="noopener noreferrer"
                                     >
-                                        {/* GitHub icon */}
-                                        <i className="fa-brands fa-github"></i>
+                                        <FontAwesomeIcon icon={faGithub} />
                                     </a>
                                     <a
                                         aria-label="Go to Saraha"
