@@ -11,7 +11,7 @@
     transform: translateX(-50%);
     width: calc(100% - 1rem);
     max-width: none;
-    padding: 0.9rem 3.5%;
+    padding: 1.3rem 3.5%;
     background: rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(20px);
     border-radius: 1rem;
