@@ -6,12 +6,12 @@
 
 .header {
     position: fixed;
-    top: 0.5rem;
+    top: 0.42rem;
     left: 50%;
     transform: translateX(-50%);
-    width: calc(100% - 4rem);
-    max-width: 100%;
-    padding: 2rem 1.5%;
+    width: calc(100% - 1rem);
+    max-width: none;
+    padding: 0.9rem 3.5%;
     background: rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(20px);
     border-radius: 1rem;
@@ -24,7 +24,7 @@
 }
 
 .logo {
-    font-size: 2.5rem;
+    font-size: 2.4rem;
     font-family: 'Yuji Syuku', serif;
     color: var(--text-color);
     font-weight: 800;
@@ -144,9 +144,11 @@
 /* -------- Responsive for Small Screens -------- */
 @media (max-width: 640px) {
     .header {
-        padding: 0.6rem 0.8rem;
+        padding: 0.5rem 1.5rem;
         /* smaller padding */
-        width: calc(100% - 0.5rem);
+        width: 100%;
+        left: 0;
+        transform: none;
         border-radius: 0.6rem;
         /* smaller corner radius */
     }
@@ -179,8 +181,10 @@
 /* -------- Responsive for Tablets -------- */
 @media (max-width: 994px) {
     .header {
-        width: calc(100% - 2rem);
-        padding: 2rem 2%;
+        width: 100%;
+        left: 0;
+        transform: none;
+        padding: 1rem 2.5%;
     }
 
     .MenuIcon {
