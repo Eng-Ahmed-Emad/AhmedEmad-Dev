@@ -39,11 +39,11 @@ export default function RootLayout({ children }: { children: React.ReactNode; })
         <html lang="en" dir="ltr">
             <head>
                 <title>Eng Ahmed Emad</title>
+                <meta charSet="UTF-8" />
                 <meta name="description" content={metadata.description} />
                 <meta name="keywords" content={metadata.keywords} />
                 <meta name="author" content={metadata.author} />
                 <meta name="viewport" content={metadata.viewport} />
-                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
                 <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu&amp;family=Overlock&amp;family=Yuji+Syuku&amp;display=swap" rel="stylesheet" />
             </head>
             <body className="bg-black text-white">

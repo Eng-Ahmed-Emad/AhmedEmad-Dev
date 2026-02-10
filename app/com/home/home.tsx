@@ -7,6 +7,7 @@ import {
   faLinkedin,
   faTelegram,
 } from "@fortawesome/free-brands-svg-icons";
+import { faInstagram, faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 import {
   faUserSecret,
   faFilePdf,
@@ -120,7 +121,7 @@ const Home = (): JSX.Element => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <i className="fa-brands fa-instagram"></i>
+              <FontAwesomeIcon icon={faInstagram} />
             </a>
 
             <a
@@ -129,7 +130,7 @@ const Home = (): JSX.Element => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <i className="fa-brands fa-whatsapp"></i>
+              <FontAwesomeIcon icon={faWhatsapp} />
             </a>
             
           </motion.div>

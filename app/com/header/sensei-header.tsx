@@ -1,5 +1,6 @@
 "use client";
-import React, { useState, useEffect, JSX } from 'react';
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import styles from './sensei-header.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -10,6 +11,7 @@ import {
     faPalette
 } from '@fortawesome/free-solid-svg-icons';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
+import { faCommentDots } from '@fortawesome/free-solid-svg-icons';
 
 
 //**
@@ -90,13 +92,14 @@ const SenseiHeader = (): JSX.Element => {
         Experience: faBook,
         Projects: faFolder,
         ArtGallery: faPalette,
+        Contact: faCommentDots,
     };
 
     return (
         <header className={styles.header}>
-            <a href="#" className={styles.logo}>
+            <Link href="/" className={styles.logo}>
                 <span lang="ja">アーメド・エマド</span>
-            </a>
+            </Link>
             <div
                 className={`${styles.MenuIcon} ${isMenuOpen ? styles.active : ''}`}
                 onClick={toggleMenu}
@@ -115,6 +118,7 @@ const SenseiHeader = (): JSX.Element => {
                         key={section}
                         href={`#${section}`}
                         className={activeSection === section ? styles.active : ''}
+                        aria-current={activeSection === section ? 'page' : undefined}
                         onClick={() => {
                             setActiveSection(section);
                             localStorage.setItem('activeSection', section);
