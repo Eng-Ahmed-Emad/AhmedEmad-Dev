@@ -23,7 +23,7 @@ import { faCommentDots } from '@fortawesome/free-solid-svg-icons';
  * The main header component with a responsive menu.
  * @returns The JSX Element for the header.
  */
-const SenseiHeader = (): JSX.Element => {
+const SenseiHeader = (): React.ReactElement => {
     /**
      * The state of the menu, whether it is open or closed.
      */
