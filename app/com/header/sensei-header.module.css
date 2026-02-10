@@ -8,7 +8,7 @@
     position: fixed;
     top: 0.42rem;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-50%) translateZ(0);
     width: calc(100% - 1rem);
     max-width: none;
     padding: 1.3rem 3.5%;
@@ -19,8 +19,10 @@
     justify-content: space-between;
     align-items: center;
     z-index: 100;
-    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    transition: box-shadow 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55), background 0.4s ease;
     border: 1px solid rgb(252, 240, 225);
+    contain: layout style;
+    backface-visibility: hidden;
 }
 
 .logo {
@@ -29,8 +31,9 @@
     color: var(--text-color);
     font-weight: 800;
     cursor: pointer;
-    transition: all 0.3s ease;
-    will-change: transform, text-shadow;
+    transition: text-shadow 0.3s ease;
+    transform: translateZ(0);
+    backface-visibility: hidden;
 }
 
 .logo:hover {
@@ -49,13 +52,16 @@
     padding: 0.5rem 1rem;
     border-radius: 0.7rem;
     font-weight: 500;
-    transition: all 0.4s ease-in-out;
+    transition: background 0.4s ease-in-out, box-shadow 0.4s ease-in-out;
     display: flex;
     align-items: center;
     gap: 0.5rem;
     position: relative;
     overflow: hidden;
-    will-change: background, color, box-shadow;
+    contain: paint;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    will-change: background, box-shadow;
 }
 
 .navbar a::before {
@@ -67,6 +73,9 @@
     height: 100%;
     background: linear-gradient(120deg, transparent, var(--main-color), transparent);
     transition: left 0.4s ease-in-out;
+    pointer-events: none;
+    will-change: left;
+    transform: translateZ(0);
 }
 
 .navbar a:hover::before {
@@ -82,8 +91,10 @@
 
 .navbar a .icon {
     color: var(--text-color);
-    will-change: transform, color;
     transition: transform 0.4s ease, color 0.4s ease;
+    will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
 }
 
 .navbar a:hover .icon,
@@ -99,6 +110,7 @@
     position: relative;
     cursor: pointer;
     display: none;
+    contain: paint;
 }
 
 .MenuIcon span {
@@ -110,8 +122,10 @@
     border-radius: 1rem;
     opacity: 1;
     left: 0;
-    transform: rotate(0deg);
-    transition: .25s ease-in-out;
+    transform: rotate(0deg) translateZ(0);
+    transition: transform 0.25s ease-in-out, opacity 0.25s ease-in-out;
+    backface-visibility: hidden;
+    will-change: transform, opacity;
 }
 
 .MenuIcon span:nth-child(1) {
@@ -145,26 +159,21 @@
 @media (max-width: 640px) {
     .header {
         padding: 0.5rem 1.5rem;
-        /* smaller padding */
         width: 100%;
         left: 0;
-        transform: none;
+        transform: translateZ(0);
         border-radius: 0.6rem;
-        /* smaller corner radius */
+        contain: layout style paint;
     }
 
     .logo {
         font-size: 1.3rem;
-        /* smaller logo */
     }
 
     .navbar a {
         font-size: 1.2rem;
-        /* smaller text */
         margin: 0.6rem;
-        /* reduced spacing */
         padding: 0.5rem 0.8rem;
-        /* reduced padding */
     }
 
     .MenuIcon {
@@ -174,7 +183,6 @@
 
     .MenuIcon span {
         height: 3px;
-        /* thinner bars */
     }
 }
 
@@ -183,8 +191,9 @@
     .header {
         width: 100%;
         left: 0;
-        transform: none;
+        transform: translateZ(0);
         padding: 1rem 2.5%;
+        contain: layout style paint;
     }
 
     .MenuIcon {
@@ -202,9 +211,12 @@
         border-radius: 1rem;
         display: none;
         opacity: 0;
-        transform: translateY(-25px);
+        transform: translateY(-25px) translateZ(0);
         margin-top: 0.5rem;
         transition: opacity 0.3s ease, transform 0.4s ease-in-out;
+        will-change: opacity, transform;
+        contain: paint;
+        backface-visibility: hidden;
     }
 
     .navbar.active {
@@ -221,8 +233,10 @@
         margin: 2.5rem;
         opacity: 0;
         padding: 1rem;
-        transform: translateX(-20px);
+        transform: translateX(-20px) translateZ(0);
         transition: opacity 0.3s ease, transform 0.3s ease;
+        backface-visibility: hidden;
+        will-change: transform, opacity;
     }
 
     .navbar.active a {
