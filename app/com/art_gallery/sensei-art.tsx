@@ -1,5 +1,5 @@
 /*
-*@Author: Ahmed_Sensei
+*@Author: Ahmed_emad
 *@Description: A responsive experience component with a menu that highlights the active section of the page.
  */
 
