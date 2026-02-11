@@ -16,7 +16,7 @@ import {
 import styles from "./sensei-home.module.css";
 
 //**
-// @Author Ahmed_Sensei
+// @Author Ahmed_Senseii
 // @Description A React component that serves as the home section of the portfolio, featuring an image, social links, animations, and a CV language selection popup.
 //**
 
