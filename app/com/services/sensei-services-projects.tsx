@@ -1,6 +1,6 @@
 // Import necessary dependencies and styles
 "use client";
-import React, { JSX } from 'react';
+import React, { ReactElement } from 'react';
 import { motion } from "framer-motion";
 import { Variants } from "framer-motion";
 import { useInView } from "react-intersection-observer";
@@ -22,14 +22,14 @@ import styles from "./sensei-services-projects.module.css";
  * - `description`: A brief description of the service.
  * - `index`: The index of the service in the list for animation delay purposes.
  *
- * @returns {JSX.Element} A JSX element representing a single service item.
+ * @returns {ReactElement} A React element representing a single service item.
  */
 const ServiceItem: React.FC<{
     icon: string;
     title: string;
     description: string;
     index: number;
-}> = ({ icon, title, description, index }): JSX.Element => {
+}> = ({ icon, title, description, index }): ReactElement => {
     // useInView hook to track if the element is visible in the viewport
     const [ref, inView] = useInView({
         triggerOnce: true,
@@ -78,9 +78,9 @@ const ServiceItem: React.FC<{
  * A React component that displays a list of service items in a grid format.
  * Each service item is rendered using the ServiceItem component and is animated when it appears in the viewport.
  *
- * @returns {JSX.Element} A JSX element representing the services section.
+ * @returns {ReactElement} A React element representing the services section.
  */
-function SenseiServicesProjects(): JSX.Element {
+function SenseiServicesProjects(): ReactElement {
     const services = [
         {
             icon: "fa-brands fa-flutter",

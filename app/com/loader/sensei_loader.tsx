@@ -5,16 +5,16 @@
  */
 
 "use client";
-import { useState, useEffect, JSX } from "react";
+import { useState, useEffect, ReactElement } from "react";
 import styles from "./sensei_loader.module.css";
 import Image, { ImageProps } from "next/image";
 
 /**
  * A React component that renders a loading spinner until the page is fully loaded.
  *
- * @returns {JSX.Element | null} A JSX element representing the loader, or null if loading is complete.
+ * @returns {ReactElement | null} A React element representing the loader, or null if loading is complete.
  */
-function SenseiLoader(): JSX.Element | null {
+function SenseiLoader(): ReactElement | null {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
