@@ -32,7 +32,6 @@ export const metadata: Metadata = {
     keywords: ["Ahmed Emad", "Information Security", "Digital Forensics", "CCNA", "Cybersecurity"],
     authors: [{ name: "Ahmed_Sensei" }],
     viewport: "width=device-width, initial-scale=1.0",
-    charset: "UTF-8",
     openGraph: {
         title: "Eng Ahmed Emad - Cybersecurity Specialist",
         description: "A Computer Science Student specializing in Information Security and Digital Forensics",

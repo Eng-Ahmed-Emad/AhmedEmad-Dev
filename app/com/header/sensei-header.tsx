@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, ReactElement } from 'react';
 import Link from 'next/link';
 import styles from './sensei-header.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -23,7 +23,7 @@ import { faCommentDots } from '@fortawesome/free-solid-svg-icons';
  * The main header component with a responsive menu.
  * @returns The JSX Element for the header.
  */
-const SenseiHeader = (): JSX.Element => {
+const SenseiHeader = (): ReactElement => {
     /**
      * The state of the menu, whether it is open or closed.
      */
@@ -33,7 +33,6 @@ const SenseiHeader = (): JSX.Element => {
      * The state of the active section, which is the section that is currently in view.
      */
     const [activeSection, setActiveSection] = useState<string>('Home');
-    const [isMounted, setIsMounted] = useState<boolean>(false);
 
     const toggleMenu = (): void => {
         setIsMenuOpen((prevState) => !prevState);
@@ -65,8 +64,6 @@ const SenseiHeader = (): JSX.Element => {
     };
 
     useEffect(() => {
-        setIsMounted(true);
-
         // Retrieve saved section only on client
         if (typeof window !== 'undefined') {
             const savedSection = localStorage.getItem('activeSection');
