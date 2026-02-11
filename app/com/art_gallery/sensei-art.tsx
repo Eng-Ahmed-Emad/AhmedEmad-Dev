@@ -4,7 +4,7 @@
  */
 
 "use client";
-import React, { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
@@ -13,7 +13,18 @@ import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 import styles from "./sensei-art.module.css";
 
-const ImageItem = ({ image, index, setOpen }) => {
+interface GalleryImage {
+    src: string;
+    thumb: string;
+}
+
+interface ImageItemProps {
+    image: GalleryImage;
+    index: number;
+    setOpen: (index: number) => void;
+}
+
+const ImageItem = ({ image, index, setOpen }: ImageItemProps) => {
     const [ref, inView] = useInView({
         triggerOnce: true,
         threshold: 0.1,
@@ -61,7 +72,7 @@ function SenseiArt() {
     const open = index >= 0;
 
     const images = useMemo(() => [
-        ...Array.from({ length: 39 }, (v, k) => ({
+        ...Array.from({ length: 39 }, (_, k) => ({
             src: `Assets/art-gallery/Images/image_display/${k + 1}.png`,
             thumb: `Assets/art-gallery/Images/image_display_thumb/${k + 1}.webp`,
         })),

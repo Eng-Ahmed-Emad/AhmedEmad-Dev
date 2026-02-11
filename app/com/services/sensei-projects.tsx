@@ -79,9 +79,8 @@ const formatDate = (dateString: string): string => {
 /**
  * Component representing a single GitHub repository item in the projects list.
  * @param repo - The GitHub repository data.
- * @param index - The index of the repository in the list.
  */
-const ProjectItem: React.FC<{ repo: GitHubRepository; index: number }> = React.memo(({ repo, index }) => {
+const ProjectItem: React.FC<{ repo: GitHubRepository }> = React.memo(({ repo }) => {
     const [ref, inView] = useInView({
         triggerOnce: true,
         threshold: 0.1,
@@ -220,8 +219,8 @@ const SenseiProjects: React.FC = () => {
                     </h2>
                 </motion.div>
                 <div className={styles['grid-container']}>
-                    {repos.map((repo, index) => (
-                        <ProjectItem key={repo.id} repo={repo} index={index} />
+                    {repos.map((repo) => (
+                        <ProjectItem key={repo.id} repo={repo} />
                     ))}
                 </div>
             </div>

@@ -3,7 +3,7 @@
 *@Description: A responsive experience component with a menu that highlights the active section of the page.
  */
 
-import React from "react";
+import type { ReactNode } from "react";
 import "./globals.css";
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { config } from '@fortawesome/fontawesome-svg-core';
@@ -32,7 +32,6 @@ export const metadata: Metadata = {
     keywords: ["Ahmed Emad", "Information Security", "Digital Forensics", "CCNA", "Cybersecurity"],
     authors: [{ name: "Ahmed_Sensei" }],
     viewport: "width=device-width, initial-scale=1.0",
-    charset: "UTF-8",
     openGraph: {
         title: "Eng Ahmed Emad - Cybersecurity Specialist",
         description: "A Computer Science Student specializing in Information Security and Digital Forensics",
@@ -43,7 +42,7 @@ export const metadata: Metadata = {
 
 config.autoAddCss = false;
 
-export default function RootLayout({ children }: { children: React.ReactNode; }) {
+export default function RootLayout({ children }: { children: ReactNode; }) {
     return (
         <html lang="en" dir="ltr" className={`${overlock.variable} ${yujiSyuku.variable}`}>
             <head>

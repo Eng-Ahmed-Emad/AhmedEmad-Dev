@@ -1,4 +1,3 @@
-import React from "react";
 import AppBar from "@/app/com/header/sensei-header";
 import HomeSection from "@/app/com/home/home";
 import ExperienceSection from "@/app/com/experience/experience-section";

@@ -1,11 +1,10 @@
 "use client";
-import { JSX, useEffect, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import { motion, useAnimation, AnimatePresence } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faLinkedin,
-  faTelegram,
 } from "@fortawesome/free-brands-svg-icons";
 import { faInstagram, faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 import {
@@ -20,7 +19,7 @@ import styles from "./sensei-home.module.css";
 // @Description A React component that serves as the home section of the portfolio, featuring an image, social links, animations, and a CV language selection popup.
 //**
 
-const Home = (): JSX.Element => {
+const Home = (): ReactElement => {
   const controls = useAnimation();
   const [ref, inView] = useInView({
     triggerOnce: false,

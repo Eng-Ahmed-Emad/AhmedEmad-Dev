@@ -33,7 +33,6 @@ const SenseiHeader = (): React.ReactElement => {
      * The state of the active section, which is the section that is currently in view.
      */
     const [activeSection, setActiveSection] = useState<string>('Home');
-    const [isMounted, setIsMounted] = useState<boolean>(false);
 
     const toggleMenu = (): void => {
         setIsMenuOpen((prevState) => !prevState);
@@ -65,8 +64,6 @@ const SenseiHeader = (): React.ReactElement => {
     };
 
     useEffect(() => {
-        setIsMounted(true);
-
         // Retrieve saved section only on client
         if (typeof window !== 'undefined') {
             const savedSection = localStorage.getItem('activeSection');

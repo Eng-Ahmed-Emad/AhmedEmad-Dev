@@ -27,8 +27,10 @@
     "yet-another-react-lightbox": "^3.25.0"
   },
   "devDependencies": {
+    "@types/lodash": "^4.17.23",
     "@types/node": "^24.9.1",
     "@types/react": "^19.2.2",
+    "baseline-browser-mapping": "^2.9.19",
     "eslint": "^9.38.0",
     "eslint-config-next": "^16.0.0",
     "typescript": "^5"
