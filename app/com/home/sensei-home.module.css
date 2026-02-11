@@ -7,7 +7,10 @@
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    padding: 2rem;
+    /* زودنا المسافة حوالي السكشن كله خصوصًا من تحت عشان ما يركبش على اللي بعده */
+    padding: 4rem 2rem 6rem;
+    /* فرق ثابت بين الهوم وأي سكشن بعده */
+    margin-bottom: 4rem;
 }
 
 .container {
