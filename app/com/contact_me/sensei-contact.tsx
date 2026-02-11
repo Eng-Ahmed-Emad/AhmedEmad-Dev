@@ -1,5 +1,7 @@
-import { ReactElement } from 'react';
+import { JSX } from 'react';
 import styles from './sensei-contact.module.css';
+import { motion, useAnimation } from "framer-motion";
+import { useInView } from "react-intersection-observer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faLinkedin,
@@ -10,7 +12,7 @@ import {
     faGithub,
     faTwitter,
 } from "@fortawesome/free-brands-svg-icons";
-import { faUserSecret } from "@fortawesome/free-solid-svg-icons";
+import { faUserSecret, faFilePdf } from "@fortawesome/free-solid-svg-icons";
 
 
 //**
@@ -22,11 +24,11 @@ import { faUserSecret } from "@fortawesome/free-solid-svg-icons";
 /**
  * @function SenseiContact
  * @description A functional component that renders the contact me section
- * @returns {ReactElement} The React Element for the contact me section
+ * @returns {JSX.Element} The JSX Element for the contact me section
  * @example
  * <SenseiContact />
  */
-const SenseiContact = (): ReactElement => {
+const SenseiContact = (): JSX.Element => {
     return (
         <section className={styles['Contact-Me-section']} id="Contact">
             <div className={styles['header-section']}>
