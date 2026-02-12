@@ -1,6 +1,5 @@
 "use client";
-import React, { useState, useEffect, useCallback } from 'react';
-import { useState, useEffect, ReactElement } from 'react';
+import { useState, useEffect, useCallback, type ReactElement } from 'react';
 import Link from 'next/link';
 import styles from './sensei-header.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

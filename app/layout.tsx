@@ -42,8 +42,24 @@ export const metadata: Metadata = {
         title: "Eng Ahmed Emad - Cybersecurity Specialist",
         description: "A Computer Science Student specializing in Information Security and Digital Forensics",
         type: "website",
+        url: "https://ahmedemad-dev.com",
+        images: [
+            {
+                url: "/Assets/art-gallery/Images/image_display_thumb/4.webp",
+                width: 1200,
+                height: 630,
+                alt: "Ahmed Emad - Cybersecurity Portfolio",
+            },
+        ],
     },
     robots: "index, follow",
+    twitter: {
+        card: "summary_large_image",
+        title: "Eng Ahmed Emad - Cybersecurity Specialist",
+        description: "Cybersecurity student and analyst focusing on information security and digital forensics.",
+        images: ["/Assets/art-gallery/Images/image_display_thumb/4.webp"],
+        creator: "@Ahmed3Emad77",
+    },
 };
 
 config.autoAddCss = false;

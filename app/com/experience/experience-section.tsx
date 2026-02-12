@@ -165,7 +165,7 @@ function ExperienceSection() {
                 "https://gdg.community.dev/gdg-on-campus-benha-university-benha-egypt/",
             desc: "Delivered cybersecurity training to 120+ learners, resulting in 40% practical skill improvement and a 4.9/5 average satisfaction rating.",
             isRight: false,
-            startDate: "2025-010-1",
+            startDate: "2025-10-01",
             endDate: "2025-11-31",
             showDate: true,
         },

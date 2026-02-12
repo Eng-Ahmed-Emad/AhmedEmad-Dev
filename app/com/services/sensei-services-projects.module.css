@@ -88,6 +88,15 @@
     gap: 20px;
 }
 
+.projects-placeholder,
+.projects-error {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: var(--text-color);
+    font-size: 1.6rem;
+    padding: 2rem 1rem;
+}
+
 .single-service,
 .single-project {
     background: var(--main-color);

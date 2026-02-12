@@ -48,6 +48,7 @@ const AnimatedBackground: React.FC = () => {
     const [bubbles, setBubbles] = useState<Bubble[]>([]);// Define the bubbles
     const [meteors, setMeteors] = useState<Meteor[]>([]);// Define the meteors
     const [isMobile, setIsMobile] = useState(false);
+    const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
     // Define the createBubbles and createMeteors functions
     // The functions are used to create the bubbles and meteors
@@ -61,7 +62,7 @@ const AnimatedBackground: React.FC = () => {
     const minRadius = 60;
 
     const createBubbles = useCallback(() => {
-        if (isMobile) return [];
+        if (isMobile || prefersReducedMotion) return [];
         return Array.from({ length: numberOfBubbles }, () => ({
             x: Math.random() * dimensions.width,
             y: Math.random() * dimensions.height,
@@ -69,9 +70,10 @@ const AnimatedBackground: React.FC = () => {
             vx: (Math.random() - 0.5) * 0.7,
             vy: (Math.random() - 0.5) * 0.7
         }));
-    }, [dimensions, numberOfBubbles, isMobile]);
+    }, [dimensions, numberOfBubbles, isMobile, prefersReducedMotion]);
 
     const createMeteors = useCallback(() => {
+        if (prefersReducedMotion) return [];
         return Array.from({ length: numberOfMeteors }, () => ({
             x: Math.floor(Math.random() * (dimensions.width / gridSize)) * gridSize,
             y: Math.floor(Math.random() * (dimensions.height / gridSize)) * gridSize,
@@ -80,7 +82,7 @@ const AnimatedBackground: React.FC = () => {
             direction: Math.random() < 0.5 ? 'horizontal' : 'vertical',
             trail: []
         })) as Meteor[];
-    }, [dimensions, numberOfMeteors]);
+    }, [dimensions, numberOfMeteors, prefersReducedMotion]);
 
     useEffect(() => {
         const updateDimensions = () => {
@@ -101,12 +103,29 @@ const AnimatedBackground: React.FC = () => {
         };
     }, []);
 
+    // Respect user prefers-reduced-motion setting
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+        const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+        setPrefersReducedMotion(mediaQuery.matches);
+        const handleChange = (event: MediaQueryListEvent) => {
+            setPrefersReducedMotion(event.matches);
+        };
+        mediaQuery.addEventListener('change', handleChange);
+        return () => mediaQuery.removeEventListener('change', handleChange);
+    }, []);
+
     useEffect(() => {
         if (dimensions.width && dimensions.height) {
-            setBubbles(createBubbles());
-            setMeteors(createMeteors());
+            if (prefersReducedMotion) {
+                setBubbles([]);
+                setMeteors([]);
+            } else {
+                setBubbles(createBubbles());
+                setMeteors(createMeteors());
+            }
         }
-    }, [dimensions, createBubbles, createMeteors]);
+    }, [dimensions, createBubbles, createMeteors, prefersReducedMotion]);
 
     const drawGrid = useCallback((ctx: CanvasRenderingContext2D) => {
         ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
@@ -174,44 +193,48 @@ const AnimatedBackground: React.FC = () => {
 
         drawGrid(ctx);
 
-        if (!isMobile) {
-            bubbles.forEach(bubble => {
-                bubble.x += bubble.vx;
-                bubble.y += bubble.vy;
-                if (bubble.x + bubble.radius > canvas.width || bubble.x - bubble.radius < 0) bubble.vx *= -1;
-                if (bubble.y + bubble.radius > canvas.height || bubble.y - bubble.radius < 0) bubble.vy *= -1;
-                drawBubble(ctx, bubble);
+        if (!prefersReducedMotion) {
+            if (!isMobile) {
+                bubbles.forEach(bubble => {
+                    bubble.x += bubble.vx;
+                    bubble.y += bubble.vy;
+                    if (bubble.x + bubble.radius > canvas.width || bubble.x - bubble.radius < 0) bubble.vx *= -1;
+                    if (bubble.y + bubble.radius > canvas.height || bubble.y - bubble.radius < 0) bubble.vy *= -1;
+                    drawBubble(ctx, bubble);
+                });
+            }
+
+            meteors.forEach(meteor => {
+                if (meteor.direction === 'horizontal') {
+                    meteor.x += meteor.speed;
+                    if (meteor.x > canvas.width) {
+                        meteor.x = 0;
+                        meteor.y = Math.floor(Math.random() * (canvas.height / gridSize)) * gridSize;
+                        meteor.trail = [];
+                    }
+                } else {
+                    meteor.y += meteor.speed;
+                    if (meteor.y > canvas.height) {
+                        meteor.y = 0;
+                        meteor.x = Math.floor(Math.random() * (canvas.width / gridSize)) * gridSize;
+                        meteor.trail = [];
+                    }
+                }
+
+                meteor.trail.unshift({ x: meteor.x, y: meteor.y, alpha: 1 });
+                if (meteor.trail.length > 20) meteor.trail.pop();
+                meteor.trail.forEach((point, index) => {
+                    point.alpha = 1 - index / meteor.trail.length;
+                });
+
+                drawMeteor(ctx, meteor);
             });
         }
 
-        meteors.forEach(meteor => {
-            if (meteor.direction === 'horizontal') {
-                meteor.x += meteor.speed;
-                if (meteor.x > canvas.width) {
-                    meteor.x = 0;
-                    meteor.y = Math.floor(Math.random() * (canvas.height / gridSize)) * gridSize;
-                    meteor.trail = [];
-                }
-            } else {
-                meteor.y += meteor.speed;
-                if (meteor.y > canvas.height) {
-                    meteor.y = 0;
-                    meteor.x = Math.floor(Math.random() * (canvas.width / gridSize)) * gridSize;
-                    meteor.trail = [];
-                }
-            }
-
-            meteor.trail.unshift({ x: meteor.x, y: meteor.y, alpha: 1 });
-            if (meteor.trail.length > 20) meteor.trail.pop();
-            meteor.trail.forEach((point, index) => {
-                point.alpha = 1 - index / meteor.trail.length;
-            });
-
-            drawMeteor(ctx, meteor);
-        });
-
-        animationFrameIdRef.current = requestAnimationFrame(animate);
-    }, [bubbles, meteors, drawGrid, isMobile]);
+        if (!prefersReducedMotion) {
+            animationFrameIdRef.current = requestAnimationFrame(animate);
+        }
+    }, [bubbles, meteors, drawGrid, isMobile, prefersReducedMotion]);
 
     useEffect(() => {
         const canvas = canvasRef.current;

@@ -1,8 +1,8 @@
 "use client";
 
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement, useEffect, useState, useRef } from "react";
 import Image from "next/image";
-import { motion, useAnimation, AnimatePresence } from "framer-motion";
+import { motion, useAnimation, AnimatePresence, useReducedMotion } from "framer-motion";
 import type { Variants } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -50,6 +50,9 @@ const itemVariants: Variants = {
 
 const Home = (): ReactElement => {
   const controls = useAnimation();
+  const shouldReduceMotion = useReducedMotion();
+  const popupRef = useRef<HTMLDivElement | null>(null);
+  const firstPopupButtonRef = useRef<HTMLButtonElement | null>(null);
   const [ref, inView] = useInView({
     triggerOnce: false,
     threshold: 0.1,
@@ -59,9 +62,59 @@ const Home = (): ReactElement => {
 
   useEffect(() => {
     if (inView) {
-      controls.start("visible");
+      if (shouldReduceMotion) {
+        controls.set("visible");
+      } else {
+        controls.start("visible");
+      }
     }
-  }, [controls, inView]);
+  }, [controls, inView, shouldReduceMotion]);
+
+  // Focus management & keyboard accessibility for the popup
+  useEffect(() => {
+    if (!showPopup) return;
+
+    const previouslyFocused = document.activeElement as HTMLElement | null;
+
+    if (firstPopupButtonRef.current) {
+      firstPopupButtonRef.current.focus();
+    }
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setShowPopup(false);
+        return;
+      }
+
+      if (event.key === "Tab" && popupRef.current) {
+        const focusableElements = popupRef.current.querySelectorAll<HTMLElement>(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+        );
+
+        if (focusableElements.length === 0) return;
+
+        const first = focusableElements[0];
+        const last = focusableElements[focusableElements.length - 1];
+
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      if (previouslyFocused) {
+        previouslyFocused.focus();
+      }
+    };
+  }, [showPopup]);
 
   const handleDownloadClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -176,22 +229,29 @@ const Home = (): ReactElement => {
           >
             <motion.div
               className={styles.popup}
+              ref={popupRef}
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
+              role="dialog"
+              aria-modal="true"
             >
               {/* Animated Icon */}
               <motion.div
                 initial={{ y: -8, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{
-                  delay: 0.1,
-                  duration: 0.5,
-                  repeat: Infinity,
-                  repeatType: "reverse",
-                  ease: "easeInOut",
-                }}
+                transition={
+                  shouldReduceMotion
+                    ? { duration: 0.3, ease: "easeOut" }
+                    : {
+                        delay: 0.1,
+                        duration: 0.5,
+                        repeat: Infinity,
+                        repeatType: "reverse",
+                        ease: "easeInOut",
+                      }
+                }
               >
                 <FontAwesomeIcon
                   icon={faFilePdf}
@@ -209,6 +269,7 @@ const Home = (): ReactElement => {
                 <button
                   onClick={() => handleDownload("en")}
                   className={`${styles.btn} ${styles.popupBtn}`}
+                  ref={firstPopupButtonRef}
                 >
                   Cv
                 </button>

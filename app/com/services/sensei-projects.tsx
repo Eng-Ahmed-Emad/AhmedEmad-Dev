@@ -167,6 +167,8 @@ const ProjectItem: React.FC<{ repo: GitHubRepository }> = React.memo(({ repo }) 
  */
 const SenseiProjects: React.FC = () => {
     const [repos, setRepos] = useState<GitHubRepository[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
     const [headerRef, headerInView] = useInView({
         triggerOnce: true,
         threshold: 0.1,
@@ -177,6 +179,8 @@ const SenseiProjects: React.FC = () => {
      */
     const fetchGitHubRepos = useCallback(async () => {
         try {
+            setLoading(true);
+            setError(null);
             const response = await fetch(API_URL);
             if (!response.ok) {
                 throw new Error('Failed to fetch repositories');
@@ -185,6 +189,9 @@ const SenseiProjects: React.FC = () => {
             setRepos(data);
         } catch (error) {
             console.error('Error fetching repositories:', error);
+            setError('Failed to load projects from GitHub. Please try again later.');
+        } finally {
+            setLoading(false);
         }
     }, []);
 
@@ -222,7 +229,17 @@ const SenseiProjects: React.FC = () => {
                     </h2>
                 </motion.div>
                 <div className={styles['grid-container']}>
-                    {repos.map((repo) => (
+                    {loading && (
+                        <div className={styles['projects-placeholder']}>
+                            <p>Loading projects from GitHub...</p>
+                        </div>
+                    )}
+                    {!loading && error && (
+                        <div className={styles['projects-error']}>
+                            <p>{error}</p>
+                        </div>
+                    )}
+                    {!loading && !error && repos.map((repo) => (
                         <ProjectItem key={repo.id} repo={repo} />
                     ))}
                 </div>
