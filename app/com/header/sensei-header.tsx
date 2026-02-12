@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import styles from './sensei-header.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -38,7 +38,7 @@ const SenseiHeader = (): React.ReactElement => {
         setIsMenuOpen((prevState) => !prevState);
     };
 
-    const handleScroll = (): void => {
+    const handleScroll = useCallback((): void => {
         const sections: Array<string> = [
             'Home',
             // 'Services',
@@ -47,21 +47,39 @@ const SenseiHeader = (): React.ReactElement => {
             'ArtGallery',
             'Contact',
         ];
+
+        const viewportCenter = window.innerHeight / 2;
+
+        // أولوية خاصة للـ Contact: لو دخل نص الشاشة يبقى هو السكشن النشط
+        const contactElement = document.getElementById('Contact');
+        if (contactElement) {
+            const rect = contactElement.getBoundingClientRect();
+            if (rect.top <= viewportCenter && rect.bottom >= viewportCenter * 0.4) {
+                setActiveSection('Contact');
+                if (typeof window !== 'undefined') {
+                    localStorage.setItem('activeSection', 'Contact');
+                }
+                return;
+            }
+        }
+
+        // لباقي السكاشن استخدم خط في منتصف الشاشة
         const current: string | undefined = sections.find((section) => {
             const element = document.getElementById(section);
             if (element) {
                 const rect = element.getBoundingClientRect();
-                return rect.top <= 100 && rect.bottom >= 100;
+                return rect.top <= viewportCenter && rect.bottom >= viewportCenter;
             }
             return false;
         });
+
         if (current) {
             setActiveSection(current);
             if (typeof window !== 'undefined') {
                 localStorage.setItem('activeSection', current);
             }
         }
-    };
+    }, []);
 
     useEffect(() => {
         // Retrieve saved section only on client
@@ -78,7 +96,7 @@ const SenseiHeader = (): React.ReactElement => {
 
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
+    }, [handleScroll]);
 
     useEffect(() => {
         const handleResize = (): void => {

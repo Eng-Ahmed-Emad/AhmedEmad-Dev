@@ -8,7 +8,7 @@ import "./globals.css";
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { config } from '@fortawesome/fontawesome-svg-core';
 import { Overlock, Yuji_Syuku } from 'next/font/google';
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 
 // Google Fonts Configuration
 const overlock = Overlock({
@@ -25,13 +25,19 @@ const yujiSyuku = Yuji_Syuku({
     display: 'swap',
 });
 
+// Viewport configuration (Next.js App Router)
+export const viewport: Viewport = {
+    width: "device-width",
+    initialScale: 1,
+    themeColor: "#000000",
+};
+
 // Metadata configuration
 export const metadata: Metadata = {
     title: "Eng Ahmed Emad",
     description: "Hello! I'm Ahmed Emad, I am a Computer Science Student at BFCAI, Certified CCNA Engineer, Specializing in Information Security and Digital Forensics.",
     keywords: ["Ahmed Emad", "Information Security", "Digital Forensics", "CCNA", "Cybersecurity"],
     authors: [{ name: "Ahmed_Sensei" }],
-    viewport: "width=device-width, initial-scale=1.0",
     openGraph: {
         title: "Eng Ahmed Emad - Cybersecurity Specialist",
         description: "A Computer Science Student specializing in Information Security and Digital Forensics",
@@ -48,8 +54,6 @@ export default function RootLayout({ children }: { children: ReactNode; }) {
             <head>
                 <meta charSet="UTF-8" />
                 <link rel="canonical" href="https://ahmedemad-dev.com" />
-                <meta name="robots" content="index, follow" />
-                <meta name="theme-color" content="#000000" />
             </head>
             <body className="bg-black text-white">
                 {children}

@@ -15,6 +15,8 @@
 .art-gallery-section {
     min-height: 100vh;
     padding: 60px 0;
+    /* مسافة واضحة قبل سكشن الـ Contact */
+    margin-bottom: 4rem;
 }
 
 .art-gallery-content {
@@ -60,7 +62,7 @@
 }
 
 .art-gallery-section {
-    margin: 0;
+    margin: 0 0 4rem 0;
 }
 
 

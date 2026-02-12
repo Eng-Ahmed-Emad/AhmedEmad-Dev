@@ -31,14 +31,17 @@ const ImageItem = ({ image, index, setOpen }: ImageItemProps) => {
     });
 
     const variants: Variants = {
-        hidden: { opacity: 0, y: 20 },
+        hidden: { opacity: 0, y: 26 },
         visible: (i: number) => ({
             opacity: 1,
             y: 0,
             transition: {
+                type: "spring",
+                stiffness: 110,
+                damping: 22,
+                mass: 1,
+                duration: 0.6,
                 delay: i * 0.1,
-                duration: 0.5,
-                ease: [0.6, -0.05, 0.01, 0.99],
             },
         }),
     };
@@ -106,8 +109,10 @@ function SenseiArt() {
             opacity: 1,
             y: 0,
             transition: {
-                duration: 0.8,
-                ease: [0.6, -0.05, 0.01, 0.99],
+                type: "spring",
+                stiffness: 110,
+                damping: 22,
+                duration: 0.6,
             },
         },
     };
@@ -118,7 +123,7 @@ function SenseiArt() {
             opacity: 1,
             transition: {
                 staggerChildren: 0.1,
-                delayChildren: 0.3,
+                delayChildren: 0.25,
             },
         },
     };

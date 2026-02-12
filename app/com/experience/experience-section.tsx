@@ -68,14 +68,17 @@ const TimelineItem = React.memo<TimelineItem & { index: number }>(
         };
 
         const variants: Variants = {
-            hidden: { opacity: 0, x: isRight ? 100 : -100 },
+            hidden: { opacity: 0, x: isRight ? 80 : -80 },
             visible: {
                 opacity: 1,
                 x: 0,
                 transition: {
-                    duration: 0.6,
-                    delay: index * 0.1,
-                    ease: [0.22, 1, 0.36, 1],
+                    type: "spring",
+                    stiffness: 110,
+                    damping: 22,
+                    mass: 1,
+                    delay: index * 0.12,
+                    duration: 0.7,
                 },
             },
         };
@@ -236,7 +239,12 @@ function ExperienceSection() {
                     className={styles["header-section"]}
                     initial={{ opacity: 0, y: -50 }}
                     animate={headerInView ? { opacity: 1, y: 0 } : {}}
-                    transition={{ duration: 0.6, ease: "easeOut" }}
+                    transition={{
+                        type: "spring",
+                        stiffness: 110,
+                        damping: 22,
+                        duration: 0.6,
+                    }}
                 >
                     <h2 className={styles.title}>
                         <span lang="ja">経験 •</span>

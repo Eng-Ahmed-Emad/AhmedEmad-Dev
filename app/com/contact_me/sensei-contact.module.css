@@ -10,8 +10,12 @@
 
 
 .Contact-Me-section {
-    min-height: 0;
+    min-height: 40vh;
     padding: 0;
+    /* مسافة بسيطة فوق السكشن عشان يبان فاصل عن الـ Art Gallery */
+    margin-top: 2rem;
+    /* عشان السكشن ما يستخباش تحت الهيدر لما نروح له باللينك */
+    scroll-margin-top: 8rem;
 }
 
 .Contact-Me-section .header-section {
@@ -50,7 +54,7 @@
 }
 
 .Contact-Me-section {
-    margin: 0;
+    margin: 2rem 0 0 0;
     padding: 0;
 }
 
@@ -118,7 +122,7 @@
 
 .social a:hover {
     color: black;
-    transform: scale(1.3) translateY(-5px);
+    transform: scale(1.1) translateY(-4px);
     background: var(--main-color);
     box-shadow: 0 0 15px var(--main-color);
 }

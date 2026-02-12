@@ -1,23 +1,52 @@
 "use client";
+
 import { ReactElement, useEffect, useState } from "react";
+import Image from "next/image";
 import { motion, useAnimation, AnimatePresence } from "framer-motion";
+import type { Variants } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faLinkedin,
-} from "@fortawesome/free-brands-svg-icons";
+import { faLinkedin } from "@fortawesome/free-brands-svg-icons";
 import { faInstagram, faWhatsapp } from "@fortawesome/free-brands-svg-icons";
-import {
-  faUserSecret,
-  faFilePdf,
-  faUserTie,
-} from "@fortawesome/free-solid-svg-icons";
+import { faUserSecret, faFilePdf, faUserTie } from "@fortawesome/free-solid-svg-icons";
 import styles from "./sensei-home.module.css";
 
 //**
 // @Author Ahmed_Senseii
-// @Description A React component that serves as the home section of the portfolio, featuring an image, social links, animations, and a CV language selection popup.
+// @Description A React component that serves as the home section of the portfolio, featuring an image,
+// social links, animations, and a CV language selection popup.
 //**
+
+const containerVariants: Variants = {
+  hidden: { opacity: 0, y: 40 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: "spring",
+      stiffness: 110,
+      damping: 22,
+      mass: 1,
+      duration: 0.7,
+      staggerChildren: 0.18,
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 24 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: "spring",
+      stiffness: 110,
+      damping: 24,
+      mass: 0.95,
+      duration: 0.6,
+    },
+  },
+};
 
 const Home = (): ReactElement => {
   const controls = useAnimation();
@@ -30,34 +59,11 @@ const Home = (): ReactElement => {
 
   useEffect(() => {
     if (inView) {
-      controls.start("visible").then((r) => console.log(r));
+      controls.start("visible");
     }
   }, [controls, inView]);
 
-  const containerVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5,
-        staggerChildren: 0.2,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5,
-      },
-    },
-  };
-
-  const handleDownloadClick = (e: React.MouseEvent) => {
+  const handleDownloadClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setShowPopup(true);
   };
@@ -67,6 +73,7 @@ const Home = (): ReactElement => {
       lang === "en"
         ? "Assets/cv/AhmedEmad_SOC_And_IR_Analyst_CV.pdf"
         : "Assets/cv/AhmedEmad_SOC_And_IR_Analyst_Resume.pdf";
+
     const link = document.createElement("a");
     link.href = file;
     link.download = file.split("/").pop() || "CV.pdf";
@@ -84,14 +91,13 @@ const Home = (): ReactElement => {
         ref={ref}
       >
         <motion.div className={styles.homeImg} variants={itemVariants}>
-          <img
-            src="Assets/art-gallery/Images/image_display_thumb/4.webp"
+          <Image
+            src="/Assets/art-gallery/Images/image_display_thumb/4.webp"
             alt="Ahmed Emad Image"
             className={styles.image}
             width={350}
             height={350}
-            loading="lazy"
-            decoding="async"
+            priority
           />
         </motion.div>
 
@@ -133,7 +139,6 @@ const Home = (): ReactElement => {
             >
               <FontAwesomeIcon icon={faWhatsapp} />
             </a>
-            
           </motion.div>
 
           {/* Buttons Section */}
@@ -178,13 +183,14 @@ const Home = (): ReactElement => {
             >
               {/* Animated Icon */}
               <motion.div
-                initial={{ y: -10, opacity: 0 }}
+                initial={{ y: -8, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{
                   delay: 0.1,
-                  duration: 0.6,
+                  duration: 0.5,
                   repeat: Infinity,
                   repeatType: "reverse",
+                  ease: "easeInOut",
                 }}
               >
                 <FontAwesomeIcon
@@ -195,7 +201,9 @@ const Home = (): ReactElement => {
                 />
               </motion.div>
 
-              <h2><p>Choose CV or Resume 📄</p></h2>
+              <h2>
+                <p>Choose CV or Resume 📄</p>
+              </h2>
 
               <div className={styles.popupButtons}>
                 <button
@@ -215,6 +223,7 @@ const Home = (): ReactElement => {
               <button
                 className={styles.closeBtn}
                 onClick={() => setShowPopup(false)}
+                aria-label="Close CV selection popup"
               >
                 ✖
               </button>
@@ -222,9 +231,9 @@ const Home = (): ReactElement => {
           </motion.div>
         )}
       </AnimatePresence>
-
     </section>
   );
 };
 
 export default Home;
+

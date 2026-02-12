@@ -101,14 +101,17 @@ const ProjectItem: React.FC<{ repo: GitHubRepository }> = React.memo(({ repo }) 
     // };
 
     const variants: Variants = {
-        hidden: { opacity: 0, y: 50 },
+        hidden: { opacity: 0, y: 32 },
         visible: {
             opacity: 1,
             y: 0,
             transition: {
-                duration: 0.5,
-                delay: 0.2,
-                ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+                type: "spring",
+                stiffness: 115,
+                damping: 22,
+                mass: 1,
+                duration: 0.6,
+                delay: 0.08,
             },
         },
     };
@@ -196,16 +199,16 @@ const SenseiProjects: React.FC = () => {
                 <motion.div
                     ref={headerRef}
                     className={styles['header-section']}
-                    initial={{ opacity: 0, y: -50 }}
+                    initial={{ opacity: 0, y: -40 }}
                     animate={headerInView ? { opacity: 1, y: 0 } : {}}
-                    transition={{ duration: 0.6, ease: "easeOut" }}
+                    transition={{ duration: 0.5, ease: "easeOut" }}
                 >
                     <h2 className={styles.title}>
                         <motion.span
                             lang="ja"
                             initial={{ scale: 0 }}
                             animate={headerInView ? { scale: 1 } : {}}
-                            transition={{ duration: 0.6, delay: 0.3, type: "spring", stiffness: 200, damping: 10 }}
+                            transition={{ duration: 0.45, delay: 0.2, type: "spring", stiffness: 180, damping: 16 }}
                         >
                             計画  •
                         </motion.span>
@@ -213,7 +216,7 @@ const SenseiProjects: React.FC = () => {
                             lang="en"
                             initial={{ scale: 0 }}
                             animate={headerInView ? { scale: 1 } : {}}
-                            transition={{ duration: 0.6, delay: 0.3, type: "spring", stiffness: 200, damping: 10 }}
+                            transition={{ duration: 0.45, delay: 0.2, type: "spring", stiffness: 180, damping: 16 }}
                         > Projects
                         </motion.span>
                     </h2>

@@ -66,8 +66,8 @@ const AnimatedBackground: React.FC = () => {
             x: Math.random() * dimensions.width,
             y: Math.random() * dimensions.height,
             radius: Math.random() * (maxRadius - minRadius) + minRadius,
-            vx: (Math.random() - 0.5) * 0.5,
-            vy: (Math.random() - 0.5) * 0.5
+            vx: (Math.random() - 0.5) * 0.7,
+            vy: (Math.random() - 0.5) * 0.7
         }));
     }, [dimensions, numberOfBubbles, isMobile]);
 
@@ -76,7 +76,7 @@ const AnimatedBackground: React.FC = () => {
             x: Math.floor(Math.random() * (dimensions.width / gridSize)) * gridSize,
             y: Math.floor(Math.random() * (dimensions.height / gridSize)) * gridSize,
             size: Math.random() * 2 + 1,
-            speed: Math.random() * 2 + 1,
+            speed: Math.random() * 2.2 + 1.2,
             direction: Math.random() < 0.5 ? 'horizontal' : 'vertical',
             trail: []
         })) as Meteor[];
