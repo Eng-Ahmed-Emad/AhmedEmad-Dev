@@ -54,8 +54,9 @@ const AnimatedBackground: React.FC = () => {
     // The functions are called in the useEffect hook
     // The functions are called in the createBubbles and createMeteors functions
     const gridSize = 50;
-    const numberOfBubbles = Math.floor(dimensions.width * dimensions.height / 80000);
-    const numberOfMeteors = Math.floor(dimensions.width / 250);
+    // Slightly reduce counts to keep background lightweight on large screens
+    const numberOfBubbles = Math.floor(dimensions.width * dimensions.height / 120000);
+    const numberOfMeteors = Math.floor(dimensions.width / 320);
     const maxRadius = 120;
     const minRadius = 60;
 

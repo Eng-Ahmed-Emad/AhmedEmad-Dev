@@ -90,6 +90,8 @@ const Home = (): ReactElement => {
             className={styles.image}
             width={350}
             height={350}
+            loading="lazy"
+            decoding="async"
           />
         </motion.div>
 

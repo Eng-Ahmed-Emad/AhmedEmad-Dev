@@ -35,6 +35,8 @@
     box-shadow: 0 0 25px var(--main-color);
     transition: transform 0.3s ease, filter 0.3s ease;
     cursor: pointer;
+    /* Hint browser to use GPU for the hover transform */
+    will-change: transform, filter;
 }
 
 .homeImg img:hover {

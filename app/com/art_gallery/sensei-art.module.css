@@ -67,7 +67,9 @@
 .art-gallery-section .art-gallery-content .Gallery img {
     border-radius: 1rem;
     width: 100%;
-    transition: 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    /* Smoother hover movement and shadow */
+    will-change: transform, box-shadow, background-color;
 }
 
 .art-gallery-section .art-gallery-content .Gallery img:hover {

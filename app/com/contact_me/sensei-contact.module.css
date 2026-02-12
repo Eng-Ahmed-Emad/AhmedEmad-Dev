@@ -111,7 +111,9 @@
     border-radius: 1rem;
     color: var(--main-color);
     margin: 2rem 1.5rem;
-    transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s ease;
+    transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    /* Hover scale/translate handled by GPU-friendly transform */
+    will-change: transform, box-shadow, background-color, border-color;
 }
 
 .social a:hover {

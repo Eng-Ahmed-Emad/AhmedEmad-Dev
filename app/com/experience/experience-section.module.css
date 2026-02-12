@@ -105,6 +105,8 @@
     border: 2px solid var(--main-color);
     box-shadow: 0 0 10px var(--main-color);
     transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    /* GPU-friendly transform on hover animations */
+    will-change: transform, box-shadow, background-color;
 }
 
 .content:hover {

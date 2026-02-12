@@ -1,7 +1,5 @@
 import { JSX } from 'react';
 import styles from './sensei-contact.module.css';
-import { motion, useAnimation } from "framer-motion";
-import { useInView } from "react-intersection-observer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faLinkedin,
@@ -12,7 +10,7 @@ import {
     faGithub,
     faTwitter,
 } from "@fortawesome/free-brands-svg-icons";
-import { faUserSecret, faFilePdf } from "@fortawesome/free-solid-svg-icons";
+import { faUserSecret } from "@fortawesome/free-solid-svg-icons";
 
 
 //**
