@@ -12,7 +12,7 @@ import { faUserSecret, faFilePdf, faUserTie } from "@fortawesome/free-solid-svg-
 import styles from "./sensei-home.module.css";
 
 //**
-// @Author Ahmed_Senseii
+// @Author Ahmed_Emad
 // @Description A React component that serves as the home section of the portfolio, featuring an image,
 // social links, animations, and a CV language selection popup.
 //**
