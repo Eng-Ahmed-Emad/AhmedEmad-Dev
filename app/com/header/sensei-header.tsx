@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, ReactElement } from 'react';
 import Link from 'next/link';
 import styles from './sensei-header.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -23,7 +24,7 @@ import { faCommentDots } from '@fortawesome/free-solid-svg-icons';
  * The main header component with a responsive menu.
  * @returns The JSX Element for the header.
  */
-const SenseiHeader = (): React.ReactElement => {
+const SenseiHeader = (): ReactElement => {
     /**
      * The state of the menu, whether it is open or closed.
      */
