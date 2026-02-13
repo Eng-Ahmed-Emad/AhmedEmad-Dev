@@ -86,7 +86,7 @@ const SenseiContact = (): JSX.Element => {
                                     </a>
                                     <a
                                         aria-label="Go to Linkedin"
-                                        href="https://www.linkedin.com/in/AhmeddNasrr/"
+                                        href="https://www.linkedin.com/in/eng-ahmed-nasr/"
                                         target="_blank"
                                         rel="noopener noreferrer"
                                     >
