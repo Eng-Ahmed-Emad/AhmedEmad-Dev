@@ -72,7 +72,7 @@ function SenseiArt() {
     const open = index >= 0;
 
     const images = useMemo(() => [
-        ...Array.from({ length: 39 }, (_, k) => ({
+        ...Array.from({ length: 27 }, (_, k) => ({
             src: `Assets/art-gallery/Images/image_display/${k + 1}.png`,
             thumb: `Assets/art-gallery/Images/image_display_thumb/${k + 1}.webp`,
         })),

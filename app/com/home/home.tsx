@@ -85,7 +85,7 @@ const Home = (): ReactElement => {
       >
         <motion.div className={styles.homeImg} variants={itemVariants}>
           <img
-            src="Assets/art-gallery/Images/image_display_thumb/4.webp"
+            src="Assets/art-gallery/Images/image_display_thumb/28.webp"
             alt="Ahmed Emad Image"
             className={styles.image}
             width={350}
