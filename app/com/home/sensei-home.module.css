@@ -55,6 +55,8 @@
     font-size: 34px;
     font-weight: 600;
     min-width: 300px;
+    margin-bottom: 1rem;
+    white-space: nowrap;
 }
 
 .typingHighlight {
@@ -100,12 +102,12 @@
 
     41%,
     60% {
-        content: "Incdient Response Analyst";
+        content: "IR Analyst";
     }
 
     61%,
     80% {
-        content: "Cybersecurity Instructor";
+        content: "Cyber Instructor";
     }
 
     81%,
