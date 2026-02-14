@@ -55,13 +55,14 @@ const ImageItem = ({ image, index, setOpen }: ImageItemProps) => {
             <Image
                 src={image.thumb}
                 alt={`Art piece ${index + 1}`}
-                width={1200}
-                height={1200}
+                width={600}
+                height={600}
                 onClick={() => setOpen(index)}
                 layout="responsive"
                 objectFit="cover"
                 placeholder="blur"
                 blurDataURL={image.thumb}
+                loading="lazy"
             />
         </motion.div>
     );
