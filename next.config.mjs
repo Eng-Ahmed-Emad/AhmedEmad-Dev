@@ -11,6 +11,7 @@ const nextConfig = {
     },
     compress: true,
     productionBrowserSourceMaps: false,
+    output: 'export',
 };
 
 export default nextConfig;
