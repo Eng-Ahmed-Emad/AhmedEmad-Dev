@@ -62,7 +62,7 @@ const ImageItem = ({ image, index, setOpen }: ImageItemProps) => {
                 objectFit="cover"
                 placeholder="blur"
                 blurDataURL={image.thumb}
-                quality={80}
+                quality={75}
             />
         </motion.div>
     );
