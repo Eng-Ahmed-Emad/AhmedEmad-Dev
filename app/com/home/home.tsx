@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faLinkedin,
 } from "@fortawesome/free-brands-svg-icons";
-import { faInstagram, faWhatsapp } from "@fortawesome/free-brands-svg-icons";
+import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 import {
   faUserSecret,
   faFilePdf,
@@ -113,16 +113,6 @@ const Home = (): ReactElement => {
             >
               <FontAwesomeIcon icon={faLinkedin} />
             </a>
-
-            <a
-              aria-label="Go to Instagram"
-              href="https://www.instagram.com/0x3omda/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <FontAwesomeIcon icon={faInstagram} />
-            </a>
-
             <a
               aria-label="Go to WhatsApp"
               href="https://wa.me/201013972690"

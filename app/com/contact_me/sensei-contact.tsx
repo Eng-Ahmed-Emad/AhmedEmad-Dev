@@ -3,15 +3,9 @@ import styles from './sensei-contact.module.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faLinkedin,
-    faTelegram,
     faWhatsapp,
-    faSquareFacebook,
-    faInstagram,
     faGithub,
-    faTwitter,
 } from "@fortawesome/free-brands-svg-icons";
-import { faUserSecret } from "@fortawesome/free-solid-svg-icons";
-
 
 //**
 // @Author Ahmed Sensei106
@@ -69,22 +63,6 @@ const SenseiContact = (): JSX.Element => {
                                     </a>
 
                                     <a
-                                        aria-label="Go to Facebook"
-                                        href="https://www.facebook.com/0x3omda?rdid=l8KHUhiFI83rvw3d&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1BPFja34vU%2F"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        <FontAwesomeIcon icon={faSquareFacebook} />
-                                    </a>
-                                    <a
-                                        aria-label="Go to Instagram"
-                                        href="https://www.instagram.com/0x3omda/"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        <FontAwesomeIcon icon={faInstagram} />
-                                    </a>
-                                    <a
                                         aria-label="Go to Linkedin"
                                         href="https://www.linkedin.com/in/eng-ahmed-nasr/"
                                         target="_blank"
@@ -92,23 +70,7 @@ const SenseiContact = (): JSX.Element => {
                                     >
                                         <FontAwesomeIcon icon={faLinkedin} />
                                     </a>
-                                    <a
-                                        aria-label="Go to x"
-                                        href="https://x.com/Ahmed3Emad77?t=XxokO68ZbNGpLJSmhQ4b3g&s=09"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        <FontAwesomeIcon icon={faTwitter} />
-                                    </a>
-                                    <a
-                                        aria-label="Go to Telegram"
-                                        href="https://t.me/Ox3omda"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        title="Telegram"
-                                    >
-                                        <FontAwesomeIcon icon={faTelegram} />
-                                    </a>
+                                   
                                     <a
                                         aria-label="Go to GitHub"
                                         href="https://github.com/Eng-Ahmed-Emad"
@@ -117,15 +79,7 @@ const SenseiContact = (): JSX.Element => {
                                     >
                                         <FontAwesomeIcon icon={faGithub} />
                                     </a>
-                                    <a
-                                        aria-label="Go to Saraha"
-                                        href="https://17833478947642.sarhne.com"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        title="Saraha"
-                                    >
-                                        <FontAwesomeIcon icon={faUserSecret} />
-                                    </a>
+                                   
 
 
 
