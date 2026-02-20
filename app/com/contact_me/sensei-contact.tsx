@@ -117,7 +117,18 @@ const SenseiContact = (): JSX.Element => {
                                     >
                                         <FontAwesomeIcon icon={faGithub} />
                                     </a>
-                                 
+                                    <a
+                                        aria-label="Go to Saraha"
+                                        href="https://17833478947642.sarhne.com"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        title="Saraha"
+                                    >
+                                        <FontAwesomeIcon icon={faUserSecret} />
+                                    </a>
+
+
+
                                 </div>
                             </div>
                         </div>
