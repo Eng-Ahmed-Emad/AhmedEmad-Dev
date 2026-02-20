@@ -60,7 +60,7 @@ const SenseiContact = (): JSX.Element => {
                                     <p className={styles.meon}>Me on Social Network</p>
                                     <a
                                         aria-label="Go to WhatsApp"
-                                        href="https://wa.me/201018166445"
+                                        href="https://wa.me/201013972690"
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         title="WhatsApp"
