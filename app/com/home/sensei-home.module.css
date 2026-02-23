@@ -219,6 +219,111 @@
     font-size: 1.8rem;
 }
 
+/* ===== Download modal (all viewports) ===== */
+.popupOverlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(16px, 4vw, 32px);
+    background: rgba(0, 0, 0, 0.62);
+    backdrop-filter: blur(10px);
+}
+
+.popup {
+    width: min(520px, 100%);
+    background: rgba(35, 35, 50, 0.96);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 22px;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
+    padding: clamp(20px, 3.5vw, 36px);
+    position: relative;
+    overflow: auto;
+    max-height: min(80vh, 560px);
+    -webkit-overflow-scrolling: touch;
+    will-change: transform;
+}
+
+.popupIcon {
+    margin-bottom: 10px;
+    text-shadow: 0 0 15px rgba(255, 77, 77, 0.6);
+}
+
+.popupTitle {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 6px;
+    color: #fff;
+}
+
+.popupText {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.75);
+    margin-bottom: 18px;
+    line-height: 1.6;
+}
+
+.popupButtons {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.popupBtn {
+    justify-content: center;
+    width: 100%;
+    padding: 12px 0;
+    font-size: 1.35rem;
+    font-weight: 700;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(6px);
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), background 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+    will-change: transform;
+}
+
+.popupBtn:hover,
+.popupBtn:focus-visible {
+    background: rgba(255, 77, 77, 0.92);
+    border-color: rgba(255, 77, 77, 0.75);
+    box-shadow: 0 0 18px rgba(255, 77, 77, 0.55);
+    transform: translateY(-2px);
+}
+
+.closeBtn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 42px;
+    height: 42px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.85);
+    border-radius: 14px;
+    cursor: pointer;
+    transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), background 0.25s ease, border-color 0.25s ease;
+}
+
+.closeBtn:hover,
+.closeBtn:focus-visible {
+    background: rgba(255, 77, 77, 0.16);
+    border-color: rgba(255, 77, 77, 0.45);
+    transform: translateY(-1px);
+}
+
+@media (max-width: 520px) {
+    .popupButtons {
+        grid-template-columns: 1fr;
+    }
+}
+
 .btn1 {
     background: transparent;
     color: var(--main-color);
@@ -371,112 +476,4 @@
         flex-direction: column;
         align-items: stretch;
     }
-
-    /* ===== Popup Overlay ===== */
-    .popupOverlay {
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.6);
-        backdrop-filter: blur(8px);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 1000;
-        animation: fadeIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-    }
-
-    /* ===== Popup Container ===== */
-    .popup {
-        background: rgba(35, 35, 50, 0.95);
-        color: white;
-        padding: 45px 40px;
-        border-radius: 25px;
-        text-align: center;
-        box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
-        width: 430px;
-        max-width: 90%;
-        position: relative;
-        overflow: hidden;
-        border: 1px solid rgba(255, 255, 255, 0.12);
-    }
-
-    /* ===== Animated Icon ===== */
-    .popupIcon {
-        margin-bottom: 15px;
-        text-shadow: 0 0 15px rgba(255, 77, 77, 0.6);
-    }
-
-    /* ===== Heading and Text ===== */
-    .popup h3 {
-        font-size: 1.6rem;
-        font-weight: 700;
-        margin-bottom: 10px;
-        color: #fff;
-    }
-
-    .popupText {
-        font-size: 1rem;
-        color: #c9c9d2;
-        margin-bottom: 25px;
-        line-height: 1.6;
-    }
-
-    /* ===== Buttons ===== */
-    .popupButtons {
-        display: flex;
-        justify-content: center;
-        gap: 20px;
-    }
-
-    .popupBtn {
-        flex: 1;
-        padding: 12px 0;
-        font-size: 1.1rem;
-        font-weight: 600;
-        border-radius: 12px;
-        background: rgba(255, 255, 255, 0.1);
-        color: #fff;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        backdrop-filter: blur(6px);
-        transition: all 0.3s ease;
-    }
-
-    .popupBtn:hover {
-        background: rgba(255, 77, 77, 0.9);
-        box-shadow: 0 0 15px rgba(255, 77, 77, 0.6);
-        transform: translateY(-3px);
-    }
-
-    /* ===== Close Button ===== */
-    .closeBtn {
-        position: absolute;
-        top: 12px;
-        right: 18px;
-        background: transparent;
-        border: none;
-        color: #ddd;
-        font-size: 1.5rem;
-        cursor: pointer;
-        transition: color 0.45s ease;
-    }
-
-    .closeBtn:hover {
-        color: #ff6b6b;
-    }
-
-    /* ===== Animation ===== */
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: scale(0.96);
-        }
-
-        to {
-            opacity: 1;
-            transform: scale(1);
-        }
-    }
-
-
-
 }

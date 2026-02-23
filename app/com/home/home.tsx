@@ -1,5 +1,5 @@
 "use client";
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion, useAnimation, useReducedMotion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
@@ -25,6 +25,11 @@ const Home = (): ReactElement => {
 
   const [showPopup, setShowPopup] = useState(false);
   const prefersReducedMotion = useReducedMotion();
+  const dialogRef = useRef<HTMLDivElement | null>(null);
+  const firstActionRef = useRef<HTMLButtonElement | null>(null);
+  const triggerRef = useRef<HTMLButtonElement | null>(null);
+  const lastActiveElementRef = useRef<HTMLElement | null>(null);
+  const previousBodyOverflowRef = useRef<string | null>(null);
 
   useEffect(() => {
     if (inView) {
@@ -66,9 +71,13 @@ const Home = (): ReactElement => {
     },
   };
 
-  const handleDownloadClick = (e: React.MouseEvent) => {
-    e.preventDefault();
+  const openPopup = () => {
+    lastActiveElementRef.current = document.activeElement as HTMLElement | null;
     setShowPopup(true);
+  };
+
+  const closePopup = () => {
+    setShowPopup(false);
   };
 
   const handleDownload = (lang: "en" | "ar") => {
@@ -82,6 +91,73 @@ const Home = (): ReactElement => {
     link.click();
     setShowPopup(false);
   };
+
+  // If you later want 4 distinct files, you can extend
+  // the function above and add more `lang` cases, then
+  // uncomment the extra buttons in the popup JSX below.
+
+  useEffect(() => {
+    if (!showPopup) {
+      if (previousBodyOverflowRef.current !== null) {
+        document.body.style.overflow = previousBodyOverflowRef.current;
+        previousBodyOverflowRef.current = null;
+      }
+
+      const toFocus = lastActiveElementRef.current ?? triggerRef.current;
+      if (toFocus) {
+        queueMicrotask(() => toFocus.focus());
+      }
+      return;
+    }
+
+    previousBodyOverflowRef.current = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    queueMicrotask(() => {
+      firstActionRef.current?.focus();
+    });
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        closePopup();
+        return;
+      }
+
+      if (e.key !== "Tab") return;
+      const root = dialogRef.current;
+      if (!root) return;
+
+      const focusable = Array.from(
+        root.querySelectorAll<HTMLElement>(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+        ),
+      ).filter((el) => !el.hasAttribute("disabled"));
+
+      if (focusable.length === 0) return;
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      const active = document.activeElement as HTMLElement | null;
+
+      if (e.shiftKey) {
+        if (!active || active === first) {
+          e.preventDefault();
+          last.focus();
+        }
+      } else {
+        if (active === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [showPopup]);
 
   return (
     <section className={styles.home} id="Home">
@@ -142,7 +218,9 @@ const Home = (): ReactElement => {
             </a>
 
             <button
-              onClick={handleDownloadClick}
+              ref={triggerRef}
+              type="button"
+              onClick={openPopup}
               className={`${styles.btn} ${styles.btn2}`}
             >
               Download CV <FontAwesomeIcon icon={faFilePdf} />
@@ -164,6 +242,7 @@ const Home = (): ReactElement => {
         {showPopup && (
           <motion.div
             className={styles.popupOverlay}
+            onClick={closePopup}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -175,6 +254,12 @@ const Home = (): ReactElement => {
           >
             <motion.div
               className={styles.popup}
+              ref={dialogRef}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="download-title"
+              aria-describedby="download-desc"
+              onClick={(e) => e.stopPropagation()}
               initial={{ scale: prefersReducedMotion ? 1 : 0.88, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: prefersReducedMotion ? 1 : 0.88, opacity: 0 }}
@@ -207,26 +292,52 @@ const Home = (): ReactElement => {
                 />
               </motion.div>
 
-              <h2><p>Choose CV or Resume 📄</p></h2>
+              <h2 id="download-title" className={styles.popupTitle}>
+                Download
+              </h2>
+              <p id="download-desc" className={styles.popupText}>
+                Choose your preferred file.
+              </p>
 
               <div className={styles.popupButtons}>
                 <button
+                  ref={firstActionRef}
+                  type="button"
                   onClick={() => handleDownload("en")}
                   className={`${styles.btn} ${styles.popupBtn}`}
                 >
-                  Cv
+                  CV (PDF)
                 </button>
                 <button
+                  type="button"
                   onClick={() => handleDownload("ar")}
                   className={`${styles.btn} ${styles.popupBtn}`}
                 >
-                  Resume
+                  Resume (PDF)
                 </button>
+                {/*
+                <button
+                  type="button"
+                  onClick={() => handleDownload("en")}
+                  className={`${styles.btn} ${styles.popupBtn}`}
+                >
+                  CV (Alternate)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleDownload("ar")}
+                  className={`${styles.btn} ${styles.popupBtn}`}
+                >
+                  Resume (Alternate)
+                </button>
+                */}
               </div>
 
               <button
                 className={styles.closeBtn}
-                onClick={() => setShowPopup(false)}
+                type="button"
+                onClick={closePopup}
+                aria-label="Close download dialog"
               >
                 ✖
               </button>
