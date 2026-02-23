@@ -175,7 +175,8 @@
     font-size: 2rem;
     border-radius: 1rem;
     color: var(--main-color);
-    transition: all 0.3s ease;
+    /* Avoid broad `all` transitions for better performance */
+    transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 
 .socialIcon a:hover {
@@ -256,7 +257,8 @@
     color: #fff;
     border: 1px solid rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(6px);
-    transition: all 0.3s ease;
+    /* Scope transitions to visual properties only */
+    transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 
 .popupBtn:hover {
@@ -303,15 +305,30 @@
     font-size: 1.6rem;
     letter-spacing: 0.1rem;
     font-weight: 600;
-    transition: all 0.3s ease;
-    cursor: pointer;
-    text-decoration: none;
-    box-shadow: 0 0 10px var(--main-color);
+    transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 
 .btn svg {
     margin-left: 0.8rem;
     font-size: 1.8rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .typingHighlight::before,
+    .typingHighlight::after {
+        animation: none;
+    }
+
+    .popupOverlay {
+        animation: none;
+    }
+
+    .btn,
+    .socialIcon a,
+    .popupBtn {
+        transition: none;
+    }
 }
 
 .btn1 {

@@ -4,9 +4,19 @@
  */
 "use client";
 import React, { useEffect, useRef, useState, useCallback } from 'react';// Import necessary dependencies
-import { debounce } from 'lodash';
 import styles from './animated_background.module.css';
 
+
+// Simple local debounce to avoid pulling in lodash at runtime
+function debounce<T extends (...args: unknown[]) => void>(fn: T, wait: number): T {
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
+    return ((...args: Parameters<T>) => {
+        if (timeoutId) {
+            clearTimeout(timeoutId);
+        }
+        timeoutId = setTimeout(() => fn(...args), wait);
+    }) as T;
+}
 
 // Define the Bubble and Meteor interfaces
 interface Bubble {

@@ -7,7 +7,6 @@ import AnimatedBackground from "@/app/com/animated_background/animated_backgroun
 import SenseiProjects from "./com/services/sensei-projects";
 import SenseiArt from "@/app/com/art_gallery/sensei-art"
 
-
 /*
 *@Author: Ahmed_Sensei
 *@Description: A responsive experience component with a menu that highlights the active section of the page.

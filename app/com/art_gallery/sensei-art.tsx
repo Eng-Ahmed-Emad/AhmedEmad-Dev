@@ -9,8 +9,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { Variants } from "framer-motion";
-import Lightbox from "yet-another-react-lightbox";
-import "yet-another-react-lightbox/styles.css";
+import dynamic from "next/dynamic";
 import styles from "./sensei-art.module.css";
 
 interface GalleryImage {
@@ -69,6 +68,10 @@ const ImageItem = ({ image, index, setOpen }: ImageItemProps) => {
         </motion.div>
     );
 };
+
+const Lightbox = dynamic(() => import("yet-another-react-lightbox"), {
+    ssr: false,
+});
 
 function SenseiArt() {
     const [index, setIndex] = useState(-1);
@@ -161,12 +164,14 @@ function SenseiArt() {
                     </div>
                 </motion.div>
             </div>
-            <Lightbox
-                slides={slides}
-                open={open}
-                index={index}
-                close={() => setIndex(-1)}
-            />
+            {open && (
+                <Lightbox
+                    slides={slides}
+                    open={open}
+                    index={index}
+                    close={() => setIndex(-1)}
+                />
+            )}
         </section>
     );
 }

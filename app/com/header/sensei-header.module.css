@@ -19,7 +19,8 @@
     justify-content: space-between;
     align-items: center;
     z-index: 100;
-    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    /* Limit transition to key visual properties for smoother GPU-friendly updates */
+    transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55), background 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
     border: 1px solid rgb(252, 240, 225);
 }
 
@@ -29,7 +30,7 @@
     color: var(--text-color);
     font-weight: 800;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease, text-shadow 0.3s ease, color 0.3s ease;
     will-change: transform, text-shadow;
 }
 
@@ -49,7 +50,7 @@
     padding: 0.5rem 1rem;
     border-radius: 0.7rem;
     font-weight: 500;
-    transition: all 0.4s ease-in-out;
+    transition: background 0.4s ease-in-out, color 0.4s ease-in-out, box-shadow 0.4s ease-in-out, transform 0.4s ease-in-out;
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -111,7 +112,7 @@
     opacity: 1;
     left: 0;
     transform: rotate(0deg);
-    transition: .25s ease-in-out;
+    transition: transform 0.25s ease-in-out, opacity 0.25s ease-in-out, left 0.25s ease-in-out;
 }
 
 .MenuIcon span:nth-child(1) {
@@ -273,5 +274,28 @@
     to {
         opacity: 1;
         transform: translateX(0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .header,
+    .logo,
+    .navbar,
+    .navbar a,
+    .navbar a .icon,
+    .MenuIcon span {
+        transition: none;
+    }
+
+    .navbar.active {
+        animation: none;
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    .navbar a,
+    .navbar.active a {
+        animation: none;
+        transform: none;
     }
 }
