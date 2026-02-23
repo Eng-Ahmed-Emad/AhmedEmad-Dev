@@ -184,6 +184,11 @@
     box-shadow: 0 0 15px var(--main-color);
 }
 
+.socialIcon a:active {
+    transform: scale(0.9) translateY(1px);
+    box-shadow: 0 0 8px var(--main-color);
+}
+
 .homeButton {
     display: flex;
     gap: 1.5rem;
@@ -201,6 +206,11 @@
     cursor: pointer;
     text-decoration: none;
     box-shadow: 0 0 10px var(--main-color);
+}
+
+.btn:active {
+    transform: scale(0.95) translateY(1px);
+    box-shadow: 0 0 8px var(--main-color);
 }
 
 @media (prefers-reduced-motion: reduce) {

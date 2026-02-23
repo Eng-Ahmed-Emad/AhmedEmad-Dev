@@ -170,6 +170,10 @@
     transform: scale(0.95);
 }
 
+.single-service:active {
+    transform: scale(0.97);
+}
+
 
 .description {
     color: var(--second-bg-color);

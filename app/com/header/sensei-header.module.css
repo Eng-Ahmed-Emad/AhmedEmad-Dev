@@ -81,6 +81,10 @@
     box-shadow: 0 0 20px var(--main-color), 0 0 10px var(--main-color);
 }
 
+.navbar a:active {
+    transform: scale(0.96) translateY(1px);
+}
+
 .navbar a .icon {
     color: var(--text-color);
     will-change: transform, color;

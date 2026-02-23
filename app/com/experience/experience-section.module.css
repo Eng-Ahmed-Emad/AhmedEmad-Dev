@@ -115,6 +115,10 @@
     color: var(--main-color);
 }
 
+.timeline-container:active .content {
+    transform: translateY(-3px) scale(0.98);
+}
+
 .content:hover .tag h2,
 .content:hover .tag h3,
 .content:hover .desc p {
