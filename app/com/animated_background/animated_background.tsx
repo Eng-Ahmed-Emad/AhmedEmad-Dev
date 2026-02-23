@@ -5,7 +5,6 @@
 "use client";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import styles from "./animated_background.module.css";
-import { usePrefersReducedMotion } from "@/app/hooks/usePrefersReducedMotion";
 
 function debounce<T extends (...args: unknown[]) => void>(fn: T, ms: number): T {
   let timeoutId: ReturnType<typeof setTimeout>;
@@ -55,8 +54,6 @@ const AnimatedBackground: React.FC = () => {
     const [dimensions, setDimensions] = useState({ width: 0, height: 0 });// Define the dimensions
     const [bubbles, setBubbles] = useState<Bubble[]>([]);// Define the bubbles
     const [meteors, setMeteors] = useState<Meteor[]>([]);// Define the meteors
-    const [isMobile, setIsMobile] = useState(false);
-    const prefersReducedMotion = usePrefersReducedMotion();
 
     // Define the createBubbles and createMeteors functions
     // The functions are used to create the bubbles and meteors
@@ -69,7 +66,6 @@ const AnimatedBackground: React.FC = () => {
     const minRadius = 60;
 
     const createBubbles = useCallback(() => {
-        if (isMobile || prefersReducedMotion) return [];
         return Array.from({ length: numberOfBubbles }, () => ({
             x: Math.random() * dimensions.width,
             y: Math.random() * dimensions.height,
@@ -77,10 +73,9 @@ const AnimatedBackground: React.FC = () => {
             vx: (Math.random() - 0.5) * 0.12,
             vy: (Math.random() - 0.5) * 0.12
         }));
-    }, [dimensions, numberOfBubbles, isMobile, prefersReducedMotion]);
+    }, [dimensions, numberOfBubbles]);
 
     const createMeteors = useCallback(() => {
-        if (prefersReducedMotion) return [];
         return Array.from({ length: numberOfMeteors }, () => ({
             x: Math.floor(Math.random() * (dimensions.width / gridSize)) * gridSize,
             y: Math.floor(Math.random() * (dimensions.height / gridSize)) * gridSize,
@@ -89,7 +84,7 @@ const AnimatedBackground: React.FC = () => {
             direction: Math.random() < 0.5 ? "horizontal" : "vertical",
             trail: [],
         })) as Meteor[];
-    }, [dimensions, numberOfMeteors, prefersReducedMotion]);
+    }, [dimensions, numberOfMeteors]);
 
     useEffect(() => {
         const updateDimensions = () => {
@@ -97,7 +92,6 @@ const AnimatedBackground: React.FC = () => {
                 width: window.innerWidth,
                 height: window.innerHeight
             });
-            setIsMobile(window.innerWidth <= 500);
         };
 
         const debouncedUpdateDimensions = debounce(updateDimensions, 200);
@@ -112,15 +106,10 @@ const AnimatedBackground: React.FC = () => {
 
     useEffect(() => {
         if (dimensions.width && dimensions.height) {
-            if (prefersReducedMotion) {
-                setBubbles([]);
-                setMeteors([]);
-            } else {
-                setBubbles(createBubbles());
-                setMeteors(createMeteors());
-            }
+            setBubbles(createBubbles());
+            setMeteors(createMeteors());
         }
-    }, [dimensions, createBubbles, createMeteors, prefersReducedMotion]);
+    }, [dimensions, createBubbles, createMeteors]);
 
     const drawGrid = useCallback((ctx: CanvasRenderingContext2D) => {
         ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
@@ -188,15 +177,13 @@ const AnimatedBackground: React.FC = () => {
 
         drawGrid(ctx);
 
-        if (!isMobile) {
-            bubbles.forEach(bubble => {
-                bubble.x += bubble.vx;
-                bubble.y += bubble.vy;
-                if (bubble.x + bubble.radius > canvas.width || bubble.x - bubble.radius < 0) bubble.vx *= -1;
-                if (bubble.y + bubble.radius > canvas.height || bubble.y - bubble.radius < 0) bubble.vy *= -1;
-                drawBubble(ctx, bubble);
-            });
-        }
+        bubbles.forEach(bubble => {
+            bubble.x += bubble.vx;
+            bubble.y += bubble.vy;
+            if (bubble.x + bubble.radius > canvas.width || bubble.x - bubble.radius < 0) bubble.vx *= -1;
+            if (bubble.y + bubble.radius > canvas.height || bubble.y - bubble.radius < 0) bubble.vy *= -1;
+            drawBubble(ctx, bubble);
+        });
 
         meteors.forEach(meteor => {
             if (meteor.direction === 'horizontal') {
@@ -225,7 +212,7 @@ const AnimatedBackground: React.FC = () => {
         });
 
         animationFrameIdRef.current = requestAnimationFrame(animate);
-    }, [bubbles, meteors, drawGrid, isMobile]);
+    }, [bubbles, meteors, drawGrid]);
 
     useEffect(() => {
         const canvas = canvasRef.current;

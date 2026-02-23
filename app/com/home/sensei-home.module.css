@@ -213,17 +213,6 @@
     box-shadow: 0 0 8px var(--main-color);
 }
 
-@media (prefers-reduced-motion: reduce) {
-    .typingHighlight::before {
-        animation: none;
-    }
-
-    .typingHighlight::after {
-        animation: none;
-        border-left: none;
-    }
-}
-
 .btn svg {
     margin-left: 0.8rem;
     font-size: 1.8rem;
