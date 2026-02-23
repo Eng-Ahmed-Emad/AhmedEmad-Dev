@@ -67,7 +67,7 @@
 
 .typingHighlight::before {
     content: " ";
-    animation: words 32s infinite;
+    animation: words 20s infinite;
 }
 
 .typingHighlight::after {
@@ -78,7 +78,7 @@
     height: 100%;
     border-left: 3px solid var(--bg-color);
     right: 0;
-    animation: cursor 1s infinite, typing 32s steps(14) infinite;
+    animation: cursor 1s infinite, typing 20s steps(16) infinite;
 }
 
 
