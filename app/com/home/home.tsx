@@ -1,18 +1,12 @@
 "use client";
 import { ReactElement, useEffect, useState } from "react";
 import Image from "next/image";
-import { motion, useAnimation, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion, useAnimation, useReducedMotion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faLinkedin,
-} from "@fortawesome/free-brands-svg-icons";
+import { faLinkedin } from "@fortawesome/free-brands-svg-icons";
 import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
-import {
-  faUserSecret,
-  faFilePdf,
-  faUserTie,
-} from "@fortawesome/free-solid-svg-icons";
+import { faFilePdf, faUserSecret, faUserTie } from "@fortawesome/free-solid-svg-icons";
 import styles from "./sensei-home.module.css";
 
 const HERO_IMAGE = "Assets/art-gallery/Images/image_display_thumb/50.webp";
@@ -30,6 +24,7 @@ const Home = (): ReactElement => {
   });
 
   const [showPopup, setShowPopup] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
     if (inView) {
@@ -38,28 +33,36 @@ const Home = (): ReactElement => {
   }, [controls, inView]);
 
   const containerVariants = {
-    hidden: { opacity: 0, y: 60 },
+    hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 60 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: {
-        duration: 1.2,
-        staggerChildren: 0.35,
-        delayChildren: 0.15,
-        ease: [0.22, 1, 0.36, 1] as const,
-      },
+      transition: prefersReducedMotion
+        ? {
+            duration: 0.35,
+          }
+        : {
+            duration: 1.2,
+            staggerChildren: 0.35,
+            delayChildren: 0.15,
+            ease: [0.22, 1, 0.36, 1] as const,
+          },
     },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 28 },
+    hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 28 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: {
-        duration: 1,
-        ease: [0.22, 1, 0.36, 1] as const,
-      },
+      transition: prefersReducedMotion
+        ? {
+            duration: 0.3,
+          }
+        : {
+            duration: 1,
+            ease: [0.22, 1, 0.36, 1] as const,
+          },
     },
   };
 
@@ -164,25 +167,37 @@ const Home = (): ReactElement => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] as const }}
+            transition={
+              prefersReducedMotion
+                ? { duration: 0.25 }
+                : { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const }
+            }
           >
             <motion.div
               className={styles.popup}
-              initial={{ scale: 0.88, opacity: 0 }}
+              initial={{ scale: prefersReducedMotion ? 1 : 0.88, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.88, opacity: 0 }}
-              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] as const }}
+              exit={{ scale: prefersReducedMotion ? 1 : 0.88, opacity: 0 }}
+              transition={
+                prefersReducedMotion
+                  ? { duration: 0.25 }
+                  : { duration: 0.7, ease: [0.22, 1, 0.36, 1] as const }
+              }
             >
               {/* Animated Icon */}
               <motion.div
-                initial={{ y: -10, opacity: 0 }}
+                initial={{ y: prefersReducedMotion ? 0 : -10, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{
-                  delay: 0.2,
-                  duration: 1,
-                  repeat: Infinity,
-                  repeatType: "reverse",
-                }}
+                transition={
+                  prefersReducedMotion
+                    ? { duration: 0.35 }
+                    : {
+                        delay: 0.2,
+                        duration: 1,
+                        repeat: Infinity,
+                        repeatType: "reverse",
+                      }
+                }
               >
                 <FontAwesomeIcon
                   icon={faFilePdf}

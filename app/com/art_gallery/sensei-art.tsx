@@ -4,14 +4,17 @@
  */
 
 "use client";
-import { useState, useEffect, useMemo, useCallback } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import dynamic from "next/dynamic";
+import { Variants, motion, useReducedMotion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
-import { Variants } from "framer-motion";
-import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 import styles from "./sensei-art.module.css";
+
+const Lightbox = dynamic(() => import("yet-another-react-lightbox"), {
+    ssr: false,
+});
 
 interface GalleryImage {
     src: string;
@@ -24,22 +27,28 @@ interface ImageItemProps {
     setOpen: (index: number) => void;
 }
 
-const ImageItem = ({ image, index, setOpen }: ImageItemProps) => {
+const ImageItem = React.memo(({ image, index, setOpen }: ImageItemProps) => {
     const [ref, inView] = useInView({
         triggerOnce: true,
         threshold: 0.1,
     });
 
+    const prefersReducedMotion = useReducedMotion();
+
     const variants: Variants = {
-        hidden: { opacity: 0, y: 32 },
+        hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 32 },
         visible: (i: number) => ({
             opacity: 1,
             y: 0,
-            transition: {
-                delay: i * 0.18,
-                duration: 1,
-                ease: [0.22, 1, 0.36, 1],
-            },
+            transition: prefersReducedMotion
+                ? {
+                    duration: 0.35,
+                }
+                : {
+                    delay: i * 0.18,
+                    duration: 1,
+                    ease: [0.22, 1, 0.36, 1],
+                },
         }),
     };
 
@@ -66,7 +75,7 @@ const ImageItem = ({ image, index, setOpen }: ImageItemProps) => {
             />
         </motion.div>
     );
-};
+});
 
 function SenseiArt() {
     const [index, setIndex] = useState(-1);
@@ -86,6 +95,8 @@ function SenseiArt() {
         threshold: 0.1,
     });
 
+    const prefersReducedMotion = useReducedMotion();
+
     const handleKeyDown = useCallback((event: { key: string; }) => {
         if (event.key === 'ArrowRight') {
             setIndex((i) => (i + 1) % slides.length);
@@ -102,14 +113,18 @@ function SenseiArt() {
     }, [open, handleKeyDown]);
 
     const headerVariants: Variants = {
-        hidden: { opacity: 0, y: -50 },
+        hidden: { opacity: 0, y: prefersReducedMotion ? 0 : -50 },
         visible: {
             opacity: 1,
             y: 0,
-            transition: {
-                duration: 1.2,
-                ease: [0.22, 1, 0.36, 1],
-            },
+            transition: prefersReducedMotion
+                ? {
+                    duration: 0.35,
+                }
+                : {
+                    duration: 1.2,
+                    ease: [0.22, 1, 0.36, 1],
+                },
         },
     };
 
@@ -117,10 +132,12 @@ function SenseiArt() {
         hidden: { opacity: 0 },
         visible: {
             opacity: 1,
-            transition: {
-                staggerChildren: 0.18,
-                delayChildren: 0.4,
-            },
+            transition: prefersReducedMotion
+                ? { duration: 0.4 }
+                : {
+                    staggerChildren: 0.18,
+                    delayChildren: 0.4,
+                },
         },
     };
 

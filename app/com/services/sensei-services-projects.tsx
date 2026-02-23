@@ -1,8 +1,7 @@
 // Import necessary dependencies and styles
 "use client";
-import React, { ReactElement } from 'react';
-import { motion } from "framer-motion";
-import { Variants } from "framer-motion";
+import React, { ReactElement } from "react";
+import { Variants, motion, useReducedMotion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import styles from "./sensei-services-projects.module.css";
 
@@ -29,24 +28,30 @@ const ServiceItem: React.FC<{
     title: string;
     description: string;
     index: number;
-}> = ({ icon, title, description, index }): ReactElement => {
+}> = React.memo(({ icon, title, description, index }): ReactElement => {
     // useInView hook to track if the element is visible in the viewport
     const [ref, inView] = useInView({
         triggerOnce: true,
         threshold: 0.1,
     });
 
+    const prefersReducedMotion = useReducedMotion();
+
     // Define animation variants for Framer Motion
     const variants: Variants = {
-        hidden: { opacity: 0, y: 48 },
+        hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 48 },
         visible: {
             opacity: 1,
             y: 0,
-            transition: {
-                duration: 1,
-                delay: index * 0.18,
-                ease: [0.22, 1, 0.36, 1],
-            },
+            transition: prefersReducedMotion
+                ? {
+                    duration: 0.35,
+                }
+                : {
+                    duration: 1,
+                    delay: index * 0.18,
+                    ease: [0.22, 1, 0.36, 1],
+                },
         },
     };
 
@@ -72,7 +77,7 @@ const ServiceItem: React.FC<{
             </div>
         </motion.div>
     );
-};
+});
 
 /**
  * A React component that displays a list of service items in a grid format.
@@ -137,15 +142,21 @@ function SenseiServicesProjects(): ReactElement {
         threshold: 0.1,
     });
 
+    const prefersReducedMotion = useReducedMotion();
+
     return (
         <section className={styles['section-services']} id="Services">
             <div className={styles.container}>
                 <motion.div
                     ref={headerRef}
                     className={styles['header-section']}
-                    initial={{ opacity: 0, y: -50 }}
+                    initial={prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: -50 }}
                     animate={headerInView ? { opacity: 1, y: 0 } : {}}
-                    transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
+                    transition={
+                        prefersReducedMotion
+                            ? { duration: 0.3 }
+                            : { duration: 1.1, ease: [0.22, 1, 0.36, 1] }
+                    }
                 >
                     <h2 className={styles.title}>
                         <span lang="ja">

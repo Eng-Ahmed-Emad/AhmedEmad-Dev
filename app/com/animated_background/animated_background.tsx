@@ -3,8 +3,9 @@
 *@Description: A responsive experience component with a menu that highlights the active section of the page.
  */
 "use client";
-import React, { useEffect, useRef, useState, useCallback } from 'react';
-import styles from './animated_background.module.css';
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import styles from "./animated_background.module.css";
+import { usePrefersReducedMotion } from "@/app/hooks/usePrefersReducedMotion";
 
 function debounce<T extends (...args: unknown[]) => void>(fn: T, ms: number): T {
   let timeoutId: ReturnType<typeof setTimeout>;
@@ -55,6 +56,7 @@ const AnimatedBackground: React.FC = () => {
     const [bubbles, setBubbles] = useState<Bubble[]>([]);// Define the bubbles
     const [meteors, setMeteors] = useState<Meteor[]>([]);// Define the meteors
     const [isMobile, setIsMobile] = useState(false);
+    const prefersReducedMotion = usePrefersReducedMotion();
 
     // Define the createBubbles and createMeteors functions
     // The functions are used to create the bubbles and meteors
@@ -67,7 +69,7 @@ const AnimatedBackground: React.FC = () => {
     const minRadius = 60;
 
     const createBubbles = useCallback(() => {
-        if (isMobile) return [];
+        if (isMobile || prefersReducedMotion) return [];
         return Array.from({ length: numberOfBubbles }, () => ({
             x: Math.random() * dimensions.width,
             y: Math.random() * dimensions.height,
@@ -75,18 +77,19 @@ const AnimatedBackground: React.FC = () => {
             vx: (Math.random() - 0.5) * 0.12,
             vy: (Math.random() - 0.5) * 0.12
         }));
-    }, [dimensions, numberOfBubbles, isMobile]);
+    }, [dimensions, numberOfBubbles, isMobile, prefersReducedMotion]);
 
     const createMeteors = useCallback(() => {
+        if (prefersReducedMotion) return [];
         return Array.from({ length: numberOfMeteors }, () => ({
             x: Math.floor(Math.random() * (dimensions.width / gridSize)) * gridSize,
             y: Math.floor(Math.random() * (dimensions.height / gridSize)) * gridSize,
             size: Math.random() * 1.5 + 0.8,
             speed: Math.random() * 0.4 + 0.25,
-            direction: Math.random() < 0.5 ? 'horizontal' : 'vertical',
-            trail: []
+            direction: Math.random() < 0.5 ? "horizontal" : "vertical",
+            trail: [],
         })) as Meteor[];
-    }, [dimensions, numberOfMeteors]);
+    }, [dimensions, numberOfMeteors, prefersReducedMotion]);
 
     useEffect(() => {
         const updateDimensions = () => {
@@ -109,10 +112,15 @@ const AnimatedBackground: React.FC = () => {
 
     useEffect(() => {
         if (dimensions.width && dimensions.height) {
-            setBubbles(createBubbles());
-            setMeteors(createMeteors());
+            if (prefersReducedMotion) {
+                setBubbles([]);
+                setMeteors([]);
+            } else {
+                setBubbles(createBubbles());
+                setMeteors(createMeteors());
+            }
         }
-    }, [dimensions, createBubbles, createMeteors]);
+    }, [dimensions, createBubbles, createMeteors, prefersReducedMotion]);
 
     const drawGrid = useCallback((ctx: CanvasRenderingContext2D) => {
         ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';

@@ -1,12 +1,11 @@
 // Import necessary dependencies and styles
 "use client";
-import React, { useEffect, useState, useCallback } from 'react';
-import { motion } from "framer-motion";
-import { Variants } from "framer-motion";
+import React, { useCallback, useEffect, useState } from "react";
+import { Variants, motion, useReducedMotion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar, faExclamationCircle, faEye } from '@fortawesome/free-solid-svg-icons';
-import styles from './sensei-services-projects.module.css';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faExclamationCircle, faEye, faStar } from "@fortawesome/free-solid-svg-icons";
+import styles from "./sensei-services-projects.module.css";
 
 /*
 *@Author: Ahmed_Sensei
@@ -86,6 +85,8 @@ const ProjectItem: React.FC<{ repo: GitHubRepository }> = React.memo(({ repo }) 
         threshold: 0.1,
     });
 
+    const prefersReducedMotion = useReducedMotion();
+
     // Define animation variants for the project item
     // const variants = {
     //     hidden: { opacity: 0, y: 50 },
@@ -101,15 +102,19 @@ const ProjectItem: React.FC<{ repo: GitHubRepository }> = React.memo(({ repo }) 
     // };
 
     const variants: Variants = {
-        hidden: { opacity: 0, y: 48 },
+        hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 48 },
         visible: {
             opacity: 1,
             y: 0,
-            transition: {
-                duration: 1,
-                delay: 0.25,
-                ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
-            },
+            transition: prefersReducedMotion
+                ? {
+                    duration: 0.35,
+                }
+                : {
+                    duration: 1,
+                    delay: 0.25,
+                    ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+                },
         },
     };
 
@@ -169,6 +174,8 @@ const SenseiProjects: React.FC = () => {
         threshold: 0.1,
     });
 
+    const prefersReducedMotion = useReducedMotion();
+
     /**
      * Fetches repositories from GitHub and updates the state.
      */
@@ -196,9 +203,13 @@ const SenseiProjects: React.FC = () => {
                 <motion.div
                     ref={headerRef}
                     className={styles['header-section']}
-                    initial={{ opacity: 0, y: -50 }}
+                    initial={prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: -50 }}
                     animate={headerInView ? { opacity: 1, y: 0 } : {}}
-                    transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
+                    transition={
+                        prefersReducedMotion
+                            ? { duration: 0.3 }
+                            : { duration: 1.1, ease: [0.22, 1, 0.36, 1] }
+                    }
                 >
                     <h2 className={styles.title}>
                         <motion.span

@@ -5,7 +5,7 @@
 
 "use client";
 import React, { useState } from "react";
-import { motion, Variants } from "framer-motion";
+import { Variants, motion, useReducedMotion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import styles from "./experience-section.module.css";
 
@@ -67,16 +67,22 @@ const TimelineItem = React.memo<TimelineItem & { index: number }>(
             }
         };
 
+        const prefersReducedMotion = useReducedMotion();
+
         const variants: Variants = {
-            hidden: { opacity: 0, x: isRight ? 80 : -80 },
+            hidden: { opacity: 0, x: prefersReducedMotion ? 0 : isRight ? 80 : -80 },
             visible: {
                 opacity: 1,
                 x: 0,
-                transition: {
-                    duration: 1.1,
-                    delay: index * 0.18,
-                    ease: [0.22, 1, 0.36, 1],
-                },
+                transition: prefersReducedMotion
+                    ? {
+                        duration: 0.35,
+                    }
+                    : {
+                        duration: 1.1,
+                        delay: index * 0.18,
+                        ease: [0.22, 1, 0.36, 1],
+                    },
             },
         };
 
@@ -111,6 +117,7 @@ const TimelineItem = React.memo<TimelineItem & { index: number }>(
 );
 
 function ExperienceSection() {
+    const prefersReducedMotion = useReducedMotion();
     const [headerRef, headerInView] = useInView({
         triggerOnce: true,
         threshold: 0.1,
@@ -233,9 +240,13 @@ function ExperienceSection() {
                 <motion.div
                     ref={headerRef}
                     className={styles["header-section"]}
-                    initial={{ opacity: 0, y: -50 }}
+                    initial={prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: -50 }}
                     animate={headerInView ? { opacity: 1, y: 0 } : {}}
-                    transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
+                    transition={
+                        prefersReducedMotion
+                            ? { duration: 0.3 }
+                            : { duration: 1.1, ease: [0.22, 1, 0.36, 1] }
+                    }
                 >
                     <h2 className={styles.title}>
                         <span lang="ja">経験 •</span>

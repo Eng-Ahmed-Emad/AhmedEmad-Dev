@@ -20,7 +20,6 @@
     "@fortawesome/free-solid-svg-icons": "^7.1.0",
     "@fortawesome/react-fontawesome": "^3.1.0",
     "framer-motion": "^12.23.24",
-    "lodash": "^4.17.21",
     "next": "^16.0.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
@@ -28,7 +27,6 @@
     "yet-another-react-lightbox": "^3.25.0"
   },
   "devDependencies": {
-    "@types/lodash": "^4.17.23",
     "@types/node": "^24.9.1",
     "@types/react": "^19.2.2",
     "baseline-browser-mapping": "^2.9.19",

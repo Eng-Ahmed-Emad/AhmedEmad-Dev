@@ -19,7 +19,7 @@
     justify-content: space-between;
     align-items: center;
     z-index: 100;
-    transition: all 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: background 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.7s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.7s cubic-bezier(0.22, 1, 0.36, 1);
     border: 1px solid rgb(252, 240, 225);
 }
 
@@ -66,11 +66,12 @@
     width: 100%;
     height: 100%;
     background: linear-gradient(120deg, transparent, var(--main-color), transparent);
-    transition: left 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    transform: translateX(-100%);
+    transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .navbar a:hover::before {
-    left: 100%;
+    transform: translateX(100%);
 }
 
 .navbar a:hover,

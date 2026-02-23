@@ -1,8 +1,8 @@
 "use client";
-import { useState, useEffect, ReactElement } from 'react';
-import Link from 'next/link';
-import styles from './sensei-header.module.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { ReactElement, useEffect, useState } from "react";
+import Link from "next/link";
+import styles from "./sensei-header.module.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faHome,
     // faUserSecret,
@@ -38,46 +38,63 @@ const SenseiHeader = (): ReactElement => {
         setIsMenuOpen((prevState) => !prevState);
     };
 
-    const handleScroll = (): void => {
-        const sections: Array<string> = [
-            'Home',
-            // 'Services',
-            'Experience',
-            'Projects',
-            'ArtGallery',
-            'Contact',
-        ];
-        const current: string | undefined = sections.find((section) => {
-            const element = document.getElementById(section);
-            if (element) {
-                const rect = element.getBoundingClientRect();
-                return rect.top <= 100 && rect.bottom >= 100;
-            }
-            return false;
-        });
-        if (current) {
-            setActiveSection(current);
-            if (typeof window !== 'undefined') {
-                localStorage.setItem('activeSection', current);
-            }
-        }
-    };
-
     useEffect(() => {
-        // Retrieve saved section only on client
-        if (typeof window !== 'undefined') {
-            const savedSection = localStorage.getItem('activeSection');
-            if (savedSection) {
-                setActiveSection(savedSection);
-                const element = document.getElementById(savedSection);
-                if (element) {
-                    element.scrollIntoView({ behavior: 'smooth' });
-                }
+        if (typeof window === "undefined") {
+            return;
+        }
+
+        const savedSection = localStorage.getItem("activeSection");
+        if (savedSection) {
+            setActiveSection(savedSection);
+            const element = document.getElementById(savedSection);
+            if (element) {
+                element.scrollIntoView({ behavior: "smooth" });
             }
         }
 
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
+        const sections: Array<string> = [
+            "Home",
+            // "Services",
+            "Experience",
+            "Projects",
+            "ArtGallery",
+            "Contact",
+        ];
+
+        let ticking = false;
+
+        const handleScroll = () => {
+            if (ticking) return;
+            ticking = true;
+
+            window.requestAnimationFrame(() => {
+                const current: string | undefined = sections.find((section) => {
+                    const element = document.getElementById(section);
+                    if (element) {
+                        const rect = element.getBoundingClientRect();
+                        return rect.top <= 100 && rect.bottom >= 100;
+                    }
+                    return false;
+                });
+
+                if (current) {
+                    setActiveSection((prev) => {
+                        if (prev !== current) {
+                            localStorage.setItem("activeSection", current);
+                        }
+                        return current;
+                    });
+                }
+
+                ticking = false;
+            });
+        };
+
+        window.addEventListener("scroll", handleScroll, { passive: true });
+
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        };
     }, []);
 
     useEffect(() => {

@@ -8,7 +8,7 @@ import "./globals.css";
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { config } from '@fortawesome/fontawesome-svg-core';
 import { Overlock, Yuji_Syuku } from 'next/font/google';
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 
 // Google Fonts Configuration
 const overlock = Overlock({
@@ -31,13 +31,17 @@ export const metadata: Metadata = {
     description: "Hello! I'm Ahmed Emad, I am a Computer Science Student at BFCAI, Certified CCNA Engineer, Specializing in Information Security and Digital Forensics.",
     keywords: ["Ahmed Emad", "Information Security", "Digital Forensics", "CCNA", "Cybersecurity"],
     authors: [{ name: "Ahmed_Sensei" }],
-    viewport: "width=device-width, initial-scale=1.0",
     openGraph: {
         title: "Eng Ahmed Emad - Cybersecurity Specialist",
         description: "A Computer Science Student specializing in Information Security and Digital Forensics",
         type: "website",
     },
     robots: "index, follow",
+};
+
+export const viewport: Viewport = {
+    width: "device-width",
+    initialScale: 1.0,
 };
 
 config.autoAddCss = false;
