@@ -84,9 +84,8 @@
     color: var(--main-color);
     font-size: 2.5rem;
     text-decoration: none;
-    transition: all 0.3s ease;
+    transition: color 0.5s ease, text-shadow 0.5s ease;
     margin-bottom: 10px;
-    /* اختياري: يزود مسافة بين الإيميلين */
 }
 
 
@@ -111,7 +110,7 @@
     border-radius: 1rem;
     color: var(--main-color);
     margin: 2rem 1.5rem;
-    transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s ease;
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), background 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease;
 }
 
 .social a:hover {
@@ -152,7 +151,7 @@
     opacity: 1;
     font-weight: bold;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: color 0.5s ease, text-shadow 0.5s ease;
 }
 
 .Sensei_Name:hover {

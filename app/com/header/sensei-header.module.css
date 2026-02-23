@@ -19,7 +19,7 @@
     justify-content: space-between;
     align-items: center;
     z-index: 100;
-    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    transition: all 0.7s cubic-bezier(0.22, 1, 0.36, 1);
     border: 1px solid rgb(252, 240, 225);
 }
 
@@ -29,7 +29,7 @@
     color: var(--text-color);
     font-weight: 800;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), text-shadow 0.5s ease;
     will-change: transform, text-shadow;
 }
 
@@ -49,7 +49,7 @@
     padding: 0.5rem 1rem;
     border-radius: 0.7rem;
     font-weight: 500;
-    transition: all 0.4s ease-in-out;
+    transition: background 0.6s cubic-bezier(0.22, 1, 0.36, 1), color 0.5s ease, box-shadow 0.5s ease;
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -66,7 +66,7 @@
     width: 100%;
     height: 100%;
     background: linear-gradient(120deg, transparent, var(--main-color), transparent);
-    transition: left 0.4s ease-in-out;
+    transition: left 0.8s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .navbar a:hover::before {
@@ -83,7 +83,7 @@
 .navbar a .icon {
     color: var(--text-color);
     will-change: transform, color;
-    transition: transform 0.4s ease, color 0.4s ease;
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), color 0.5s ease;
 }
 
 .navbar a:hover .icon,
@@ -111,7 +111,7 @@
     opacity: 1;
     left: 0;
     transform: rotate(0deg);
-    transition: .25s ease-in-out;
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease, left 0.4s ease;
 }
 
 .MenuIcon span:nth-child(1) {
@@ -204,14 +204,14 @@
         opacity: 0;
         transform: translateY(-25px);
         margin-top: 0.5rem;
-        transition: opacity 0.3s ease, transform 0.4s ease-in-out;
+        transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1), transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     .navbar.active {
         display: block;
         opacity: 1;
         transform: translateY(0);
-        animation: slideIn 0.4s ease forwards;
+        animation: slideIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
     }
 
     .navbar a {
@@ -222,7 +222,7 @@
         opacity: 0;
         padding: 1rem;
         transform: translateX(-20px);
-        transition: opacity 0.3s ease, transform 0.3s ease;
+        transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     .navbar.active a {
@@ -231,23 +231,23 @@
     }
 
     .navbar.active a:nth-child(1) {
-        animation: slideInLeft 0.5s ease 0.1s forwards;
+        animation: slideInLeft 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.15s forwards;
     }
 
     .navbar.active a:nth-child(2) {
-        animation: slideInLeft 0.5s ease 0.2s forwards;
+        animation: slideInLeft 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.3s forwards;
     }
 
     .navbar.active a:nth-child(3) {
-        animation: slideInLeft 0.5s ease 0.3s forwards;
+        animation: slideInLeft 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.45s forwards;
     }
 
     .navbar.active a:nth-child(4) {
-        animation: slideInLeft 0.5s ease 0.4s forwards;
+        animation: slideInLeft 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.6s forwards;
     }
 
     .navbar.active a:nth-child(5) {
-        animation: slideInLeft 0.5s ease 0.5s forwards;
+        animation: slideInLeft 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.75s forwards;
     }
 }
 
@@ -255,7 +255,7 @@
 @keyframes slideIn {
     from {
         opacity: 0;
-        transform: translateY(-20px);
+        transform: translateY(-24px);
     }
 
     to {
@@ -267,7 +267,7 @@
 @keyframes slideInLeft {
     from {
         opacity: 0;
-        transform: translateX(-20px);
+        transform: translateX(-24px);
     }
 
     to {

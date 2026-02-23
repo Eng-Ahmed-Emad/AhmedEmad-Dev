@@ -101,13 +101,13 @@ const ProjectItem: React.FC<{ repo: GitHubRepository }> = React.memo(({ repo }) 
     // };
 
     const variants: Variants = {
-        hidden: { opacity: 0, y: 50 },
+        hidden: { opacity: 0, y: 48 },
         visible: {
             opacity: 1,
             y: 0,
             transition: {
-                duration: 0.5,
-                delay: 0.2,
+                duration: 1,
+                delay: 0.25,
                 ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
             },
         },
@@ -127,7 +127,7 @@ const ProjectItem: React.FC<{ repo: GitHubRepository }> = React.memo(({ repo }) 
                     className={getIconForLanguage(repo.language)}
                     animate={{ rotate: 0 }}
                     whileHover={{ rotate: 360 }}
-                    transition={{ duration: 0.6 }}
+                    transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
                 />
                 <h3>{repo.name}</h3>
             </div>
@@ -198,14 +198,14 @@ const SenseiProjects: React.FC = () => {
                     className={styles['header-section']}
                     initial={{ opacity: 0, y: -50 }}
                     animate={headerInView ? { opacity: 1, y: 0 } : {}}
-                    transition={{ duration: 0.6, ease: "easeOut" }}
+                    transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
                 >
                     <h2 className={styles.title}>
                         <motion.span
                             lang="ja"
                             initial={{ scale: 0 }}
                             animate={headerInView ? { scale: 1 } : {}}
-                            transition={{ duration: 0.6, delay: 0.3, type: "spring", stiffness: 200, damping: 10 }}
+                            transition={{ duration: 1, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
                         >
                             計画  •
                         </motion.span>
@@ -213,7 +213,7 @@ const SenseiProjects: React.FC = () => {
                             lang="en"
                             initial={{ scale: 0 }}
                             animate={headerInView ? { scale: 1 } : {}}
-                            transition={{ duration: 0.6, delay: 0.3, type: "spring", stiffness: 200, damping: 10 }}
+                            transition={{ duration: 1, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
                         > Projects
                         </motion.span>
                     </h2>

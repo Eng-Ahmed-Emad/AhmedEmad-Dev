@@ -96,7 +96,7 @@
     padding: 20px;
     text-align: left;
     box-shadow: 0 0 10px var(--main-color);
-    transition: 0.3s ease;
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s ease, background 0.5s ease;
     border: 2px solid var(--main-color);
 }
 
@@ -121,7 +121,7 @@
 .part-1 i {
     font-size: 40px;
     color: black;
-    transition: color 0.3s ease;
+    transition: color 0.5s ease;
 }
 
 .part-1 h3 {
@@ -145,7 +145,7 @@
     color: var(--main-color);
     font-weight: bold;
     text-decoration: underline;
-    transition: color 0.3s ease;
+    transition: color 0.5s ease;
 }
 
 .single-service:hover .part-2 a,

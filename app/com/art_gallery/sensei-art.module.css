@@ -67,7 +67,7 @@
 .art-gallery-section .art-gallery-content .Gallery img {
     border-radius: 1rem;
     width: 100%;
-    transition: 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s ease, border 0.4s ease;
 }
 
 .art-gallery-section .art-gallery-content .Gallery img:hover {
@@ -85,6 +85,13 @@
     display: inline-block;
     margin-bottom: 16px;
     width: 100%;
+}
+
+.Gallery .galleryImg {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    display: block;
 }
 
 @media (max-width: 1199px) {

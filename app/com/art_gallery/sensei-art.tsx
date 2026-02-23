@@ -31,14 +31,14 @@ const ImageItem = ({ image, index, setOpen }: ImageItemProps) => {
     });
 
     const variants: Variants = {
-        hidden: { opacity: 0, y: 20 },
+        hidden: { opacity: 0, y: 32 },
         visible: (i: number) => ({
             opacity: 1,
             y: 0,
             transition: {
-                delay: i * 0.1,
-                duration: 0.5,
-                ease: [0.6, -0.05, 0.01, 0.99],
+                delay: i * 0.18,
+                duration: 1,
+                ease: [0.22, 1, 0.36, 1],
             },
         }),
     };
@@ -55,15 +55,14 @@ const ImageItem = ({ image, index, setOpen }: ImageItemProps) => {
             <Image
                 src={image.thumb}
                 alt={`Art piece ${index + 1}`}
-                width={500}
-                height={500}
+                width={400}
+                height={400}
+                sizes="(max-width: 767px) 100vw, (max-width: 991px) 50vw, (max-width: 1199px) 33vw, 25vw"
                 onClick={() => setOpen(index)}
-                layout="responsive"
-                objectFit="cover"
-                placeholder="blur"
-                blurDataURL={image.thumb}
-                quality={70}
-                
+                loading="lazy"
+                decoding="async"
+                quality={65}
+                className={styles.galleryImg}
             />
         </motion.div>
     );
@@ -108,8 +107,8 @@ function SenseiArt() {
             opacity: 1,
             y: 0,
             transition: {
-                duration: 0.8,
-                ease: [0.6, -0.05, 0.01, 0.99],
+                duration: 1.2,
+                ease: [0.22, 1, 0.36, 1],
             },
         },
     };
@@ -119,8 +118,8 @@ function SenseiArt() {
         visible: {
             opacity: 1,
             transition: {
-                staggerChildren: 0.1,
-                delayChildren: 0.3,
+                staggerChildren: 0.18,
+                delayChildren: 0.4,
             },
         },
     };

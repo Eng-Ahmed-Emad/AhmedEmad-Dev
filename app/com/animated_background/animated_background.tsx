@@ -3,9 +3,16 @@
 *@Description: A responsive experience component with a menu that highlights the active section of the page.
  */
 "use client";
-import React, { useEffect, useRef, useState, useCallback } from 'react';// Import necessary dependencies
-import { debounce } from 'lodash';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import styles from './animated_background.module.css';
+
+function debounce<T extends (...args: unknown[]) => void>(fn: T, ms: number): T {
+  let timeoutId: ReturnType<typeof setTimeout>;
+  return ((...args: Parameters<T>) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => fn(...args), ms);
+  }) as T;
+}
 
 
 // Define the Bubble and Meteor interfaces
@@ -65,8 +72,8 @@ const AnimatedBackground: React.FC = () => {
             x: Math.random() * dimensions.width,
             y: Math.random() * dimensions.height,
             radius: Math.random() * (maxRadius - minRadius) + minRadius,
-            vx: (Math.random() - 0.5) * 0.5,
-            vy: (Math.random() - 0.5) * 0.5
+            vx: (Math.random() - 0.5) * 0.12,
+            vy: (Math.random() - 0.5) * 0.12
         }));
     }, [dimensions, numberOfBubbles, isMobile]);
 
@@ -74,8 +81,8 @@ const AnimatedBackground: React.FC = () => {
         return Array.from({ length: numberOfMeteors }, () => ({
             x: Math.floor(Math.random() * (dimensions.width / gridSize)) * gridSize,
             y: Math.floor(Math.random() * (dimensions.height / gridSize)) * gridSize,
-            size: Math.random() * 2 + 1,
-            speed: Math.random() * 2 + 1,
+            size: Math.random() * 1.5 + 0.8,
+            speed: Math.random() * 0.4 + 0.25,
             direction: Math.random() < 0.5 ? 'horizontal' : 'vertical',
             trail: []
         })) as Meteor[];
@@ -201,7 +208,7 @@ const AnimatedBackground: React.FC = () => {
             }
 
             meteor.trail.unshift({ x: meteor.x, y: meteor.y, alpha: 1 });
-            if (meteor.trail.length > 20) meteor.trail.pop();
+            if (meteor.trail.length > 35) meteor.trail.pop();
             meteor.trail.forEach((point, index) => {
                 point.alpha = 1 - index / meteor.trail.length;
             });

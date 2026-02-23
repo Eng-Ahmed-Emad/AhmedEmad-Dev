@@ -1,5 +1,6 @@
 "use client";
 import { ReactElement, useEffect, useState } from "react";
+import Image from "next/image";
 import { motion, useAnimation, AnimatePresence } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -13,6 +14,8 @@ import {
   faUserTie,
 } from "@fortawesome/free-solid-svg-icons";
 import styles from "./sensei-home.module.css";
+
+const HERO_IMAGE = "Assets/art-gallery/Images/image_display_thumb/50.webp";
 
 //**
 // @Author Ahmed_Senseii
@@ -30,29 +33,32 @@ const Home = (): ReactElement => {
 
   useEffect(() => {
     if (inView) {
-      controls.start("visible").then((r) => console.log(r));
+      controls.start("visible");
     }
   }, [controls, inView]);
 
   const containerVariants = {
-    hidden: { opacity: 0, y: 50 },
+    hidden: { opacity: 0, y: 60 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.5,
-        staggerChildren: 0.2,
+        duration: 1.2,
+        staggerChildren: 0.35,
+        delayChildren: 0.15,
+        ease: [0.22, 1, 0.36, 1] as const,
       },
     },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0, y: 28 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.5,
+        duration: 1,
+        ease: [0.22, 1, 0.36, 1] as const,
       },
     },
   };
@@ -84,12 +90,14 @@ const Home = (): ReactElement => {
         ref={ref}
       >
         <motion.div className={styles.homeImg} variants={itemVariants}>
-          <img
-            src="Assets/art-gallery/Images/image_display_thumb/50.webp"
+          <Image
+            src={HERO_IMAGE}
             alt="Ahmed Emad Image"
             className={styles.image}
             width={350}
             height={350}
+            priority
+            sizes="(max-width: 768px) 100vw, 350px"
           />
         </motion.div>
 
@@ -156,21 +164,22 @@ const Home = (): ReactElement => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] as const }}
           >
             <motion.div
               className={styles.popup}
-              initial={{ scale: 0.8, opacity: 0 }}
+              initial={{ scale: 0.88, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
+              exit={{ scale: 0.88, opacity: 0 }}
+              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] as const }}
             >
               {/* Animated Icon */}
               <motion.div
                 initial={{ y: -10, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{
-                  delay: 0.1,
-                  duration: 0.6,
+                  delay: 0.2,
+                  duration: 1,
                   repeat: Infinity,
                   repeatType: "reverse",
                 }}

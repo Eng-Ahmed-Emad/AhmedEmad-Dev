@@ -38,13 +38,13 @@ const ServiceItem: React.FC<{
 
     // Define animation variants for Framer Motion
     const variants: Variants = {
-        hidden: { opacity: 0, y: 50 },
+        hidden: { opacity: 0, y: 48 },
         visible: {
             opacity: 1,
             y: 0,
             transition: {
-                duration: 0.5,
-                delay: index * 0.1, // Delay based on the service index for staggered animation
+                duration: 1,
+                delay: index * 0.18,
                 ease: [0.22, 1, 0.36, 1],
             },
         },
@@ -62,8 +62,8 @@ const ServiceItem: React.FC<{
                 <motion.i
                     className={icon}
                     animate={{ rotate: 0 }}
-                    whileHover={{ rotate: 360 }} // Icon rotates on hover
-                    transition={{ duration: 0.6 }}
+                    whileHover={{ rotate: 360 }}
+                    transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
                 ></motion.i>
                 <h3 className={styles.title}>{title}</h3>
             </div>
@@ -145,7 +145,7 @@ function SenseiServicesProjects(): ReactElement {
                     className={styles['header-section']}
                     initial={{ opacity: 0, y: -50 }}
                     animate={headerInView ? { opacity: 1, y: 0 } : {}}
-                    transition={{ duration: 0.6, ease: "easeOut" }}
+                    transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
                 >
                     <h2 className={styles.title}>
                         <span lang="ja">

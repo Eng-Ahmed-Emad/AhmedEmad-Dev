@@ -50,6 +50,7 @@ export default function RootLayout({ children }: { children: ReactNode; }) {
                 <link rel="canonical" href="https://ahmedemad-dev.com" />
                 <meta name="robots" content="index, follow" />
                 <meta name="theme-color" content="#000000" />
+                <link rel="preload" as="image" href="/Assets/art-gallery/Images/image_display_thumb/50.webp" />
             </head>
             <body className="bg-black text-white">
                 {children}
