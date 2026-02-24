@@ -193,7 +193,7 @@ const Home = (): ReactElement => {
 
           <motion.div className={styles.socialIcon} variants={itemVariants}>
             <a
-              href="https://www.linkedin.com/in/eng-ahmed-nasr/"
+              href="https://www.linkedin.com/in/ahmed-em-nasr/"
               target="_blank"
               rel="noopener noreferrer"
               title="Linkedin"
