@@ -62,18 +62,8 @@ const SenseiContact = (): JSX.Element => {
                                         <FontAwesomeIcon icon={faLinkedin} />
                                     </a>
                                    
-                                    <a
-                                        aria-label="Go to GitHub"
-                                        href="https://github.com/Eng-Ahmed-Emad"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        <FontAwesomeIcon icon={faGithub} />
-                                    </a>
-                                   
-
-
-
+                                
+                        
                                 </div>
                             </div>
                         </div>
