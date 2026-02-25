@@ -40,6 +40,14 @@ const SenseiContact = (): JSX.Element => {
                                 >
                                     ahmed.em.nasr@gmail.com
                                 </a>
+                                  <a
+                                    className={styles['link-me']}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    href="mailto:ahmedemadeldeen77@gmail.com?subject=Hello Eng Ahmed: "
+                                >
+                                    ahmedemadeldeen77@gmail.com
+                                </a>
                                 <div className={styles.social}>
                                     <p className={styles.meon}>Me on Social Network</p>
                                     <a
@@ -54,7 +62,7 @@ const SenseiContact = (): JSX.Element => {
 
                                     <a
                                         aria-label="Go to Linkedin"
-                                        href="https://www.linkedin.com/in/ahmed-em-nasr/"
+                                        href="https://www.linkedin.com/in/eng-ahmed-nasr/"
                                         target="_blank"
                                         rel="noopener noreferrer"
                                     >
