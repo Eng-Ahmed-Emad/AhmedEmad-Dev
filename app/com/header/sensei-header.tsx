@@ -45,7 +45,7 @@ const SenseiHeader = (): ReactElement => {
 
         // Check if there's a hash in the URL (direct navigation to section)
         const hash = window.location.hash.slice(1);
-        if (hash) {
+        if (hash && ["Home", "Experience", "Projects", "ArtGallery", "Contact"].includes(hash)) {
             // If navigating via hash, scroll to that section
             const element = document.getElementById(hash);
             if (element) {
@@ -55,8 +55,11 @@ const SenseiHeader = (): ReactElement => {
         } else {
             // Only restore from localStorage if not a direct hash navigation
             const savedSection = localStorage.getItem("activeSection");
-            if (savedSection) {
+            if (savedSection && ["Home", "Experience", "Projects", "ArtGallery", "Contact"].includes(savedSection)) {
                 setActiveSection(savedSection);
+            } else {
+                // Default to Home if nothing is saved
+                setActiveSection("Home");
             }
         }
 
@@ -76,13 +79,24 @@ const SenseiHeader = (): ReactElement => {
             ticking = true;
 
             window.requestAnimationFrame(() => {
-                const current: string | undefined = sections.find((section) => {
+                // Find the section that is currently in view (closest to top)
+                let current: string | undefined;
+                let closestDistance = Infinity;
+
+                sections.forEach((section) => {
                     const element = document.getElementById(section);
                     if (element) {
                         const rect = element.getBoundingClientRect();
-                        return rect.top <= 150 && rect.bottom >= 150;
+                        // Check if section is in viewport (with some threshold)
+                        if (rect.top <= 200 && rect.bottom >= 100) {
+                            // Calculate distance from top of viewport (preferring sections closer to top)
+                            const distance = Math.max(0, rect.top);
+                            if (distance < closestDistance) {
+                                closestDistance = distance;
+                                current = section;
+                            }
+                        }
                     }
-                    return false;
                 });
 
                 if (current) {
@@ -98,10 +112,23 @@ const SenseiHeader = (): ReactElement => {
             });
         };
 
+        const handleHashChange = () => {
+            const hash = window.location.hash.slice(1);
+            if (hash && ["Home", "Experience", "Projects", "ArtGallery", "Contact"].includes(hash)) {
+                setActiveSection(hash);
+                const element = document.getElementById(hash);
+                if (element) {
+                    element.scrollIntoView({ behavior: "smooth", block: "start" });
+                }
+            }
+        };
+
         window.addEventListener("scroll", handleScroll, { passive: true });
+        window.addEventListener("hashchange", handleHashChange);
 
         return () => {
             window.removeEventListener("scroll", handleScroll);
+            window.removeEventListener("hashchange", handleHashChange);
         };
     }, []);
 
