@@ -101,10 +101,10 @@ const SenseiHeader = (): ReactElement => {
 
                 if (current) {
                     setActiveSection((prev) => {
-                        if (prev !== current) {
-                            localStorage.setItem("activeSection", current);
+                        if (prev !== current!) {
+                            localStorage.setItem("activeSection", current!);
                         }
-                        return current;
+                        return current!;
                     });
                 }
 
