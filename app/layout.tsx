@@ -27,13 +27,13 @@ const yujiSyuku = Yuji_Syuku({
 
 // Metadata configuration
 export const metadata: Metadata = {
-    title: "Eng Ahmed Emad",
-    description: "Hello! I'm Ahmed Emad, I am a Computer Science Student at BFCAI, Certified CCNA Engineer, Specializing in Information Security and Digital Forensics.",
+    title: "Ahmed Emad Nasr",
+    description: "Ahmed Emad Nasr is a SOC Analyst experienced in ELK, Wazuh, and Incident Response. Holds eJPT v2 and CCNA certifications, specializing in Information Security.",
     keywords: ["Ahmed Emad", "Information Security", "Digital Forensics", "CCNA", "Cybersecurity"],
     authors: [{ name: "Ahmed_Sensei" }],
     openGraph: {
-        title: "Eng Ahmed Emad - Cybersecurity Specialist",
-        description: "A Computer Science Student specializing in Information Security and Digital Forensics",
+        title: "Ahmed Emad Nasr - Cybersecurity Specialist",
+        description: "Ahmed Emad Nasr is a SOC Analyst experienced in ELK, Wazuh, and Incident Response. Holds eJPT v2 and CCNA certifications, specializing in Information Security.",
         type: "website",
     },
     robots: "index, follow",
