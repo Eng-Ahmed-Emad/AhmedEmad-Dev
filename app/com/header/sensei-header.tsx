@@ -43,12 +43,20 @@ const SenseiHeader = (): ReactElement => {
             return;
         }
 
-        const savedSection = localStorage.getItem("activeSection");
-        if (savedSection) {
-            setActiveSection(savedSection);
-            const element = document.getElementById(savedSection);
+        // Check if there's a hash in the URL (direct navigation to section)
+        const hash = window.location.hash.slice(1);
+        if (hash) {
+            // If navigating via hash, scroll to that section
+            const element = document.getElementById(hash);
             if (element) {
-                element.scrollIntoView({ behavior: "smooth" });
+                element.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+            setActiveSection(hash);
+        } else {
+            // Only restore from localStorage if not a direct hash navigation
+            const savedSection = localStorage.getItem("activeSection");
+            if (savedSection) {
+                setActiveSection(savedSection);
             }
         }
 
@@ -146,6 +154,11 @@ const SenseiHeader = (): ReactElement => {
                             setActiveSection(section);
                             if (typeof window !== 'undefined') {
                                 localStorage.setItem('activeSection', section);
+                                // Scroll to the top of the section
+                                const element = document.getElementById(section);
+                                if (element) {
+                                    element.scrollIntoView({ behavior: "smooth", block: "start" });
+                                }
                             }
                             if (window.innerWidth <= 994) setIsMenuOpen(false);
                         }}

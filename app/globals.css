@@ -73,6 +73,15 @@ section {
     padding: 6rem 6% 5rem;
 }
 
+/* Scroll margin for sections with fixed header */
+#Home,
+#Experience,
+#Projects,
+#ArtGallery,
+#Contact {
+    scroll-margin-top: 7rem;
+}
+
 @media (max-width: 991px) {
     section {
         min-height: 100vh;
