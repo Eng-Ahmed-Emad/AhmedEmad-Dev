@@ -182,6 +182,7 @@ const handleDownload = (lang: "CV" | "Resume" | "Arabic") => {
             width={350}
             height={350}
             priority
+            decoding="async"
             sizes="(max-width: 768px) 100vw, 350px"
           />
         </motion.div>

@@ -67,14 +67,14 @@
 .art-gallery-section .art-gallery-content .Gallery img {
     border-radius: 1rem;
     width: 100%;
-    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s ease, border 0.4s ease;
-    will-change: transform;
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s ease;
+    will-change: transform, box-shadow;
+    backface-visibility: hidden;
 }
 
 .art-gallery-section .art-gallery-content .Gallery img:hover {
-    border: 2px solid var(--main-color);
     transform: translateY(-10px);
-    box-shadow: 0 0 20px var(--main-color);
+    box-shadow: 0 0 20px var(--main-color), inset 0 0 2px 1px var(--main-color);
 }
 
 .Gallery {
@@ -86,6 +86,7 @@
     display: inline-block;
     margin-bottom: 16px;
     width: 100%;
+    contain: layout style paint;
 }
 
 .Gallery .galleryImg {

@@ -23,6 +23,7 @@
     flex: 0 0 auto;
     max-width: 350px;
     width: 100%;
+    contain: layout style paint;
 }
 
 .homeImg img {
@@ -30,15 +31,15 @@
     height: auto;
     border-radius: 16px;
     box-shadow: 0 0 25px var(--main-color);
-    transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1), filter 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.6s cubic-bezier(0.22, 1, 0.36, 1);
     cursor: pointer;
-    will-change: transform;
+    will-change: transform, box-shadow;
+    backface-visibility: hidden;
 }
 
 .homeImg img:hover {
-    transform: scale(1.1);
-    filter: drop-shadow(0 0 25px var(--main-color));
-    border: 2px solid var(--main-color);
+    transform: scale(1.08);
+    box-shadow: 0 0 35px var(--main-color), inset 0 0 15px rgba(252, 240, 225, 0.1);
 }
 
 
@@ -63,6 +64,7 @@
 .typingHighlight {
     position: relative;
     color: var(--main-color);
+    will-change: opacity;
 }
 
 .typingHighlight::before {
@@ -132,6 +134,7 @@
     90%,
     95% {
         width: 0;
+        opacity: 1;
     }
 
     5%,
@@ -144,6 +147,7 @@
     80%,
     85% {
         width: calc(100% + 7px);
+        opacity: 1;
     }
 }
 
@@ -174,7 +178,8 @@
     border-radius: 1rem;
     color: var(--main-color);
     transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), color 0.5s ease, background 0.5s ease, box-shadow 0.5s ease;
-    will-change: transform;
+    will-change: transform, background, color, box-shadow;
+    backface-visibility: hidden;
 }
 
 .socialIcon a:hover {
@@ -205,6 +210,8 @@
     transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), color 0.5s ease, background 0.5s ease, border 0.5s ease, box-shadow 0.5s ease;
     cursor: pointer;
     text-decoration: none;
+    will-change: transform;
+    backface-visibility: hidden;
     box-shadow: 0 0 10px var(--main-color);
 }
 

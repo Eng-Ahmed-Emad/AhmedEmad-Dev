@@ -105,7 +105,8 @@
     border: 2px solid var(--main-color);
     box-shadow: 0 0 10px var(--main-color);
     transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.6s ease, background-color 0.6s ease;
-    will-change: transform;
+    will-change: transform, box-shadow, background-color;
+    backface-visibility: hidden;
 }
 
 .content:hover {
@@ -142,6 +143,7 @@
     top: 15px;
     border-radius: 1rem;
     z-index: 1;
+    will-change: transform, background-color, box-shadow;
     transition: background-color 0.6s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 

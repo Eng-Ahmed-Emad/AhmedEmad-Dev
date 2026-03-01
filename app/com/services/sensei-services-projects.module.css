@@ -98,6 +98,8 @@
     box-shadow: 0 0 10px var(--main-color);
     transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s ease, background 0.5s ease;
     border: 2px solid var(--main-color);
+    will-change: transform, box-shadow, background;
+    backface-visibility: hidden;
 }
 
 .single-service:hover,
@@ -122,6 +124,7 @@
     font-size: 40px;
     color: black;
     transition: color 0.5s ease;
+    will-change: color;
 }
 
 .part-1 h3 {

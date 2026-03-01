@@ -41,6 +41,7 @@ function SenseiLoader(): ReactElement | null {
     width: 200,
     height: 200,
     priority: true,
+    decoding: "async",
   };
 
   return (
