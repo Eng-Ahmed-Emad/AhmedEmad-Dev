@@ -80,17 +80,23 @@ const Home = (): ReactElement => {
     setShowPopup(false);
   };
 
-  const handleDownload = (lang: "en" | "ar") => {
-    const file =
-      lang === "en"
-        ? "Assets/cv/AhmedEmad_SOCAnalyst_CV.pdf"
-        : "Assets/cv/AhmedEmad_SOCAnalyst_Resume.pdf";
-    const link = document.createElement("a");
-    link.href = file;
-    link.download = file.split("/").pop() || "CV.pdf";
-    link.click();
-    setShowPopup(false);
-  };
+const handleDownload = (lang: "CV" | "Resume" | "Arabic") => {
+  let file = "";
+
+  if (lang === "CV") {
+    file = "Assets/cv/AhmedEmad_SOCAnalyst_CV.pdf";
+  } else if (lang === "Resume") {
+    file = "Assets/cv/AhmedEmad_SOCAnalyst_Resume.pdf";
+  } else if (lang === "Arabic") {
+    file = "Assets/cv/سيره_ذاتيه_أحمد عماد.pdf";
+  }
+
+  const link = document.createElement("a");
+  link.href = encodeURI(file); // مهم عشان العربي والمسافات
+  link.download = file.split("/").pop() || "CV.pdf";
+  link.click();
+  setShowPopup(false);
+};
 
   // If you later want 4 distinct files, you can extend
   // the function above and add more `lang` cases, then
@@ -303,26 +309,27 @@ const Home = (): ReactElement => {
                 <button
                   ref={firstActionRef}
                   type="button"
-                  onClick={() => handleDownload("en")}
+                  onClick={() => handleDownload("CV")}
                   className={`${styles.btn} ${styles.popupBtn}`}
                 >
                   CV (PDF)
                 </button>
                 <button
                   type="button"
-                  onClick={() => handleDownload("ar")}
+                  onClick={() => handleDownload("Resume")}
                   className={`${styles.btn} ${styles.popupBtn}`}
                 >
                   Resume (PDF)
                 </button>
-                {/*
+                
                 <button
                   type="button"
-                  onClick={() => handleDownload("en")}
+                  onClick={() => handleDownload("Arabic")}
                   className={`${styles.btn} ${styles.popupBtn}`}
                 >
-                  CV (Alternate)
+                  Arabic
                 </button>
+                {/*
                 <button
                   type="button"
                   onClick={() => handleDownload("ar")}
