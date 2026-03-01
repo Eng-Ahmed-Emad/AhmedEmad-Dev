@@ -72,7 +72,7 @@ const SenseiHeader = (): ReactElement => {
                     const element = document.getElementById(section);
                     if (element) {
                         const rect = element.getBoundingClientRect();
-                        return rect.top <= 100 && rect.bottom >= 100;
+                        return rect.top <= 150 && rect.bottom >= 150;
                     }
                     return false;
                 });

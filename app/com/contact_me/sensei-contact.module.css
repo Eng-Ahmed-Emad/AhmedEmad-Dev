@@ -96,7 +96,7 @@
 }
 
 .link-me:active {
-    transform: scale(0.97) translateY(1px);
+    transform: scale(0.98) translateY(2px);
 }
 
 .social {
@@ -128,8 +128,8 @@
 }
 
 .social a:active {
-    transform: scale(0.9) translateY(1px);
-    box-shadow: 0 0 8px var(--main-color);
+    transform: scale(0.95) translateY(2px);
+    box-shadow: 0 0 10px var(--main-color);
 }
 
 /*.social a[aria-label="Go to Facebook"]:hover {*/

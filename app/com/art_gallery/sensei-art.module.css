@@ -15,10 +15,12 @@
 .art-gallery-section {
     min-height: 100vh;
     padding: 60px 0;
+    overflow: hidden;
 }
 
 .art-gallery-content {
     padding: 0 5rem 5%;
+    contain: layout style;
 }
 
 
@@ -94,6 +96,15 @@
     height: auto;
     object-fit: cover;
     display: block;
+    cursor: pointer;
+    transition: transform 0.4s ease, filter 0.4s ease;
+    filter: brightness(1) saturate(1);
+    will-change: transform, filter;
+}
+
+.Gallery .art_pic:hover .galleryImg {
+    transform: scale(1.05);
+    filter: brightness(1.1) saturate(1.15);
 }
 
 @media (max-width: 1199px) {

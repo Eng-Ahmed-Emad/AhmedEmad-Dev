@@ -179,6 +179,14 @@ function SenseiArt() {
                 open={open}
                 index={index}
                 close={() => setIndex(-1)}
+                on={{
+                    view: ({ index: currentIndex }) => setIndex(currentIndex),
+                }}
+                animation={{
+                    fade: 250,
+                    swipe: 220,
+                    navigation: 400,
+                }}
             />
         </section>
     );

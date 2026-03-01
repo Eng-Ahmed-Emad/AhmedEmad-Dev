@@ -60,8 +60,8 @@ const AnimatedBackground: React.FC = () => {
     // The functions are called in the useEffect hook
     // The functions are called in the createBubbles and createMeteors functions
     const gridSize = 50;
-    const numberOfBubbles = Math.floor(dimensions.width * dimensions.height / 80000);
-    const numberOfMeteors = Math.floor(dimensions.width / 250);
+    const numberOfBubbles = Math.max(2, Math.floor(dimensions.width * dimensions.height / 150000));
+    const numberOfMeteors = Math.max(2, Math.floor(dimensions.width / 350));
     const maxRadius = 120;
     const minRadius = 60;
 
@@ -112,8 +112,8 @@ const AnimatedBackground: React.FC = () => {
     }, [dimensions, createBubbles, createMeteors]);
 
     const drawGrid = useCallback((ctx: CanvasRenderingContext2D) => {
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
-        ctx.lineWidth = 0.4;
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.02)';
+        ctx.lineWidth = 0.3;
 
         for (let x = 0; x <= dimensions.width; x += gridSize) {
             ctx.beginPath();

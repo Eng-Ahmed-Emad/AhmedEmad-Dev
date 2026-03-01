@@ -23,6 +23,7 @@ html {
     font-size: 62.5%;
     overflow-x: hidden;
     scroll-behavior: smooth;
+    scroll-timeline: view();
 }
 
 html[lang="en"] body {
@@ -58,6 +59,8 @@ html::-webkit-scrollbar-track {
 
 html::-webkit-scrollbar-thumb {
     background: var(--main-color);
+    border-radius: 0.4rem;
+    border: 2px solid var(--bg-color);
 }
 
 
