@@ -70,7 +70,11 @@ const ImageItem = React.memo(({ image, index, setOpen }: ImageItemProps) => {
                 onClick={() => setOpen(index)}
                 loading="lazy"
                 decoding="async"
-                quality={75}
+                quality={50}            /* sacrifice a bit more quality for performance */
+                placeholder="blur"          /* show a small blur while the
+                                               thumbnail loads */
+                blurDataURL="/Assets/placeholder.png" /* you can generate
+                                                        a tiny base64 image */
                 className={styles.galleryImg}
                 style={{
                     width: '100%',
@@ -86,10 +90,15 @@ function SenseiArt() {
     const [index, setIndex] = useState(-1);
     const open = index >= 0;
 
+    // use the already‑generated webp thumbnails instead of loading
+    // full‑size PNGs for each item. the previous `image_display_thumb`
+    // directory didn’t exist, so every image fell back to the large
+    // source which is why the grid felt sluggish. the `web` folder in
+    // public/Assets contains much lighter previews.
     const images = useMemo(() => [
         ...Array.from({ length: 33 }, (_, k) => ({
-            src: `Assets/art-gallery/Images/image_display/${k + 1}.png`,
-            thumb: `Assets/art-gallery/Images/image_display_thumb/${k + 1}.webp`,
+            src: `/Assets/art-gallery/Images/image_display/${k + 1}.png`,
+            thumb: `/Assets/art-gallery/Images/web/${k + 1}.webp`,
         })),
     ], []);
 
