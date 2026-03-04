@@ -64,23 +64,14 @@ const ImageItem = React.memo(({ image, index, setOpen }: ImageItemProps) => {
             <Image
                 src={image.thumb}
                 alt={`Art piece ${index + 1}`}
-                width={600}
-                height={600}
+                width={400}
+                height={400}
                 sizes="(max-width: 767px) 100vw, (max-width: 991px) 50vw, (max-width: 1199px) 33vw, 25vw"
                 onClick={() => setOpen(index)}
                 loading="lazy"
                 decoding="async"
-                quality={50}            /* sacrifice a bit more quality for performance */
-                placeholder="blur"          /* show a small blur while the
-                                               thumbnail loads */
-                blurDataURL="/Assets/placeholder.png" /* you can generate
-                                                        a tiny base64 image */
+                quality={60}
                 className={styles.galleryImg}
-                style={{
-                    width: '100%',
-                    height: 'auto',
-                    objectFit: 'cover',
-                }}
             />
         </motion.div>
     );
@@ -90,15 +81,10 @@ function SenseiArt() {
     const [index, setIndex] = useState(-1);
     const open = index >= 0;
 
-    // use the already‑generated webp thumbnails instead of loading
-    // full‑size PNGs for each item. the previous `image_display_thumb`
-    // directory didn’t exist, so every image fell back to the large
-    // source which is why the grid felt sluggish. the `web` folder in
-    // public/Assets contains much lighter previews.
     const images = useMemo(() => [
         ...Array.from({ length: 33 }, (_, k) => ({
-            src: `/Assets/art-gallery/Images/image_display/${k + 1}.png`,
-            thumb: `/Assets/art-gallery/Images/web/${k + 1}.webp`,
+            src: `Assets/art-gallery/Images/image_display/${k + 1}.png`,
+            thumb: `Assets/art-gallery/Images/image_display_thumb/${k + 1}.webp`,
         })),
     ], []);
 
