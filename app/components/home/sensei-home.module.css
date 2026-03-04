@@ -346,3 +346,9 @@
     align-items: stretch;
   }
 }
+
+@media (max-width: 600px) {
+  .homeImg {
+    max-width: 250px;
+  }
+}
