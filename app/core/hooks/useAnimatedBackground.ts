@@ -47,11 +47,13 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
   const createBubbles = useCallback(() => {
     if (isMobile) return [];
 
+    // increase bubble count by reducing the divisor (was 80000) for a denser background
     const numberOfBubbles = Math.floor(
-      (dimensions.width * dimensions.height) / 80000,
+      (dimensions.width * dimensions.height) / 37037,
     );
     const bubbles = Array.from({ length: numberOfBubbles }, () => {
-      const radius = Math.random() * (maxRadius - minRadius) + minRadius;
+      // slightly smaller radii range to avoid overcrowding with huge bubbles
+      const radius = Math.random() * (maxRadius - minRadius) + minRadius * 0.8;
       return {
         x: Math.random() * dimensions.width,
         y: Math.random() * dimensions.height,

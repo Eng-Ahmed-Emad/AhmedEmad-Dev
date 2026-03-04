@@ -5,40 +5,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar, faExclamationCircle, faEye } from "@fortawesome/free-solid-svg-icons";
 import { cubicBezier, motion, Variants } from "framer-motion";
 import styles from "./sensei-services-projects.module.css";
-import { useGitHubRepos } from "@/app/core/hooks/useGitHubRepos";
+import { useGitHubRepos, type GitHubRepository } from "@/app/core/hooks/useGitHubRepos";
 import { getIconForLanguage, formatDate } from "@/app/core/utils/projectsUtils";
+import MotionInView from "@/app/core/components/MotionInView";
+import SectionHeader from "@/app/core/components/SectionHeader";
 
 //**
 // @Author Ahmed Emad Nasr
 // @Description React component that fetches and displays GitHub repositories with animation and styling using Framer Motion and FontAwesome.
 /**
-
-/**
- * Interface representing the GitHub repository data structure.
- */
-interface GitHubRepository {
-  id: number;
-  name: string;
-  description: string;
-  language: string;
-  html_url: string;
-  stargazers_count: number;
-  open_issues_count: number;
-  updated_at: string;
-  created_at: string;
-  owner: {
-    login: string;
-    avatar_url: string;
-  };
-  topics: string[];
-  default_branch: string;
-  watchers_count: number;
-  license: {
-    name: string;
-  } | null;
-}
-
-import MotionInView from "@/app/core/components/MotionInView";
 
 /**
  * Component representing a single GitHub repository item in the projects list.
@@ -115,8 +90,6 @@ const ProjectItem: React.FC<{ repo: GitHubRepository; index: number }> = React.m
   },
   (prevProps, nextProps) => prevProps.repo.id === nextProps.repo.id,
 );
-
-import SectionHeader from "@/app/core/components/SectionHeader";
 
 /**
  * Main component that fetches and displays GitHub repositories.

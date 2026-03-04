@@ -4,7 +4,7 @@ import { GITHUB_USERNAME } from "@/app/core/data";
 
 const API_URL = `https://api.github.com/users/${GITHUB_USERNAME}/repos`;
 
-interface GitHubRepository {
+export interface GitHubRepository {
   id: number;
   name: string;
   description: string;

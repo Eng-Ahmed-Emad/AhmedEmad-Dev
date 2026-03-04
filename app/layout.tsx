@@ -2,25 +2,21 @@ import React from "react";
 import "./globals.css";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 
-// Custom Metadata
-type CustomMetadata = Metadata & {
-  description: string;
-  keywords: string;
-  author: string;
-  charset: string;
-  viewport: string;
+// Viewport configuration
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 
 // Metadata configuration
-export const metadata: CustomMetadata = {
+export const metadata: Metadata = {
+  title: "Ahmed Emad",
   description:
     "Hello! I'm Ahmed Emad, Soc Analyst and Cybersecurity Engineer. I specialize in protecting digital assets and ensuring online safety. With a passion for cybersecurity, I analyze threats, implement security measures, and stay ahead of cybercriminals to safeguard data and systems.",
   keywords: "Ahmed Emad Nasr, Soc Analyst, Cybersecurity Engineer, Incident Response Analyst, Blue Team, Cybersecurity Instructor, Software Engineer, Portfolio",
-  author: "Ahmed Emad Nasr",
-  charset: "UTF-8",
-  viewport: "width=device-width, initial-scale=1.0",
+  authors: [{ name: "Ahmed Emad Nasr" }],
 };
 
 config.autoAddCss = false;
@@ -33,11 +29,6 @@ export default function RootLayout({
   return (
     <html lang="en" dir="ltr">
       <head>
-        <title>Ahmed Emad</title>
-        <meta name="description" content={metadata.description} />
-        <meta name="keywords" content={metadata.keywords} />
-        <meta name="author" content={metadata.author} />
-        <meta name="viewport" content={metadata.viewport} />
         <meta name="google-site-verification" content="VCIeVhcDb-vQGmE68weZARtruR_F2bUwv6hcjKYdwqo" />
         <link
           rel="stylesheet"

@@ -57,7 +57,7 @@ const SenseiHome = (): JSX.Element => {
 
     if (inView) {
 
-      controls.start("visible").then((r) => console.log(r));
+      controls.start("visible");
 
     }
 
