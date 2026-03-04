@@ -12,7 +12,7 @@ import {
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 //**
-// @Author Mostafa Sensei106
+// @Author Ahmed Emad Nasr
 // @Description A responsive header component with a menu that highlights the active section of the page.
 //**
 
@@ -23,7 +23,7 @@ import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { useHeader } from "@/app/core/hooks/useHeader";
 
 //**
-// @Author Mostafa Sensei106
+// @Author Ahmed Emad Nasr
 // @Description A responsive header component with a menu that highlights the active section of the page.
 //**
 

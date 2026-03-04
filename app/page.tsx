@@ -10,7 +10,7 @@ import ProjectsSection from "@/app/components/services/sensei-projects";
 
 // Main component
 // @returns {JSX.Element}
-// @author Mostafa Sensei106
+// @author Ahmed Emad Nasr
 // @description A functional component that renders the page of the website.
 
 function Main() {

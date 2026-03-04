@@ -6,7 +6,7 @@ import { useInView } from "react-intersection-observer";
 import styles from "./sensei-services-projects.module.css";
 
 //**
-// @Author Mostafa Sensei106
+// @Author Ahmed Emad Nasr
 // @Description React component that displays a list of service items using Framer Motion animations.
 // Each service item includes an icon, title, and description, all of which are animated based on the user's scroll position.
 //**
@@ -82,59 +82,59 @@ const ServiceItem: React.FC<{
 function SenseiServicesProjects(): JSX.Element {
   const services = [
     {
-      icon: "fa-brands fa-flutter",
-      title: "Mobile App Development",
+      icon: "fa-solid fa-shield-halved",
+      title: "Security Operations Center (SOC) Analysis",
       description:
-        "Develop user-friendly and efficient mobile apps. Utilize Flutter for cross-platform development, implement responsive UI designs, and integrate RESTful APIs.",
+        "Advanced alert triage, threat detection, and security event analysis. Utilize Wazuh, ELK Stack, and Splunk for real-time monitoring. Implement MITRE ATT&CK framework for threat classification and improve detection accuracy.",
     },
 
     {
-      icon: "fa-brands fa-android",
-      title: "Android App Development",
+      icon: "fa-solid fa-fire",
+      title: "Incident Response (IR) & Handling",
       description:
-        "Create secure and scalable Android apps. Use Kotlin for modern development, implement Material Design principles, and ensure compatibility across various Android versions.",
+        "End-to-end incident response lifecycle management. Perform threat hunting, containment, eradication, and recovery. Execute incident response playbooks using best practices and frameworks.",
     },
 
     {
-      icon: "fa-solid fa-server",
-      title: "Backend Development",
+      icon: "fa-solid fa-magnifying-glass",
+      title: "Threat Hunting & Detection Engineering",
       description:
-        "Build robust and scalable backend systems using Python. FastAPI , Django for rapid development, implement RESTful APIs with FastAPI , and utilize MongoDB,MySQL, and PostgreSQL for efficient data management.",
+        "Proactive threat hunting using YARA rules, Suricata IDS/IPS, and behavioral analysis. Create custom detection signatures, reduce false positive alerts, and strengthen security posture.",
     },
 
     {
-      icon: "fa-solid fa-microchip",
-      title: "AI Development",
+      icon: "fa-solid fa-database",
+      title: "SIEM & EDR Implementation",
       description:
-        "Develop intelligent systems with Python. Use TensorFlow and PyTorch for deep learning models, implement natural language processing with NLTK, and create computer vision solutions with OpenCV.",
+        "Deploy and configure enterprise-grade SIEM solutions including ELK Stack and Splunk. Implement EDR tools like Wazuh for endpoint detection and response capabilities.",
     },
 
     {
-      icon: "fa-solid fa-gamepad",
-      title: "Game Development",
+      icon: "fa-solid fa-file-lines",
+      title: "Log Analysis & Digital Forensics",
       description:
-        "Design immersive games with Unreal Engine. Utilize Blueprints visual scripting for rapid prototyping, implement realistic physics with PhysX, and create stunning visuals with the Unreal Engine renderer.",
+        "Comprehensive log analysis, IOC extraction, and digital forensics investigations. Perform memory forensics, malware behavioral analysis, and evidence collection for incident investigations.",
     },
 
     {
-      icon: "fa-solid fa-paintbrush",
-      title: "Digital Artist",
+      icon: "fa-solid fa-triangle-exclamation",
+      title: "Vulnerability Assessment & Penetration Testing",
       description:
-        "Create visually appealing digital artwork using Krita. Employ custom brushes for unique textures, utilize layer management for complex compositions, and implement digital painting techniques.",
+        "Identify security weaknesses through systematic vulnerability assessments. Conduct authorized penetration testing, create detailed reports, and recommend remediation strategies.",
     },
 
     {
-      icon: "fa-solid fa-palette",
-      title: "Graphic Designer",
+      icon: "fa-solid fa-person-chalkboard",
+      title: "Cybersecurity Training & Awareness",
       description:
-        "Craft professional graphics with Adobe Creative Suite. Design vector graphics in Illustrator, edit and manipulate images in Photoshop, and create layouts for print and digital media in InDesign.",
+        "Deliver comprehensive cybersecurity training programs to technical and non-technical audiences. Build security awareness, improve incident response skills, and foster security culture.",
     },
 
     {
-      icon: "fa-solid fa-images",
-      title: "Photography",
+      icon: "fa-solid fa-virus",
+      title: "Malware Analysis & Prevention",
       description:
-        "Capture visually striking and unique photographs. Specialize in portrait, landscape, and event photography. Edit images using Adobe Lightroom and Photoshop for professional results.",
+        "Perform static and dynamic malware analysis in isolated environments. Extract indicators of compromise (IOCs), develop detection signatures, and implement prevention strategies using YARA rules.",
     },
   ];
 

@@ -9,7 +9,7 @@ import { useGitHubRepos } from "@/app/core/hooks/useGitHubRepos";
 import { getIconForLanguage, formatDate } from "@/app/core/utils/projectsUtils";
 
 //**
-// @Author Mostafa Sensei106
+// @Author Ahmed Emad Nasr
 // @Description React component that fetches and displays GitHub repositories with animation and styling using Framer Motion and FontAwesome.
 /**
 

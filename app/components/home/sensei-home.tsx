@@ -5,14 +5,13 @@ import { useInView } from "react-intersection-observer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faLinkedin,
-  faGithub,
-  faTelegram,
+  faWhatsapp,
 } from "@fortawesome/free-brands-svg-icons";
 import { faUserSecret, faFilePdf } from "@fortawesome/free-solid-svg-icons";
 import styles from "./sensei-home.module.css";
 
 //**
-// @Author Mostafa Sensei106
+// @Author Ahmed Emad Nasr
 // @Description A React component that serves as the home section of the portfolio, featuring an image, social links, and animations.
 //**
 
@@ -22,7 +21,7 @@ import { useRandomMedia } from "@/app/core/hooks/useRandomMedia";
 
 //**
 
-// @Author Mostafa Sensei106
+// @Author Ahmed Emad Nasr
 
 // @Description A React component that serves as the home section of the portfolio, featuring an image, social links, and animations.
 
@@ -142,7 +141,7 @@ const SenseiHome = (): JSX.Element => {
 
             src="Assets/art-gallery/Images/logo/My_Logo.webp"
 
-            alt="Mostafa Sensei Image"
+            alt="Ahmed Emad Nasr Image"
 
             className={styles.image}
 
@@ -160,7 +159,7 @@ const SenseiHome = (): JSX.Element => {
 
           <h1>
 
-            Hi, it's <span className={styles.highlight}>Mostafa Mahmoud</span>
+            Hi, it's <span className={styles.highlight}>Ahmed Emad</span>
 
           </h1>
 
@@ -172,13 +171,7 @@ const SenseiHome = (): JSX.Element => {
 
           <p>
 
-            I'm a college student specializing in Python and Flutter, focusing
-
-            on stable and secure app development. I have experience in
-
-            Python-based computer vision projects and improving mobile
-
-            experiences through Flutter development.
+           CyberSecurity Trainee @ITI | Info Sec Trainee @DEPI | IR Analyst @AMIT.
 
           </p>
 
@@ -186,7 +179,7 @@ const SenseiHome = (): JSX.Element => {
 
             <a
 
-              href="https://www.linkedin.com/in/mostafa-mahmoud-963a78235/"
+              href="https://www.linkedin.com/in/ahmed-emad-nasr/"
 
               target="_blank"
 
@@ -200,32 +193,17 @@ const SenseiHome = (): JSX.Element => {
 
             </a>
 
-            <a
-
-              href="https://github.com/MostafaSensei106"
-
-              target="_blank"
-
-              rel="noopener noreferrer"
-
-              title="Github"
-
-            >
-
-              <FontAwesomeIcon icon={faGithub} />
-
-            </a>
+           <a
+  href="https://wa.me/201018166445"
+  target="_blank"
+  rel="noopener noreferrer"
+  title="WhatsApp"
+>
+  <FontAwesomeIcon icon={faWhatsapp} />
+</a>
 
 
-            <a
-              aria-label="Go to X"
-              href="https://x.com/MostafaSensei"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {/* Twitter icon */}
-              <i className="fa-brands fa-x-twitter"></i>
-            </a>
+
 
           </motion.div>
 
@@ -239,7 +217,7 @@ const SenseiHome = (): JSX.Element => {
 
             <a
 
-              href="Assets/cv/Mostafa-Mahmoud-CV.pdf"
+              href="Assets/cv/AhmedEmad_SOCAnalyst_CV.pdf"
 
               download
 

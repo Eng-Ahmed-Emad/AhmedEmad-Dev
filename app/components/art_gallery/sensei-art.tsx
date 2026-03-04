@@ -1,143 +1,192 @@
+/*
+*@Author: Ahmed_emad
+*@Description: A responsive experience component with a menu that highlights the active section of the page.
+ */
+
 "use client";
-import React, { useState, useEffect, useMemo, useCallback } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import Image from "next/image";
-import { motion, Variants, cubicBezier } from "framer-motion";
-import { useInView, } from "react-intersection-observer";
-import Lightbox from "yet-another-react-lightbox";
+import dynamic from "next/dynamic";
+import { Variants, motion, useReducedMotion } from "framer-motion";
+import { useInView } from "react-intersection-observer";
 import "yet-another-react-lightbox/styles.css";
 import styles from "./sensei-art.module.css";
-import { images } from "@/app/core/data";
 
-import MotionInView from "@/app/core/components/MotionInView";
+const Lightbox = dynamic(() => import("yet-another-react-lightbox"), {
+    ssr: false,
+});
 
-const ImageItem = ({ image, index, setOpen }) => {
-  const variants: Variants = {
-    hidden: {
-      opacity: 0,
-      y: 20,
-    },
-    visible: (i: number) => ({
-      opacity: 1,
-      y: 0,
-      transition: {
-        delay: i * 0.1,
-        duration: 0.5,
-        ease: [0.6, -0.05, 0.01, 0.99],
-      },
-    }),
-  };
+interface GalleryImage {
+    src: string;
+    thumb: string;
+}
 
-  return (
-    <MotionInView
-      className={styles.art_pic}
-      custom={index}
-      variants={variants}
-    >
-      <Image
-        src={image.thumb}
-        alt={`Art piece ${index + 1}`}
-        width={1200}
-        height={1200}
-        onClick={() => setOpen(index)}
-        layout="responsive"
-        objectFit="cover"
-        placeholder="blur"
-        blurDataURL={image.thumb}
-      />
-    </MotionInView>
-  );
-};
+interface ImageItemProps {
+    image: GalleryImage;
+    index: number;
+    setOpen: (index: number) => void;
+}
 
-import SectionHeader from "@/app/core/components/SectionHeader";
+const ImageItem = React.memo(({ image, index, setOpen }: ImageItemProps) => {
+    const [ref, inView] = useInView({
+        triggerOnce: true,
+        threshold: 0.1,
+    });
+
+    const prefersReducedMotion = useReducedMotion();
+
+    const variants: Variants = {
+        hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 32 },
+        visible: (i: number) => ({
+            opacity: 1,
+            y: 0,
+            transition: prefersReducedMotion
+                ? {
+                    duration: 0.35,
+                }
+                : {
+                    delay: i * 0.18,
+                    duration: 1,
+                    ease: [0.22, 1, 0.36, 1],
+                },
+        }),
+    };
+
+    return (
+        <motion.div
+            ref={ref}
+            className={styles.art_pic}
+            custom={index}
+            initial="hidden"
+            animate={inView ? "visible" : "hidden"}
+            variants={variants}
+        >
+            <Image
+                src={image.thumb}
+                alt={`Art piece ${index + 1}`}
+                width={600}
+                height={600}
+                sizes="(max-width: 767px) 100vw, (max-width: 991px) 50vw, (max-width: 1199px) 33vw, 25vw"
+                onClick={() => setOpen(index)}
+                loading="lazy"
+                decoding="async"
+                quality={75}
+                className={styles.galleryImg}
+                style={{
+                    width: '100%',
+                    height: 'auto',
+                    objectFit: 'cover',
+                }}
+            />
+        </motion.div>
+    );
+});
 
 function SenseiArt() {
-  const [index, setIndex] = useState(-1);
-  const open = index >= 0;
+    const [index, setIndex] = useState(-1);
+    const open = index >= 0;
 
-  const slides = useMemo(
-    () => images.map((image) => ({ src: image.src })),
-    [images],
-  );
+    const images = useMemo(() => [
+        ...Array.from({ length: 33 }, (_, k) => ({
+            src: `Assets/art-gallery/Images/image_display/${k + 1}.png`,
+            thumb: `Assets/art-gallery/Images/image_display_thumb/${k + 1}.webp`,
+        })),
+    ], []);
 
-  const [headerRef, headerInView] = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-  });
+    const slides = useMemo(() => images.map(image => ({ src: image.src })), [images]);
 
-  const handleKeyDown = useCallback(
-    (event: { key: string }) => {
-      if (event.key === "ArrowRight") {
-        setIndex((i) => (i + 1) % slides.length);
-      } else if (event.key === "ArrowLeft") {
-        setIndex((i) => (i - 1 + slides.length) % slides.length);
-      }
-    },
-    [slides.length],
-  );
+    const [headerRef, headerInView] = useInView({
+        triggerOnce: true,
+        threshold: 0.1,
+    });
 
-  useEffect(() => {
-    if (open) {
-      window.addEventListener("keydown", handleKeyDown);
-    }
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [open, handleKeyDown]);
+    const prefersReducedMotion = useReducedMotion();
 
-  const headerVariants: Variants = {
-    hidden: { opacity: 0, y: -50 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.8,
-        ease: cubicBezier(0.6, -0.05, 0.01, 0.99),
-      },
-    },
-  };
+    const handleKeyDown = useCallback((event: { key: string; }) => {
+        if (event.key === 'ArrowRight') {
+            setIndex((i) => (i + 1) % slides.length);
+        } else if (event.key === 'ArrowLeft') {
+            setIndex((i) => (i - 1 + slides.length) % slides.length);
+        }
+    }, [slides.length]);
 
-  const galleryVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.3,
-      },
-    },
-  };
+    useEffect(() => {
+        if (open) {
+            window.addEventListener('keydown', handleKeyDown);
+        }
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [open, handleKeyDown]);
 
-  return (
-    <section className={styles["art-gallery-section"]} id="ArtGallery">
-      <div className={styles.container}>
-        <motion.div
-          ref={headerRef}
-          className={styles["header-section"]}
-          initial="hidden"
-          animate={headerInView ? "visible" : "hidden"}
-          variants={headerVariants}
-        >
-          <SectionHeader japaneseText="画廊" englishText="Art Gallery" titleClassName={styles.title} />
-        </motion.div>
-        <motion.div
-          className={styles["art-gallery-content"]}
-          initial="hidden"
-          animate="visible"
-          variants={galleryVariants}
-        >
-          <div className={styles.Gallery}>
-            {images.map((image, i) => (
-              <ImageItem key={i} image={image} index={i} setOpen={setIndex} />
-            ))}
-          </div>
-        </motion.div>
-      </div>
-      <Lightbox
-        slides={slides}
-        open={open}
-        index={index}
-        close={() => setIndex(-1)}
-      />
-    </section>
-  );
+    const headerVariants: Variants = {
+        hidden: { opacity: 0, y: prefersReducedMotion ? 0 : -50 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: prefersReducedMotion
+                ? {
+                    duration: 0.35,
+                }
+                : {
+                    duration: 1.2,
+                    ease: [0.22, 1, 0.36, 1],
+                },
+        },
+    };
+
+    const galleryVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: prefersReducedMotion
+                ? { duration: 0.4 }
+                : {
+                    staggerChildren: 0.18,
+                    delayChildren: 0.4,
+                },
+        },
+    };
+
+    return (
+        <section className={styles["art-gallery-section"]} id="ArtGallery">
+            <div className={styles.container}>
+                <motion.div
+                    ref={headerRef}
+                    className={styles["header-section"]}
+                    initial="hidden"
+                    animate={headerInView ? "visible" : "hidden"}
+                    variants={headerVariants}
+                >
+                    <h2 className={styles.title}>
+                        <span lang="ja">画廊 •</span>
+                        <span lang="en"> Art Gallery</span>
+                    </h2>
+                </motion.div>
+                <motion.div
+                    className={styles["art-gallery-content"]}
+                    initial="hidden"
+                    animate="visible"
+                    variants={galleryVariants}
+                >
+                    <div className={styles.Gallery}>
+                        {images.map((image, i) => (
+                            <ImageItem
+                                key={i}
+                                image={image}
+                                index={i}
+                                setOpen={setIndex}
+                            />
+                        ))}
+                    </div>
+                </motion.div>
+            </div>
+            <Lightbox
+                slides={slides}
+                open={open}
+                index={index}
+                close={() => setIndex(-1)}
+            />
+        </section>
+    );
 }
 
 export default SenseiArt;

@@ -4,7 +4,7 @@
 
 /*
 * Art Gallery Section
-* @Author: Mostafa Sensei106
+ * @Author: Ahmed Emad Nasr
 * @Description: A responsive art gallery component with a menu that highlights the active section of the page.
  */
 
@@ -56,21 +56,6 @@
   margin: 0;
 }
 
-.art-gallery-section .art-gallery-content .Gallery img {
-  border-radius: 1rem;
-  width: 100%;
-  transition:
-    0.3s ease,
-    box-shadow 0.3s ease,
-    background-color 0.3s ease;
-}
-
-.art-gallery-section .art-gallery-content .Gallery img:hover {
-  border: 2px solid var(--main-color);
-  transform: translateY(-10px);
-  box-shadow: 0 0 20px var(--main-color);
-}
-
 .Gallery {
   column-count: 4;
   column-gap: 16px;
@@ -80,6 +65,23 @@
   display: inline-block;
   margin-bottom: 16px;
   width: 100%;
+  overflow: hidden;
+  border-radius: 1rem;
+}
+
+.galleryImg {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 1rem;
+  object-fit: cover;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
+}
+
+.art_pic:hover .galleryImg {
+  transform: translateY(-10px);
+  box-shadow: 0 0 20px var(--main-color);
+  border: 2px solid var(--main-color);
 }
 
 @media (max-width: 1199px) {
@@ -108,3 +110,4 @@
     padding: 0 1.5rem 5%;
   }
 }
+/* Image Wrapper and Overlay Styles */

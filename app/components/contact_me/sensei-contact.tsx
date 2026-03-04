@@ -2,7 +2,7 @@ import React, { JSX } from "react";
 import styles from "./sensei-contact.module.css";
 
 //**
-// @Author Mostafa Sensei106
+// @Author Ahmed Emad Nasr
 // @Description A responsive contact me component with a menu that highlights the active section of the page.
 //**
 
@@ -30,32 +30,16 @@ const SenseiContact = (): JSX.Element => {
                   className={styles["link-me"]}
                   target="_blank"
                   rel="noopener noreferrer"
-                  href="mailto:mostafa438886@fci.bu.edu.eg?subject=こんにちは、 MR: Mostafa Sensei"
+                  href="mailto:ahmed.em.nasr@gmail.com?subject=こんにちは、 MR: Ahmed Emad"
                 >
-                  Mostafa Sensei106.Mail
+                  Ahmed Emad.Mail
                 </a>
                 <div className={styles.social}>
                   <p className={styles.meon}>Me on Social Network</p>
-                  <a
-                    aria-label="Go to Facebook"
-                    href="https://www.facebook.com/MostafaSensei106"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <i className="fa-brands fa-square-facebook"></i>
-                  </a>
-                  <a
-                    aria-label="Go to Instagram"
-                    href="https://www.instagram.com/mostafa_sensei106/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {/* Instagram icon */}
-                    <i className="fa-brands fa-instagram"></i>
-                  </a>
+
                   <a
                     aria-label="Go to Linkedin"
-                    href="https://www.linkedin.com/in/mostafa-mahmoud-963a78235/?originalSubdomain=eg"
+                    href="https://www.linkedin.com/in/ahmed-emad-nasr/?originalSubdomain=eg"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -63,23 +47,23 @@ const SenseiContact = (): JSX.Element => {
                     <i className="fa-brands fa-linkedin"></i>
                   </a>
                   <a
-                    aria-label="Go to X"
-                    href="https://x.com/MostafaSensei"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {/* Twitter icon */}
-                    <i className="fa-brands fa-x-twitter"></i>
-                  </a>
-                  <a
-                    aria-label="Go to Telegram"
-                    href="https://t.me/Mostafa_Sensei106"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {/* Telegram icon */}
-                    <i className="fa-brands fa-telegram"></i>
-                  </a>
+  aria-label="Contact on WhatsApp"
+  href="https://wa.me/201018166445"
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  <i className="fa-brands fa-whatsapp"></i>
+</a>
+<a
+  aria-label="Go to Instagram"
+  href="https://www.instagram.com/ahmed.em.nasr/"
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  <i className="fa-brands fa-instagram"></i>
+</a>
+                  
+                 
                 </div>
               </div>
             </div>
@@ -89,11 +73,11 @@ const SenseiContact = (): JSX.Element => {
               <span>
                 <a
                   className={styles.Sensei_Name}
-                  href="https://github.com/MostafaSensei106"
+                  href="https://www.linkedin.com/in/ahmed-emad-nasr/"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Mostafa Mahmoud
+                  Ahmed Emad
                 </a>
               </span>{" "}
               ALL Copyright Reserved.

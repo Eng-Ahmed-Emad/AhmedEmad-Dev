@@ -16,9 +16,9 @@ type CustomMetadata = Metadata & {
 // Metadata configuration
 export const metadata: CustomMetadata = {
   description:
-    "Hello! I'm Mostafa Mahmoud, a Software Engineer specializing in Flutter, backend development, and AI.",
-  keywords: "Mostafa Mahmoud, Flutter, Backend Development, AI",
-  author: "Mostafa Sensei106",
+    "Hello! I'm Ahmed Emad, Soc Analyst and Cybersecurity Engineer. I specialize in protecting digital assets and ensuring online safety. With a passion for cybersecurity, I analyze threats, implement security measures, and stay ahead of cybercriminals to safeguard data and systems.",
+  keywords: "Ahmed Emad Nasr, Soc Analyst, Cybersecurity Engineer, Incident Response Analyst, Blue Team, Cybersecurity Instructor, Software Engineer, Portfolio",
+  author: "Ahmed Emad Nasr",
   charset: "UTF-8",
   viewport: "width=device-width, initial-scale=1.0",
 };
@@ -33,7 +33,7 @@ export default function RootLayout({
   return (
     <html lang="en" dir="ltr">
       <head>
-        <title>Mostafa Mahmoud</title>
+        <title>Ahmed Emad</title>
         <meta name="description" content={metadata.description} />
         <meta name="keywords" content={metadata.keywords} />
         <meta name="author" content={metadata.author} />
