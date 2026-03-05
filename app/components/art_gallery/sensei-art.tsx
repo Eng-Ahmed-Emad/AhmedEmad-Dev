@@ -70,7 +70,7 @@ const ImageItem = React.memo(({ image, index, setOpen }: ImageItemProps) => {
                 onClick={() => setOpen(index)}
                 loading="lazy"
                 decoding="async"
-                quality={60}
+                quality={55}
                 className={styles.galleryImg}
             />
         </motion.div>

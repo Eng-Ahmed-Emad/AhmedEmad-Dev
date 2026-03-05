@@ -20,7 +20,7 @@
   align-items: center;
   z-index: 100;
   transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-  border: 1px solid rgb(252, 240, 225);
+  border: 1px solid var(--main-color);
 }
 
 .logo {
