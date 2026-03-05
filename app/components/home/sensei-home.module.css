@@ -101,7 +101,7 @@
   }
   62%,
   80% {
-    content: "Cybersecurity Instructor.";
+    content: "security Instructor.";
   }
   81%,
   100% {
@@ -349,6 +349,8 @@
 
 @media (max-width: 600px) {
   .homeImg {
-    max-width: 250px;
+    max-width: 300px;
+    margin-bottom: 1rem;
+    margin-top: 5rem;
   }
 }
