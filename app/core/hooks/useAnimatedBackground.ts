@@ -47,13 +47,13 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
   const createBubbles = useCallback(() => {
     if (isMobile) return [];
 
-    // increase bubble count by reducing the divisor (was 80000) for a denser background
+    // reduce bubble count by 20% by increasing the divisor from 37037 to 46296
     const numberOfBubbles = Math.floor(
-      (dimensions.width * dimensions.height) / 37037,
+      (dimensions.width * dimensions.height) / 46296,
     );
     const bubbles = Array.from({ length: numberOfBubbles }, () => {
       // slightly smaller radii range to avoid overcrowding with huge bubbles
-      const radius = Math.random() * (maxRadius - minRadius) + minRadius * 0.8;
+      const radius = Math.random() * (maxRadius - minRadius) + minRadius;
       return {
         x: Math.random() * dimensions.width,
         y: Math.random() * dimensions.height,
@@ -148,7 +148,7 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
 
   const drawBubble = useCallback(
     (ctx: CanvasRenderingContext2D, bubble: Bubble) => {
-      ctx.filter = "blur(30px)";
+      ctx.filter = "blur(33px)";
       const gradient = ctx.createRadialGradient(
         bubble.x,
         bubble.y,

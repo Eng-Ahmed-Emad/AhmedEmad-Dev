@@ -13,7 +13,7 @@
   max-width: 100%;
   padding: 2rem 1.5%;
   background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(20px);
+  backdrop-filter: blur(22px);
   border-radius: 1rem;
   display: flex;
   justify-content: space-between;
@@ -35,8 +35,8 @@
 
 .logo:hover {
   text-shadow:
-    0 0 29px var(--main-color),
-    0 0 9px var(--main-color);
+    0 0 32px var(--main-color),
+    0 0 10px var(--main-color);
 }
 
 .navbar {
@@ -85,8 +85,8 @@
   background: var(--main-color);
   color: var(--bg-color);
   box-shadow:
-    0 0 19px var(--main-color),
-    0 0 9px var(--main-color);
+    0 0 21px var(--main-color),
+    0 0 10px var(--main-color);
 }
 
 .navbar a .icon {
@@ -172,7 +172,7 @@
     width: 100%;
     border: 2px solid var(--main-color);
     background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(22px);
     border-radius: 1rem;
     display: none;
     opacity: 0;
