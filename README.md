@@ -1,7 +1,9 @@
-<h1 align="center">Sensei-Dev Portfolio</h1>
-<p align="center"><img src="https://socialify.git.ci/MostafaSensei106/Sensei-Dev/image?custom_language=Next.js&font=KoHo&language=1&logo=https%3A%2F%2Favatars.githubusercontent.com%2Fu%2F138288138%3Fv%3D4&name=1&owner=1&pattern=Floating+Cogs&theme=Light" alt="project-image"></p>
+<h1 align="center">Ahmed Emad - Portfolio</h1>
 <p align="center">
-  <strong>Explore a world of innovative Software Development and creative problem-solving.</strong>
+  <strong>SOC Analyst & Cybersecurity Engineer | Incident Response Specialist</strong>
+</p>
+<p align="center">
+  Explore a world of cybersecurity expertise, incident response, and creative problem-solving.
 </p>
 <p align="center">
   <a href="#about">About</a> •
@@ -17,7 +19,7 @@
 
 ## About
 
-Welcome to Sensei-Dev, my personal portfolio showcasing a journey through the realms of Software Development and creative problem-solving. This portfolio is a testament to my skills, projects, and contributions to the open-source community. Dive in to experience an interactive and vibrant showcase of my work!
+Welcome to my personal portfolio showcasing my journey through **Cybersecurity**, **Incident Response**, and **Software Development**. As a **SOC Analyst** and **Cybersecurity Engineer**, this portfolio is a testament to my skills in threat analysis, security defense, and technical problem-solving. Dive in to experience an interactive showcase of my expertise, projects, and contributions to the cybersecurity community!
 
 ## Features
 
@@ -50,14 +52,12 @@ Welcome to Sensei-Dev, my personal portfolio showcasing a journey through the re
 
 6. **Specialized Sections**:
 
-   - Services: Clear and organized presentation of offered services
-   - Projects: Showcase of past and current projects
-   - Education and Languages: Information on educational experiences and language proficiencies
-   - Programming Languages: Display of utilized programming languages
-   - Image Gallery: Attractive presentation of images and graphics
-   - Design: Samples of design work
-   - Contact: Form for client communication
-   - Footer: Additional information and important links
+   - Services: Cybersecurity expertise and services offered
+   - Experience: Professional background and incident response experience
+   - Projects: Showcase of security tools and automation projects
+   - Education: Certifications and training in cybersecurity
+   - Art Gallery: Creative visual portfolio
+   - Contact: Direct communication channel
 
 7. **Customizable Interface**:
    - Easy-to-use customization options to tailor the viewing experience to your preferences
@@ -110,10 +110,12 @@ Get Sensei-Dev up and running on your local machine in just a few steps:
 
 This portfolio is built with cutting-edge technologies:
 
-- **Next.js 14**: For server-side rendering and optimal performance
+- **Next.js 16**: For modern web development with server-side rendering and optimal performance
 - **TypeScript**: Ensuring type safety and improved developer experience
-- **Python**: Powering scripts for image optimization and data processing
-- **CSS**: Styling with modern CSS techniques for a polished look
+- **Framer Motion**: Creating smooth, engaging animations and interactive UI
+- **React**: Building responsive and dynamic user interfaces
+- **CSS Modules**: Styling with modern CSS techniques for a polished look
+- **Cybersecurity Tools**: Showcase of expertise with SIEM, EDR, and threat detection platforms
 
 ## Contributing
 
@@ -134,5 +136,5 @@ This project is licensed under the GPL-3.0 license - see the [LICENSE](LICENSE) 
 ---
 
 <p align="center">
-  Made with ❤️ by <a href="https://github.com/MostafaSensei106">MostafaSensei106</a>
+  Made with ❤️ by <a href="https://github.com/Ahmed-Emad-Nasr">Ahmed Emad Nasr</a>
 </p>
