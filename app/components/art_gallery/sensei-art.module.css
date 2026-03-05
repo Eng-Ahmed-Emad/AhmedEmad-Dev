@@ -74,7 +74,7 @@
 .art-gallery-section .art-gallery-content .Gallery img:hover {
     border: 2px solid var(--main-color);
     transform: translateY(-10px);
-    box-shadow: 0 0 20px var(--main-color);
+    box-shadow: 0 0 23px var(--main-color);
 }
 
 .Gallery {

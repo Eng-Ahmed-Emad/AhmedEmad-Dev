@@ -91,7 +91,7 @@
   overflow: hidden;
   padding: 20px;
   text-align: left;
-  box-shadow: 0 0 10px var(--main-color);
+  box-shadow: 0 0 11px var(--main-color);
   transition: 0.3s ease;
   border: 2px solid var(--main-color);
 }
@@ -99,7 +99,7 @@
 .single-service:hover,
 .single-project:hover {
   background: transparent;
-  box-shadow: 0 0 25px var(--main-color);
+  box-shadow: 0 0 29px var(--main-color);
 }
 
 .single-service:hover .part-1,
