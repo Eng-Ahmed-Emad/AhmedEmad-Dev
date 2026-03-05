@@ -35,8 +35,8 @@
 
 .logo:hover {
   text-shadow:
-    0 0 30px var(--main-color),
-    0 0 10px var(--main-color);
+    0 0 29px var(--main-color),
+    0 0 9px var(--main-color);
 }
 
 .navbar {
@@ -85,8 +85,8 @@
   background: var(--main-color);
   color: var(--bg-color);
   box-shadow:
-    0 0 20px var(--main-color),
-    0 0 10px var(--main-color);
+    0 0 19px var(--main-color),
+    0 0 9px var(--main-color);
 }
 
 .navbar a .icon {

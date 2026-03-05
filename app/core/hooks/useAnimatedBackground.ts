@@ -130,6 +130,8 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
     (ctx: CanvasRenderingContext2D) => {
       ctx.strokeStyle = "rgba(255, 255, 255, 0.05)";
       ctx.lineWidth = 0.4;
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
       ctx.beginPath();
       for (let x = 0; x <= dimensions.width; x += gridSize) {
         ctx.moveTo(x, 0);
@@ -168,6 +170,8 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
 
   const drawMeteor = useCallback(
     (ctx: CanvasRenderingContext2D, meteor: Meteor) => {
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
       meteor.trail.forEach((point, index) => {
         const prevPoint = meteor.trail[index - 1] || {
           x: meteor.x,
