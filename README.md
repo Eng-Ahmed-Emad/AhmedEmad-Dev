@@ -72,7 +72,7 @@ Welcome to my personal portfolio showcasing my journey through **Cybersecurity**
 ## Demo
 
 Experience the Sensei-Dev portfolio live:
-🚀 [Sensei-Dev Live Demo](https://mostafasensei106.github.io/Sensei-Dev)
+🚀 [Sensei-Dev Live Demo](https://ahmed-emad-nasr.github.io/Portfolio/)
 
 ## Installation
 
@@ -81,11 +81,11 @@ Get Sensei-Dev up and running on your local machine in just a few steps:
 1. Ensure you have [Node.js](https://nodejs.org/en/download/package-manager) installed on your system.
 2. Clone the repository:
    ```
-   git clone https://github.com/MostafaSensei106/Sensei-Dev.git
+   git clone https://github.com/Ahmed-Emad-Nasr/Portfolio.git
    ```
 3. Navigate to the project directory and install dependencies:
    ```
-   cd Sensei-Dev
+   cd portfolio
    npm install
    ```
 4. Install Python requirements:
