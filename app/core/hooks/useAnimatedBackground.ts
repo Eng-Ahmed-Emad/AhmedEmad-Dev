@@ -49,7 +49,7 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
 
     // reduce bubble count by 20% by increasing the divisor from 37037 to 46296
     const numberOfBubbles = Math.floor(
-      (dimensions.width * dimensions.height) / 80000,
+      (dimensions.width * dimensions.height) / 78000,
     );
     const bubbles = Array.from({ length: numberOfBubbles }, () => {
       // slightly smaller radii range to avoid overcrowding with huge bubbles
@@ -69,8 +69,8 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
   }, [dimensions, isMobile]);
 
   const createMeteors = useCallback(() => {
-    const reductionFactor = isMobile ? 0.7 : 0.8;
-    const numberOfMeteors = Math.floor((dimensions.width / 250) * reductionFactor);
+    //const reductionFactor = isMobile ? 0.7 : 0.8;
+    const numberOfMeteors = Math.floor((dimensions.width / 250) );//* reductionFactor);
     const meteors = Array.from({ length: numberOfMeteors }, () => ({
       x: Math.floor(Math.random() * (dimensions.width / gridSize)) * gridSize,
       y: Math.floor(Math.random() * (dimensions.height / gridSize)) * gridSize,

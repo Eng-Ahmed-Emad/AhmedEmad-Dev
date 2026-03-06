@@ -47,23 +47,48 @@ const SenseiContact = (): JSX.Element => {
                     <i className="fa-brands fa-linkedin"></i>
                   </a>
                   <a
-  aria-label="Contact on WhatsApp"
-  href="https://wa.me/201018166445"
-  target="_blank"
-  rel="noopener noreferrer"
->
-  <i className="fa-brands fa-whatsapp"></i>
-</a>
-<a
-  aria-label="Go to Instagram"
-  href="https://www.instagram.com/ahmed.em.nasr/"
-  target="_blank"
-  rel="noopener noreferrer"
->
-  <i className="fa-brands fa-instagram"></i>
-</a>
-                  
-                 
+                    aria-label="Contact on WhatsApp"
+                    href="https://wa.me/201018166445"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <i className="fa-brands fa-whatsapp"></i>
+                  </a>
+                  <a
+                    aria-label="Go to Instagram"
+                    href="https://www.instagram.com/ahmed.em.nasr/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <i className="fa-brands fa-instagram"></i>
+                  </a>
+                  <a
+                    aria-label="Go to Facebook"
+                    href="https://www.facebook.com/ahmed.em.nasr"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <i className="fa-brands fa-square-facebook"></i>
+                  </a>
+                   <a
+                    aria-label="Go to Telegram"
+                    href="https://t.me/Ox3omda"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {/* Telegram icon */}
+                    <i className="fa-brands fa-telegram"></i>
+                  </a>
+                   <a
+                    aria-label="Go to Sarhne"
+                    href="https://17833478947642.sarhne.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {/* Sarhne icon */}
+                    <i className="fa-solid fa-comment"></i>
+                  </a>
+                
                 </div>
               </div>
             </div>
