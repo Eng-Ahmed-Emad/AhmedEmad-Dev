@@ -1,7 +1,7 @@
 "use client";
 
 export const useRandomMedia = () => {
-  const videoUrl: string = "https://youtu.be/A0xHuA4jmgs?si=6UbIqEzhXjP8CaLQ";
+  const videoUrl: string = "https://youtu.be/9gK7uyTGxz8?si=N6eSrfE-wHK6UsI6&t=212";
 
   const handleImageClick = (): void => {
     window.open(videoUrl, "_blank");
