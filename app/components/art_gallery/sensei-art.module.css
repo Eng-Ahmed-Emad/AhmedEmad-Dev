@@ -78,13 +78,13 @@
 }
 
 .Gallery {
-    column-count: 4;
-    column-gap: 16px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
 }
 
 .Gallery .art_pic {
-    display: inline-block;
-    margin-bottom: 16px;
+    display: block;
     width: 100%;
 }
 
@@ -97,7 +97,7 @@
 
 @media (max-width: 1199px) {
     .Gallery {
-        column-count: 3;
+        grid-template-columns: repeat(3, 1fr);
     }
 
     .art-gallery-content {
@@ -107,7 +107,7 @@
 
 @media (max-width: 991px) {
     .Gallery {
-        column-count: 2;
+        grid-template-columns: repeat(2, 1fr);
     }
 
     .art-gallery-content {
@@ -117,7 +117,7 @@
 
 @media (max-width: 767px) {
     .Gallery {
-        column-count: 1;
+        grid-template-columns: 1fr;
     }
 
     .art-gallery-content {
