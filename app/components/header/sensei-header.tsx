@@ -37,7 +37,7 @@ const SenseiHeader = (): JSX.Element => {
   return (
     <header className={styles.header}>
       <a href="#" className={styles.logo}>
-        <span lang="ja"> モスタファ</span>
+        <span lang="ja"> エンジニア・アハメド</span>
       </a>
       <div
         className={`${styles.MenuIcon} ${isMenuOpen ? styles.active : ""}`}
