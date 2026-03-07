@@ -171,10 +171,7 @@ const SenseiHome = (): JSX.Element => {
 
           <p>
 
-           Cybersecurity professional specializing in Security Operations and Incident Response.
-           Computer Science student at the Faculty of Computer Science and Artificial Intelligence, Benha University.
-           Focused on threat analysis, alert triage, and incident investigation through hands-on SOC projects and training.
-           Passionate about defending systems and continuously developing Blue Team skills.
+           Cybersecurity professional specializing in Security Operations and Incident Response. Computer Science student at the Faculty of Computer Science and Artificial Intelligence, Benha University.          Focused on threat analysis, alert triage, and incident investigation through hands-on SOC projects and training. Passionate about defending systems and continuously developing Blue Team skills.
 
           </p>
 

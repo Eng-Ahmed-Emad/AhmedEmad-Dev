@@ -154,11 +154,17 @@
 @media (max-width: 994px) {
   .header {
     width: calc(100% - 2rem);
-    padding: 2rem 2%;
+    padding: 1rem 2%;
+  }
+
+  .logo {
+    font-size: 2rem;
   }
 
   .MenuIcon {
     display: block;
+    width: 25px;
+    height: 18px;
   }
 
   .navbar {
