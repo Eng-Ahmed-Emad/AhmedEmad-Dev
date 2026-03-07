@@ -1,6 +1,6 @@
 /*
  * sensei-header.module.css
- *@Author Ahmed Emad Nasr
+ *@Author Mostafa Sensei106
  *@Description A modern silver-themed floating navbar with enhanced animations
  */
 
@@ -13,14 +13,14 @@
   max-width: 100%;
   padding: 2rem 1.5%;
   background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(22px);
+  backdrop-filter: blur(20px);
   border-radius: 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   z-index: 100;
   transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-  border: 1px solid var(--main-color);
+  border: 1px solid rgb(252, 240, 225);
 }
 
 .logo {
@@ -35,7 +35,7 @@
 
 .logo:hover {
   text-shadow:
-    0 0 32px var(--main-color),
+    0 0 30px var(--main-color),
     0 0 10px var(--main-color);
 }
 
@@ -85,7 +85,7 @@
   background: var(--main-color);
   color: var(--bg-color);
   box-shadow:
-    0 0 21px var(--main-color),
+    0 0 20px var(--main-color),
     0 0 10px var(--main-color);
 }
 
@@ -154,11 +154,7 @@
 @media (max-width: 994px) {
   .header {
     width: calc(100% - 2rem);
-    padding: 0.8rem 2%;
-  }
-
-  .logo {
-    font-size: 1.8rem;
+    padding: 2rem 2%;
   }
 
   .MenuIcon {
@@ -172,7 +168,7 @@
     width: 100%;
     border: 2px solid var(--main-color);
     background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(22px);
+    backdrop-filter: blur(20px);
     border-radius: 1rem;
     display: none;
     opacity: 0;
@@ -193,10 +189,10 @@
   .navbar a {
     display: flex;
     align-items: center;
-    font-size: 1.5rem;
-    margin: 1.5rem;
+    font-size: 2.1rem;
+    margin: 2.5rem;
     opacity: 0;
-    padding: 0.8rem;
+    padding: 1rem;
     transform: translateX(-20px);
     transition:
       opacity 0.3s ease,

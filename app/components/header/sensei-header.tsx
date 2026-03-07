@@ -1,8 +1,36 @@
 "use client";
-import React, { JSX } from "react";
+import React, { useState, useEffect, JSX } from "react";
 import styles from "./sensei-header.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faHome,
+  faUserSecret,
+  faBook,
+  faFolder,
+  faPalette,
+} from "@fortawesome/free-solid-svg-icons";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
+
+//**
+// @Author Mostafa Sensei106
+// @Description A responsive header component with a menu that highlights the active section of the page.
+//**
+
+/**
+ * The main header component with a responsive menu.
+ * @returns The JSX Element for the header.
+ */
 import { useHeader } from "@/app/core/hooks/useHeader";
+
+//**
+// @Author Mostafa Sensei106
+// @Description A responsive header component with a menu that highlights the active section of the page.
+//**
+
+/**
+ * The main header component with a responsive menu.
+ * @returns The JSX Element for the header.
+ */
 const SenseiHeader = (): JSX.Element => {
   const { isMenuOpen, activeSection, toggleMenu, sectionIcons, setActiveSection, setIsMenuOpen } = useHeader();
 

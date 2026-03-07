@@ -47,12 +47,10 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
   const createBubbles = useCallback(() => {
     if (isMobile) return [];
 
-    // reduce bubble count by 20% by increasing the divisor from 37037 to 46296
     const numberOfBubbles = Math.floor(
       (dimensions.width * dimensions.height) / 80000,
     );
     const bubbles = Array.from({ length: numberOfBubbles }, () => {
-      // slightly smaller radii range to avoid overcrowding with huge bubbles
       const radius = Math.random() * (maxRadius - minRadius) + minRadius;
       return {
         x: Math.random() * dimensions.width,
@@ -69,8 +67,7 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
   }, [dimensions, isMobile]);
 
   const createMeteors = useCallback(() => {
-    const reductionFactor = isMobile ? 0.8 : 0.9;
-    const numberOfMeteors = Math.floor((dimensions.width / 250) * reductionFactor);
+    const numberOfMeteors = Math.floor(dimensions.width / 250);
     const meteors = Array.from({ length: numberOfMeteors }, () => ({
       x: Math.floor(Math.random() * (dimensions.width / gridSize)) * gridSize,
       y: Math.floor(Math.random() * (dimensions.height / gridSize)) * gridSize,
@@ -82,7 +79,7 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
 
     meteorsRef.current = meteors;
     return meteors;
-  }, [dimensions, isMobile]);
+  }, [dimensions]);
 
   useEffect(() => {
     const updateDimensions = () => {
@@ -130,8 +127,6 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
     (ctx: CanvasRenderingContext2D) => {
       ctx.strokeStyle = "rgba(255, 255, 255, 0.05)";
       ctx.lineWidth = 0.4;
-      ctx.lineCap = "round";
-      ctx.lineJoin = "round";
       ctx.beginPath();
       for (let x = 0; x <= dimensions.width; x += gridSize) {
         ctx.moveTo(x, 0);
@@ -148,7 +143,7 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
 
   const drawBubble = useCallback(
     (ctx: CanvasRenderingContext2D, bubble: Bubble) => {
-      ctx.filter = "blur(33px)";
+      ctx.filter = "blur(30px)";
       const gradient = ctx.createRadialGradient(
         bubble.x,
         bubble.y,
@@ -170,8 +165,6 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
 
   const drawMeteor = useCallback(
     (ctx: CanvasRenderingContext2D, meteor: Meteor) => {
-      ctx.lineCap = "round";
-      ctx.lineJoin = "round";
       meteor.trail.forEach((point, index) => {
         const prevPoint = meteor.trail[index - 1] || {
           x: meteor.x,
