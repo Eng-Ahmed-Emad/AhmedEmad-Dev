@@ -158,9 +158,7 @@ const SenseiHome = (): JSX.Element => {
         <motion.div className={styles.homeContent} variants={itemVariants}>
 
           <h1>
-
-            Hi, it's <span className={styles.highlight}>Ahmed Emad</span>
-
+            <span className={styles.highlight}>Ahmed Emad</span>.
           </h1>
 
           <h3 className={styles.typingText}>
@@ -171,7 +169,7 @@ const SenseiHome = (): JSX.Element => {
 
           <p>
 
-           Cybersecurity professional specializing in Security Operations and Incident Response. Computer Science student at the Faculty of Computer Science and Artificial Intelligence, Benha University.          Focused on threat analysis, alert triage, and incident investigation through hands-on SOC projects and training. Passionate about defending systems and continuously developing Blue Team skills.
+           Computer Science student at Benha University specializing in Security Operations and Incident Response. Focused on threat hunting, alert triage, and defending systems through hands-on SOC projects. Passionate about continuously developing Blue Team skills and securing digital environments.
 
           </p>
 
