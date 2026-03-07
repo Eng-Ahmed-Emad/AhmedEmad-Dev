@@ -79,15 +79,6 @@ const SenseiContact = (): JSX.Element => {
                     {/* Telegram icon */}
                     <i className="fa-brands fa-telegram"></i>
                   </a>
-                   <a
-                    aria-label="Go to Sarhne"
-                    href="https://17833478947642.sarhne.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {/* Sarhne icon */}
-                    <i className="fa-solid fa-comment"></i>
-                  </a>
                 
                 </div>
               </div>
