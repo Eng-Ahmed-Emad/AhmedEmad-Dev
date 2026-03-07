@@ -24,6 +24,7 @@ export const useHeader = () => {
       "Experience",
       "Projects",
       "ArtGallery",
+      "Skills",
     ];
     const current: string | undefined = sections.find((section) => {
       const element = document.getElementById(section);
@@ -70,6 +71,7 @@ export const useHeader = () => {
     Experience: faBook,
     Projects: faFolder,
     ArtGallery: faPalette,
+    Skills: faUserSecret,
   };
 
   return { isMenuOpen, activeSection, toggleMenu, sectionIcons, setActiveSection, setIsMenuOpen };

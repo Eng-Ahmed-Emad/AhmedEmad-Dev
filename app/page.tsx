@@ -3,6 +3,7 @@ import HomeSection from "@/app/components/home/sensei-home";
 import ServicesSection from "@/app/components/services/sensei-services-projects";
 import ExperienceSection from "@/app/components/experience/experience-section";
 import ArtGallerySection from "@/app/components/art_gallery/sensei-art";
+import SkillsSection from "@/app/components/skills/sensei-skills";
 import ContactMeSection from "@/app/components/contact_me/sensei-contact";
 import LoadingScreen from "@/app/components/loader/sensei_loader";
 import AnimatedBackground from "@/app/components/animated_background/animated_background";
@@ -24,6 +25,7 @@ function Main() {
       <ExperienceSection />
       <ProjectsSection />
       <ArtGallerySection />
+      <SkillsSection />
       <ContactMeSection />
     </main>
   );

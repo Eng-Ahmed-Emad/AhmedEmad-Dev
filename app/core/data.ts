@@ -76,3 +76,64 @@ export const knowledgeEducationItems = [
     showDate: false,
   },
 ];
+
+export const technicalSkills = [
+  {
+    category: "Tools & Platforms",
+    icon: "fa-solid fa-wrench",
+    skills: "Wazuh, ELK Stack, Splunk, Sysmon, Suricata, pfSense, VirusTotal, YARA, Wireshark",
+  },
+  {
+    category: "Security Operations",
+    icon: "fa-solid fa-shield-halved",
+    skills: "Incident Response, Threat Hunting, Alert Triage, Detection Engineering, IOC Analysis, Playbook Execution",
+  },
+  {
+    category: "Frameworks & Methodologies",
+    icon: "fa-solid fa-sitemap",
+    skills: "MITRE ATT&CK, Incident Response Lifecycle, Security Best Practices",
+  },
+  {
+    category: "Networking",
+    icon: "fa-solid fa-network-wired",
+    skills: "TCP/IP, Network Traffic Analysis (NTA), IDS/IPS",
+  },
+  {
+    category: "Malware Analysis",
+    icon: "fa-solid fa-virus",
+    skills: "Static Analysis, Dynamic Analysis, Sandbox Execution, YARA Rules, IOC Extraction",
+  },
+  {
+    category: "Log Analysis & SIEM",
+    icon: "fa-solid fa-chart-line",
+    skills: "Log Parsing, Event Correlation, Alert Tuning, Compliance Reporting, Data Visualization",
+  },
+];
+
+export const nonTechnicalSkills = [
+  {
+    category: "Communication",
+    icon: "fa-solid fa-comments",
+    skills: "Technical Writing, Presentation Skills, Cross-functional Collaboration, Stakeholder Management",
+  },
+  {
+    category: "Leadership & Teamwork",
+    icon: "fa-solid fa-people-group",
+    skills: "Team Collaboration, Mentorship, Problem-solving, Analytical Thinking",
+  },
+  {
+    category: "Professional Development",
+    icon: "fa-solid fa-graduation-cap",
+    skills: "Continuous Learning, Adaptability, Time Management, Technical Training",
+  },
+  {
+    category: "Documentation & Reporting",
+    icon: "fa-solid fa-file-lines",
+    skills: "Incident Reports, Technical Documentation, Process Documentation, Executive Summaries",
+  },
+  {
+    category: "Crisis Management",
+    icon: "fa-solid fa-fire-extinguisher",
+    skills: "Quick Decision Making, Stress Management, Priority Setting, Emergency Response",
+  },
+];
