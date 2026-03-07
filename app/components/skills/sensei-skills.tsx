@@ -79,8 +79,8 @@ function SkillsSection(): JSX.Element {
           transition={{ duration: 0.6 }}
         >
           <SectionHeader
-            japaneseText="技術"
-            englishText="Technical Skills"
+            japaneseText="技能 スキル"
+            englishText="Skills"
             titleClassName={styles.title}
           />
         </motion.div>
@@ -97,18 +97,7 @@ function SkillsSection(): JSX.Element {
           ))}
         </div>
 
-        <motion.div
-          className={styles["header-section"]}
-          initial={{ opacity: 0, y: -50 }}
-          animate={headerInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
-          <SectionHeader
-            japaneseText="ビジネス"
-            englishText="Non-Technical Skills"
-            titleClassName={styles.title}
-          />
-        </motion.div>
+
 
         <div className={styles["skills-grid"]}>
           {nonTechnicalSkills.map((skill, index) => (
