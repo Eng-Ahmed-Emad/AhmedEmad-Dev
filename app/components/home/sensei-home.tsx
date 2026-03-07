@@ -1,5 +1,6 @@
 "use client";
 import { JSX, useEffect } from "react";
+import Image from "next/image";
 import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -137,19 +138,27 @@ const SenseiHome = (): JSX.Element => {
 
         <motion.div className={styles.homeImg} variants={itemVariants}>
 
-          <img
+          <Image
 
-            src="Assets/art-gallery/Images/logo/My_Logo.webp"
+            src="/Assets/art-gallery/Images/logo/My_Logo.webp"
 
             alt="Ahmed Emad Nasr Image"
 
             className={styles.image}
 
-            width={400}
+            width={800}
 
-            height={400}
+            height={915}
+
+            sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 378px"
 
             onClick={handleImageClick}
+
+            priority={false}
+
+            loading="lazy"
+
+            quality={75}
 
           />
 
