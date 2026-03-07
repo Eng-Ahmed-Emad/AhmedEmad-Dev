@@ -29,6 +29,8 @@ import { useRandomMedia } from "@/app/core/hooks/useRandomMedia";
 
 
 
+const IMAGE_QUALITY = 90; // قيمة جودة الصورة - يمكن التحكم فيها من هنا
+
 const SenseiHome = (): JSX.Element => {
 
   const { handleImageClick } = useRandomMedia();
@@ -151,6 +153,7 @@ const SenseiHome = (): JSX.Element => {
 
             onClick={handleImageClick}
 
+            quality={IMAGE_QUALITY}
           />
 
         </motion.div>
