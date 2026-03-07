@@ -145,9 +145,9 @@ const SenseiHome = (): JSX.Element => {
 
             className={styles.image}
 
-            width={350}
+            width={400}
 
-            height={350}
+            height={400}
 
             onClick={handleImageClick}
 
