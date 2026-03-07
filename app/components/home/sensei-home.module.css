@@ -93,19 +93,19 @@
   }
   21%,
   40% {
-    content: "IR Analyst.";
+    content: "Cybersecurity Analyst.";
   }
   41%,
   61% {
-    content: "Cybersecurity Engineer.";
+    content: "Incident Responder.";
   }
   62%,
   80% {
-    content: "security Instructor.";
+    content: "Cybersecurity Engineer.";
   }
   81%,
   100% {
-    content: "Software Engineer.";
+    content: "Cybersecurity.Instructor.";
   }
 }
 
