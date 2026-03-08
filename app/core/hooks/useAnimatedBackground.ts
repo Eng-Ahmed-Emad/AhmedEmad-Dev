@@ -131,7 +131,7 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
   }, [dimensions, isMobile]);
 
   const createMeteors = useCallback(() => {
-    const multiplier = isMobile ? 0.7 : 1; 
+    const multiplier = isMobile ? 0.7 : 0.9; 
     const numberOfMeteors = Math.floor((dimensions.width / 250) * multiplier);
     meteorsRef.current = Array.from({ length: numberOfMeteors }, () => ({
       x: Math.floor(Math.random() * (dimensions.width / gridSize)) * gridSize,
