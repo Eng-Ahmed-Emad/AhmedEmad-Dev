@@ -125,8 +125,10 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
     });
   }, [dimensions, isMobile]);
 
-  const createMeteors = useCallback(() => {
-    const numberOfMeteors = Math.floor((dimensions.width / 250) * 0.9);
+ const createMeteors = useCallback(() => {
+  // لو موبايل، اضرب في 0.6 (قلل 40%)، لو ديسكتوب اضرب في 1 (سيبه كامل)
+  const multiplier = isMobile ? 0.7 : 1; 
+  const numberOfMeteors = Math.floor((dimensions.width / 250) * multiplier);
     meteorsRef.current = Array.from({ length: numberOfMeteors }, () => ({
       x: Math.floor(Math.random() * (dimensions.width / gridSize)) * gridSize,
       y: Math.floor(Math.random() * (dimensions.height / gridSize)) * gridSize,

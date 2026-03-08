@@ -12,7 +12,7 @@ export const viewport: Viewport = {
 
 // Metadata configuration
 export const metadata: Metadata = {
-  title: "Ahmed Emad",
+  title: "Ahmed Emad Nasr",
   description:
     "Hello! I'm Ahmed Emad, Soc Analyst and Cybersecurity Engineer. I specialize in protecting digital assets and ensuring online safety. With a passion for cybersecurity, I analyze threats, implement security measures, and stay ahead of cybercriminals to safeguard data and systems.",
   keywords: "Ahmed Emad Nasr, Soc Analyst, Cybersecurity Engineer, Incident Response Analyst, Blue Team, Cybersecurity Instructor, Software Engineer, Portfolio",
