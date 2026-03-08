@@ -203,26 +203,41 @@ useEffect(() => {
     );
   }, []);
 
-  const drawMeteor = useCallback((ctx: CanvasRenderingContext2D, meteor: Meteor) => {
-    meteor.trail.forEach((point, index) => {
-      const prevPoint = meteor.trail[index - 1] || { x: meteor.x, y: meteor.y };
-      ctx.beginPath();
-      ctx.moveTo(Math.floor(point.x), Math.floor(point.y));
-      ctx.lineTo(Math.floor(prevPoint.x), Math.floor(prevPoint.y));
-      ctx.strokeStyle = `rgba(254, 242, 226, ${point.alpha})`;
-      ctx.lineWidth = meteor.size * (1 - index / meteor.trail.length);
-      ctx.stroke();
-    });
+const drawMeteor = useCallback((ctx: CanvasRenderingContext2D, meteor: Meteor) => {
+  if (meteor.trail.length < 2) return;
 
-    ctx.beginPath();
-    ctx.moveTo(Math.floor(meteor.x), Math.floor(meteor.y));
-    const endX = meteor.direction === "horizontal" ? meteor.x - meteor.size * 5 : meteor.x;
-    const endY = meteor.direction === "vertical" ? meteor.y - meteor.size * 5 : meteor.y;
-    ctx.lineTo(Math.floor(endX), Math.floor(endY));
-    ctx.strokeStyle = "rgba(252, 240, 225, 0.7)";
-    ctx.lineWidth = meteor.size;
-    ctx.stroke();
-  }, []);
+  ctx.beginPath();
+  // ابدأ من أول نقطة في الذيل
+  ctx.moveTo(Math.floor(meteor.trail[0].x), Math.floor(meteor.trail[0].y));
+
+  // ارسم خطوط متصلة لكل النقاط الباقية في المسار
+  for (let i = 1; i < meteor.trail.length; i++) {
+    ctx.lineTo(Math.floor(meteor.trail[i].x), Math.floor(meteor.trail[i].y));
+  }
+
+  // بدل ما نغير الشفافية لكل قطعة، هنعمل Gradient (تدرج) للخط كله
+  const lastPoint = meteor.trail[meteor.trail.length - 1];
+  const gradient = ctx.createLinearGradient(
+    Math.floor(meteor.x), Math.floor(meteor.y),
+    Math.floor(lastPoint.x), Math.floor(lastPoint.y)
+  );
+  
+  gradient.addColorStop(0, "rgba(254, 242, 226, 0.8)"); // البداية قوية
+  gradient.addColorStop(1, "rgba(254, 242, 226, 0)");   // النهاية تختفي
+
+  ctx.strokeStyle = gradient;
+  ctx.lineWidth = meteor.size;
+  ctx.lineCap = "round"; // بيخلي شكل الخط أنعم في الأطراف
+  
+  // أمر الرسم "مرة واحدة" فقط للذيل كله
+  ctx.stroke();
+
+  // رسم رأس النيزك (نقطة مضيئة في البداية)
+  ctx.beginPath();
+  ctx.arc(Math.floor(meteor.x), Math.floor(meteor.y), meteor.size / 2, 0, Math.PI * 2);
+  ctx.fillStyle = "rgba(252, 240, 225, 1)";
+  ctx.fill();
+}, []);
 
   // استخدام dtMultiplier لضمان ثبات السرعة
   const updateBubbles = useCallback((canvas: HTMLCanvasElement, dtMultiplier: number) => {
@@ -373,7 +388,7 @@ const animate = useCallback((timestamp: number) => {
       }
     };
   }, [dimensions, animate]);
-  
+
   // أضف هذا الجزء تحت الـ useEffect الخاص بالـ resize والـ mouse
 useEffect(() => {
   const handleVisibilityChange = () => {

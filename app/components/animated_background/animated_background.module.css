@@ -11,4 +11,10 @@
   width: 100vw;
   height: 100vh;
   z-index: -1;
+  
+  /* التعديلات الجديدة لتحسين الأداء */
+  will-change: transform;
+  backface-visibility: hidden;
+  pointer-events: none; /* عشان تضمن إن الماوس يضغط على الزراير اللي فوقه */
+  background-color: #000; /* خلفية سوداء أساسية */
 }
