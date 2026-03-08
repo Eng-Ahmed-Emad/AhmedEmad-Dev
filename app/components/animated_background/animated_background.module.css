@@ -12,9 +12,14 @@
   height: 100vh;
   z-index: -1;
   
-  /* التعديلات الجديدة لتحسين الأداء */
+  /* التعديل الجديد لضمان عدم ظهور مساحات إضافية */
+  display: block;
+  margin: 0;
+  padding: 0;
+  
+  /* إعدادات الأداء الممتازة الخاصة بك */
   will-change: transform;
   backface-visibility: hidden;
-  pointer-events: none; /* عشان تضمن إن الماوس يضغط على الزراير اللي فوقه */
-  background-color: #000; /* خلفية سوداء أساسية */
+  pointer-events: none;
+  background-color: #000;
 }
