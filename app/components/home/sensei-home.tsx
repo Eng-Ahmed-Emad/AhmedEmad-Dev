@@ -129,8 +129,8 @@ const SenseiHome = (): JSX.Element => {
   src="Assets/art-gallery/Images/logo/My_Logo.webp"
   alt="Ahmed Emad Nasr Image"
   className={styles.image}
-  width={400}
-  height={400}
+  width={350}
+  height={350}
   loading="lazy"
   onClick={handleImageClick}
 />
