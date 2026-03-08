@@ -1,6 +1,8 @@
 "use client";
 import { useEffect, useRef, useState, useCallback } from "react";
 import { debounce } from "lodash";
+const FPS_LIMIT = 60; // يمكنك تغييرها لـ 120 حسب رغبتك
+const FRAME_MIN_TIME = 1000 / FPS_LIMIT;
 
 interface Bubble {
   x: number;
@@ -135,7 +137,7 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
     }));
   }, [dimensions]);
 
-  useEffect(() => {
+useEffect(() => {
     const updateDimensions = () => {
       setDimensions({
         width: window.innerWidth,
@@ -143,9 +145,14 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
       });
       setIsMobile(window.innerWidth <= 768);
     };
+
     const debouncedUpdateDimensions = debounce(updateDimensions, 250);
-    window.addEventListener("resize", debouncedUpdateDimensions);
+    
+    // تمت إضافة { passive: true } هنا كمعامل ثالث
+    window.addEventListener("resize", debouncedUpdateDimensions, { passive: true });
+    
     updateDimensions();
+    
     return () => {
       window.removeEventListener("resize", debouncedUpdateDimensions);
     };
@@ -158,17 +165,21 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
     }
   }, [dimensions, createBubbles, createMeteors]);
 
-  useEffect(() => {
+useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       mouseRef.current.x = e.clientX;
       mouseRef.current.y = e.clientY;
       mouseRef.current.active = true;
     };
+    
     const handleMouseLeave = () => {
       mouseRef.current.active = false;
     };
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("mouseleave", handleMouseLeave);
+
+    // تمت إضافة { passive: true } هنا كمعامل ثالث
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    window.addEventListener("mouseleave", handleMouseLeave, { passive: true });
+    
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseleave", handleMouseLeave);
@@ -266,7 +277,7 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
     }
   }, []);
 
-  const updateMeteors = useCallback((canvas: HTMLCanvasElement, dtMultiplier: number) => {
+const updateMeteors = useCallback((canvas: HTMLCanvasElement, dtMultiplier: number) => {
     const meteors = meteorsRef.current;
     
     for (let i = 0; i < meteors.length; i++) {
@@ -288,7 +299,9 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
       }
       
       meteor.trail.unshift({ x: meteor.x, y: meteor.y, alpha: 1 });
-      if (meteor.trail.length > 20) meteor.trail.pop();
+      
+      // تقليل طول المسار من 20 إلى 12 لتوفير عمليات الرسم
+      if (meteor.trail.length > 12) meteor.trail.pop();
       
       for (let j = 0; j < meteor.trail.length; j++) {
         meteor.trail[j].alpha = 1 - j / meteor.trail.length;
@@ -296,26 +309,36 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
     }
   }, [gridSize]);
 
-  const animate = useCallback((timestamp: number) => {
-    // حساب Delta Time
+const animate = useCallback((timestamp: number) => {
+    // 1. حساب الوقت المنقضي منذ آخر إطار
     if (!lastTimeRef.current) lastTimeRef.current = timestamp;
-    const deltaTime = timestamp - lastTimeRef.current;
-    lastTimeRef.current = timestamp;
+    const elapsed = timestamp - lastTimeRef.current;
+
+    // 2. إذا لم يمر وقت كافٍ (حسب الـ FPS المحدد)، اطلب الإطار القادم وانتظر
+    if (elapsed < FRAME_MIN_TIME) {
+      animationFrameIdRef.current = requestAnimationFrame(animate);
+      return;
+    }
+
+    // 3. تحديث الوقت الأخير (مع خصم "الباقي" لضمان دقة التوقيت)
+    lastTimeRef.current = timestamp - (elapsed % FRAME_MIN_TIME);
     
-    // تأمين ضد التوقف الطويل (مثل تصغير المتصفح)
-    const dtMultiplier = Math.min(deltaTime / 16.66, 3);
+    // حساب dtMultiplier بناءً على الـ 60 فريم القياسية (16.66ms)
+    // نستخدم 'elapsed' هنا لضمان سلاسة الحركة مهما كان الـ FPS
+    const dtMultiplier = Math.min(elapsed / 16.66, 3);
 
     const canvas = canvasRef.current;
     const ctx = contextRef.current;
     if (!canvas || !ctx) return;
     
-    // رسم الخلفية الجاهزة مرة واحدة بدلاً من الشبكة والألوان كل إطار
+    // رسم الخلفية
     if (preRenderedBgRef.current) {
       ctx.drawImage(preRenderedBgRef.current, 0, 0);
     } else {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
     
+    // تحديث ورسم الفقاعات
     if (!isMobile) {
       updateBubbles(canvas, dtMultiplier);
       for (let i = 0; i < bubblesRef.current.length; i++) {
@@ -323,13 +346,14 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
       }
     }
     
+    // تحديث ورسم النيازك
     updateMeteors(canvas, dtMultiplier);
     for (let i = 0; i < meteorsRef.current.length; i++) {
       drawMeteor(ctx, meteorsRef.current[i]);
     }
     
     animationFrameIdRef.current = requestAnimationFrame(animate);
-  }, [updateBubbles, updateMeteors, drawBubble, drawMeteor, isMobile]);
+  }, [updateBubbles, updateMeteors, drawBubble, drawMeteor, isMobile, FRAME_MIN_TIME]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
