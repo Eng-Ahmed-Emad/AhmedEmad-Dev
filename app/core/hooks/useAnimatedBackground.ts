@@ -1,7 +1,8 @@
 "use client";
 import { useEffect, useRef, useState, useCallback } from "react";
 import { debounce } from "lodash";
-const FPS_LIMIT = 60; // يمكنك تغييرها لـ 120 حسب رغبتك
+
+const FPS_LIMIT = 60; 
 const FRAME_MIN_TIME = 1000 / FPS_LIMIT;
 
 interface Bubble {
@@ -11,6 +12,8 @@ interface Bubble {
   vx: number;
   vy: number;
   originalRadius: number;
+  phase: number;       // للتحكم في دورة تكبير وتصغير الفقاعة
+  pulseSpeed: number;  // سرعة النبض (التكبير والتصغير)
 }
 
 interface Meteor {
@@ -32,11 +35,9 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);
   const animationFrameIdRef = useRef<number | null>(null);
   
-  // Canvases مخفية للرسم المسبق
   const preRenderedBubbleRef = useRef<HTMLCanvasElement | null>(null);
   const preRenderedBgRef = useRef<HTMLCanvasElement | null>(null);
   
-  // تتبع الوقت لحركة سلسة (Delta Time)
   const lastTimeRef = useRef<number>(0);
 
   const bubblesRef = useRef<Bubble[]>([]);
@@ -76,7 +77,7 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
     preRenderedBubbleRef.current = canvas;
   }, []);
 
-  // 2. التجهيز المسبق للخلفية والشبكة (Layer Separation)
+  // 2. التجهيز المسبق للخلفية والشبكة
   useEffect(() => {
     if (!dimensions.width || !dimensions.height) return;
     
@@ -119,16 +120,19 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
         y: Math.random() * dimensions.height,
         radius,
         originalRadius: radius,
-        vx: (Math.random() - 0.5) * 0.5,
-        vy: (Math.random() - 0.5) * 0.5,
+        // سرعة ابتدائية عالية
+        vx: (Math.random() - 0.5) * 4,
+        vy: (Math.random() - 0.5) * 4,
+        // متغيرات تأثير النبض والحجم
+        phase: Math.random() * Math.PI * 2,
+        pulseSpeed: 0.02 + Math.random() * 0.04,
       };
     });
   }, [dimensions, isMobile]);
 
- const createMeteors = useCallback(() => {
-  // لو موبايل، اضرب في 0.6 (قلل 40%)، لو ديسكتوب اضرب في 1 (سيبه كامل)
-  const multiplier = isMobile ? 0.7 : 1; 
-  const numberOfMeteors = Math.floor((dimensions.width / 250) * multiplier);
+  const createMeteors = useCallback(() => {
+    const multiplier = isMobile ? 0.7 : 1; 
+    const numberOfMeteors = Math.floor((dimensions.width / 250) * multiplier);
     meteorsRef.current = Array.from({ length: numberOfMeteors }, () => ({
       x: Math.floor(Math.random() * (dimensions.width / gridSize)) * gridSize,
       y: Math.floor(Math.random() * (dimensions.height / gridSize)) * gridSize,
@@ -137,9 +141,9 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
       direction: Math.random() < 0.5 ? "horizontal" : "vertical",
       trail: [],
     }));
-  }, [dimensions]);
+  }, [dimensions, isMobile]);
 
-useEffect(() => {
+  useEffect(() => {
     const updateDimensions = () => {
       setDimensions({
         width: window.innerWidth,
@@ -149,10 +153,7 @@ useEffect(() => {
     };
 
     const debouncedUpdateDimensions = debounce(updateDimensions, 250);
-    
-    // تمت إضافة { passive: true } هنا كمعامل ثالث
     window.addEventListener("resize", debouncedUpdateDimensions, { passive: true });
-    
     updateDimensions();
     
     return () => {
@@ -167,7 +168,7 @@ useEffect(() => {
     }
   }, [dimensions, createBubbles, createMeteors]);
 
-useEffect(() => {
+  useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       mouseRef.current.x = e.clientX;
       mouseRef.current.y = e.clientY;
@@ -178,7 +179,6 @@ useEffect(() => {
       mouseRef.current.active = false;
     };
 
-    // تمت إضافة { passive: true } هنا كمعامل ثالث
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
     window.addEventListener("mouseleave", handleMouseLeave, { passive: true });
     
@@ -188,7 +188,6 @@ useEffect(() => {
     };
   }, []);
 
-  // منع حسابات البكسلات الفرعية باستخدام Math.floor
   const drawBubble = useCallback((ctx: CanvasRenderingContext2D, bubble: Bubble) => {
     const offscreenCanvas = preRenderedBubbleRef.current;
     if (!offscreenCanvas) return;
@@ -205,53 +204,47 @@ useEffect(() => {
     );
   }, []);
 
-const drawMeteor = useCallback((ctx: CanvasRenderingContext2D, meteor: Meteor) => {
-  if (meteor.trail.length < 2) return;
+  const drawMeteor = useCallback((ctx: CanvasRenderingContext2D, meteor: Meteor) => {
+    if (meteor.trail.length < 2) return;
 
-  ctx.beginPath();
-  // ابدأ من أول نقطة في الذيل
-  ctx.moveTo(Math.floor(meteor.trail[0].x), Math.floor(meteor.trail[0].y));
+    ctx.beginPath();
+    ctx.moveTo(Math.floor(meteor.trail[0].x), Math.floor(meteor.trail[0].y));
 
-  // ارسم خطوط متصلة لكل النقاط الباقية في المسار
-  for (let i = 1; i < meteor.trail.length; i++) {
-    ctx.lineTo(Math.floor(meteor.trail[i].x), Math.floor(meteor.trail[i].y));
-  }
+    for (let i = 1; i < meteor.trail.length; i++) {
+      ctx.lineTo(Math.floor(meteor.trail[i].x), Math.floor(meteor.trail[i].y));
+    }
 
-  // بدل ما نغير الشفافية لكل قطعة، هنعمل Gradient (تدرج) للخط كله
-  const lastPoint = meteor.trail[meteor.trail.length - 1];
-  const gradient = ctx.createLinearGradient(
-    Math.floor(meteor.x), Math.floor(meteor.y),
-    Math.floor(lastPoint.x), Math.floor(lastPoint.y)
-  );
-  
-  gradient.addColorStop(0, "rgba(254, 242, 226, 0.8)"); // البداية قوية
-  gradient.addColorStop(1, "rgba(254, 242, 226, 0)");   // النهاية تختفي
+    const lastPoint = meteor.trail[meteor.trail.length - 1];
+    const gradient = ctx.createLinearGradient(
+      Math.floor(meteor.x), Math.floor(meteor.y),
+      Math.floor(lastPoint.x), Math.floor(lastPoint.y)
+    );
+    
+    gradient.addColorStop(0, "rgba(254, 242, 226, 0.8)");
+    gradient.addColorStop(1, "rgba(254, 242, 226, 0)");
 
-  ctx.strokeStyle = gradient;
-  ctx.lineWidth = meteor.size;
-  ctx.lineCap = "round"; // بيخلي شكل الخط أنعم في الأطراف
-  
-  // أمر الرسم "مرة واحدة" فقط للذيل كله
-  ctx.stroke();
+    ctx.strokeStyle = gradient;
+    ctx.lineWidth = meteor.size;
+    ctx.lineCap = "round";
+    ctx.stroke();
 
-  // رسم رأس النيزك (نقطة مضيئة في البداية)
-  ctx.beginPath();
-  ctx.arc(Math.floor(meteor.x), Math.floor(meteor.y), meteor.size / 2, 0, Math.PI * 2);
-  ctx.fillStyle = "rgba(252, 240, 225, 1)";
-  ctx.fill();
-}, []);
+    ctx.beginPath();
+    ctx.arc(Math.floor(meteor.x), Math.floor(meteor.y), meteor.size / 2, 0, Math.PI * 2);
+    ctx.fillStyle = "rgba(252, 240, 225, 1)";
+    ctx.fill();
+  }, []);
 
-  // استخدام dtMultiplier لضمان ثبات السرعة
   const updateBubbles = useCallback((canvas: HTMLCanvasElement, dtMultiplier: number) => {
     const mouse = mouseRef.current;
     const bubbles = bubblesRef.current;
 
     for (let i = 0; i < bubbles.length; i++) {
       const bubble = bubbles[i];
-      // ضرب السرعة في معامل الوقت
+      
       let newX = bubble.x + (bubble.vx * dtMultiplier);
       let newY = bubble.y + (bubble.vy * dtMultiplier);
 
+      // ارتداد مرن عند الاصطدام بالحواف
       if (newX + bubble.radius > canvas.width || newX - bubble.radius < 0) {
         bubble.vx *= -1;
         newX = Math.max(bubble.radius, Math.min(newX, canvas.width - bubble.radius));
@@ -261,7 +254,14 @@ const drawMeteor = useCallback((ctx: CanvasRenderingContext2D, meteor: Meteor) =
         newY = Math.max(bubble.radius, Math.min(newY, canvas.height - bubble.radius));
       }
 
-      let newRadius = bubble.originalRadius;
+      // =====================================
+      // حساب الحجم الجديد (تأثير النبض)
+      // =====================================
+      bubble.phase += bubble.pulseSpeed * dtMultiplier;
+      // تتغير مساحة الفقاعة بنسبة تصل إلى 20% زيادة أو نقصاناً
+      const pulsingRadius = bubble.originalRadius + Math.sin(bubble.phase) * (bubble.originalRadius * 0.2);
+      let newRadius = pulsingRadius;
+
       if (mouse.active) {
         const dx = mouse.x - newX;
         const dy = mouse.y - newY;
@@ -269,32 +269,37 @@ const drawMeteor = useCallback((ctx: CanvasRenderingContext2D, meteor: Meteor) =
 
         if (distance < mouseInfluenceRadius) {
           const influence = 1 - distance / mouseInfluenceRadius;
-          newRadius = bubble.originalRadius * (1 + influence * bubbleExpansionFactor);
+          // إضافة تأثير الماوس فوق تأثير النبض
+          newRadius = pulsingRadius * (1 + influence * bubbleExpansionFactor);
 
           const forceFactor = mouseInfluenceStrength * influence;
           bubble.vx -= (dx / distance) * forceFactor;
           bubble.vy -= (dy / distance) * forceFactor;
-          
-          const speed = Math.sqrt(bubble.vx * bubble.vx + bubble.vy * bubble.vy);
-          const maxSpeed = 2;
-          if (speed > maxSpeed) {
-            bubble.vx = (bubble.vx / speed) * maxSpeed;
-            bubble.vy = (bubble.vy / speed) * maxSpeed;
-          }
         }
       }
       
-      // التخميد التدريجي للسرعة
-      bubble.vx *= Math.pow(0.99, dtMultiplier);
-      bubble.vy *= Math.pow(0.99, dtMultiplier);
+      // =====================================
+      // إضافة الحركة العشوائية السريعة المستمرة
+      // =====================================
+      const randomJitter = 1.2; 
+      bubble.vx += (Math.random() - 0.5) * randomJitter * dtMultiplier;
+      bubble.vy += (Math.random() - 0.5) * randomJitter * dtMultiplier;
+
+      const currentSpeed = Math.sqrt(bubble.vx * bubble.vx + bubble.vy * bubble.vy);
+      const maxSpeedLimit = 5; // الحد الأقصى للسرعة
       
+      if (currentSpeed > maxSpeedLimit) {
+        bubble.vx = (bubble.vx / currentSpeed) * maxSpeedLimit;
+        bubble.vy = (bubble.vy / currentSpeed) * maxSpeedLimit;
+      }
+
       bubble.x = newX;
       bubble.y = newY;
-      bubble.radius = newRadius;
+      bubble.radius = Math.max(10, newRadius); // ضمان عدم اختفاء الفقاعة أو صغرها جداً
     }
-  }, []);
+  }, [mouseInfluenceRadius, mouseInfluenceStrength, bubbleExpansionFactor]);
 
-const updateMeteors = useCallback((canvas: HTMLCanvasElement, dtMultiplier: number) => {
+  const updateMeteors = useCallback((canvas: HTMLCanvasElement, dtMultiplier: number) => {
     const meteors = meteorsRef.current;
     
     for (let i = 0; i < meteors.length; i++) {
@@ -317,7 +322,6 @@ const updateMeteors = useCallback((canvas: HTMLCanvasElement, dtMultiplier: numb
       
       meteor.trail.unshift({ x: meteor.x, y: meteor.y, alpha: 1 });
       
-      // تقليل طول المسار من 20 إلى 12 لتوفير عمليات الرسم
       if (meteor.trail.length > 12) meteor.trail.pop();
       
       for (let j = 0; j < meteor.trail.length; j++) {
@@ -326,36 +330,28 @@ const updateMeteors = useCallback((canvas: HTMLCanvasElement, dtMultiplier: numb
     }
   }, [gridSize]);
 
-const animate = useCallback((timestamp: number) => {
-    // 1. حساب الوقت المنقضي منذ آخر إطار
+  const animate = useCallback((timestamp: number) => {
     if (!lastTimeRef.current) lastTimeRef.current = timestamp;
     const elapsed = timestamp - lastTimeRef.current;
 
-    // 2. إذا لم يمر وقت كافٍ (حسب الـ FPS المحدد)، اطلب الإطار القادم وانتظر
     if (elapsed < FRAME_MIN_TIME) {
       animationFrameIdRef.current = requestAnimationFrame(animate);
       return;
     }
 
-    // 3. تحديث الوقت الأخير (مع خصم "الباقي" لضمان دقة التوقيت)
     lastTimeRef.current = timestamp - (elapsed % FRAME_MIN_TIME);
-    
-    // حساب dtMultiplier بناءً على الـ 60 فريم القياسية (16.66ms)
-    // نستخدم 'elapsed' هنا لضمان سلاسة الحركة مهما كان الـ FPS
     const dtMultiplier = Math.min(elapsed / 16.66, 3);
 
     const canvas = canvasRef.current;
     const ctx = contextRef.current;
     if (!canvas || !ctx) return;
     
-    // رسم الخلفية
     if (preRenderedBgRef.current) {
       ctx.drawImage(preRenderedBgRef.current, 0, 0);
     } else {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
     
-    // تحديث ورسم الفقاعات
     if (!isMobile) {
       updateBubbles(canvas, dtMultiplier);
       for (let i = 0; i < bubblesRef.current.length; i++) {
@@ -363,7 +359,6 @@ const animate = useCallback((timestamp: number) => {
       }
     }
     
-    // تحديث ورسم النيازك
     updateMeteors(canvas, dtMultiplier);
     for (let i = 0; i < meteorsRef.current.length; i++) {
       drawMeteor(ctx, meteorsRef.current[i]);
@@ -379,7 +374,6 @@ const animate = useCallback((timestamp: number) => {
       canvas.height = dimensions.height;
       contextRef.current = canvas.getContext("2d", { alpha: false });
       
-      // إعادة تعيين الوقت عند بدء الأنيميشن
       lastTimeRef.current = 0;
       animationFrameIdRef.current = requestAnimationFrame(animate);
     }
@@ -391,25 +385,22 @@ const animate = useCallback((timestamp: number) => {
     };
   }, [dimensions, animate]);
 
-  // أضف هذا الجزء تحت الـ useEffect الخاص بالـ resize والـ mouse
-useEffect(() => {
-  const handleVisibilityChange = () => {
-    if (document.hidden) {
-      // إيقاف الأنيميشن فوراً عند خروج المستخدم من التبويب لتوفير المعالج
-      if (animationFrameIdRef.current) {
-        cancelAnimationFrame(animationFrameIdRef.current);
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        if (animationFrameIdRef.current) {
+          cancelAnimationFrame(animationFrameIdRef.current);
+        }
+      } else {
+        lastTimeRef.current = performance.now();
+        animationFrameIdRef.current = requestAnimationFrame(animate);
       }
-    } else {
-      // إعادة تشغيل الأنيميشن عند العودة مع إعادة ضبط الوقت لتجنب القفزات المفاجئة
-      lastTimeRef.current = performance.now();
-      animationFrameIdRef.current = requestAnimationFrame(animate);
-    }
-  };
+    };
 
-  document.addEventListener("visibilitychange", handleVisibilityChange);
-  
-  return () => {
-    document.removeEventListener("visibilitychange", handleVisibilityChange);
-  };
-}, [animate]);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [animate]);
 };
