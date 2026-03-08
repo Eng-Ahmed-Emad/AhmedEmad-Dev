@@ -22,15 +22,6 @@ import { IconProp } from "@fortawesome/fontawesome-svg-core";
  */
 import { useHeader } from "@/app/core/hooks/useHeader";
 
-//**
-// @Author Mostafa Sensei106
-// @Description A responsive header component with a menu that highlights the active section of the page.
-//**
-
-/**
- * The main header component with a responsive menu.
- * @returns The JSX Element for the header.
- */
 const SenseiHeader = (): JSX.Element => {
   const { isMenuOpen, activeSection, toggleMenu, sectionIcons, setActiveSection, setIsMenuOpen } = useHeader();
 

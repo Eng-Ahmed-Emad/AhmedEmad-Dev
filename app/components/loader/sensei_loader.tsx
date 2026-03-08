@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, JSX } from "react";
 import styles from "./sensei_loader.module.css";
-import Image, { ImageProps } from "next/image";
+import Image from "next/image";
 
 /**
  * A React component that renders a loading spinner until the page is fully loaded.
@@ -29,13 +29,13 @@ function SenseiLoader(): JSX.Element | null {
 
   if (!isLoading) return null;
 
-  const loaderImageProps: ImageProps = {
+  const loaderImageProps = {
     src: "Assets/loading/loading.gif",
     alt: "Loading",
     width: 200,
     height: 200,
     priority: true,
-  };
+  } as const;
 
   return (
     <>

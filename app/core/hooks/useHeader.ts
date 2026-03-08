@@ -6,6 +6,7 @@ import {
   faBook,
   faFolder,
   faPalette,
+  faBrain,
 } from "@fortawesome/free-solid-svg-icons";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
@@ -71,7 +72,7 @@ export const useHeader = () => {
     Experience: faBook,
     Projects: faFolder,
     ArtGallery: faPalette,
-    Skills: faUserSecret,
+    Skills: faBrain,
   };
 
   return { isMenuOpen, activeSection, toggleMenu, sectionIcons, setActiveSection, setIsMenuOpen };
