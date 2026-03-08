@@ -373,4 +373,26 @@ const animate = useCallback((timestamp: number) => {
       }
     };
   }, [dimensions, animate]);
+  
+  // أضف هذا الجزء تحت الـ useEffect الخاص بالـ resize والـ mouse
+useEffect(() => {
+  const handleVisibilityChange = () => {
+    if (document.hidden) {
+      // إيقاف الأنيميشن فوراً عند خروج المستخدم من التبويب لتوفير المعالج
+      if (animationFrameIdRef.current) {
+        cancelAnimationFrame(animationFrameIdRef.current);
+      }
+    } else {
+      // إعادة تشغيل الأنيميشن عند العودة مع إعادة ضبط الوقت لتجنب القفزات المفاجئة
+      lastTimeRef.current = performance.now();
+      animationFrameIdRef.current = requestAnimationFrame(animate);
+    }
+  };
+
+  document.addEventListener("visibilitychange", handleVisibilityChange);
+  
+  return () => {
+    document.removeEventListener("visibilitychange", handleVisibilityChange);
+  };
+}, [animate]);
 };
