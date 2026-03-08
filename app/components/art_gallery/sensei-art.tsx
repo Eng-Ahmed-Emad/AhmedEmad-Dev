@@ -64,8 +64,8 @@ const ImageItem = React.memo(({ image, index, setOpen }: ImageItemProps) => {
             <Image
                 src={image.thumb}
                 alt={`Art piece ${index + 1}`}
-                width={390}
-                height={390}
+                width={350}
+                height={350}
                 sizes="(max-width: 767px) 100vw, (max-width: 991px) 50vw, (max-width: 1199px) 33vw, 25vw"
                 onClick={() => setOpen(index)}
                 loading="lazy"
