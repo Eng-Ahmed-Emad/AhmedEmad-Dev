@@ -29,7 +29,7 @@ import { useRandomMedia } from "@/app/core/hooks/useRandomMedia";
 
 
 
-const IMAGE_QUALITY = 90; // قيمة جودة الصورة - يمكن التحكم فيها من هنا
+
 
 const SenseiHome = (): JSX.Element => {
 
@@ -139,22 +139,15 @@ const SenseiHome = (): JSX.Element => {
 
         <motion.div className={styles.homeImg} variants={itemVariants}>
 
-          <img
-
-            src="Assets/art-gallery/Images/logo/My_Logo.webp"
-
-            alt="Ahmed Emad Nasr Image"
-
-            className={styles.image}
-
-            width={400}
-
-            height={400}
-
-            onClick={handleImageClick}
-
-            quality={IMAGE_QUALITY}
-          />
+<img
+  src="Assets/art-gallery/Images/logo/My_Logo.webp"
+  alt="Ahmed Emad Nasr Image"
+  className={styles.image}
+  width={400}
+  height={400}
+  loading="lazy"
+  onClick={handleImageClick}
+/>
 
         </motion.div>
 
