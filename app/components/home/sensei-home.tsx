@@ -153,13 +153,13 @@ const SenseiHome = (): JSX.Element => {
 
         <motion.div className={styles.homeContent} variants={itemVariants}>
 
-          <h1>
-            <span className={styles.highlight}>Ahmed Emad</span>.
-          </h1>
+<h1>
+  <span className={styles.highlight}>Ahmed Emad Nasr</span>.
+</h1>
 
           <h3 className={styles.typingText}>
 
-            I'm a <span className={styles.typingHighlight}></span>
+           <span className={styles.typingHighlight}></span>
 
           </h3>
 
