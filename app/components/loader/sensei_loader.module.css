@@ -1,6 +1,6 @@
 /**
  * @Author Ahmed Emad Nasr
- * @Description Enhanced loader with Progress Bar
+ * @Description Fast & Clean Loader - GPU Optimized
  */
 
 .loader {
@@ -15,15 +15,22 @@
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 1) 100%);
-  animation: fadeOut 0.5s ease-in-out forwards;
-  animation-delay: 2s; /* وقت كافٍ لمشاهدة الـ Bar وهو يكتمل */
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+  /* إخبار كرت الشاشة بالاستعداد لتغيير الشفافية لأداء أسلس */
+  will-change: opacity, visibility;
+}
+
+.loader.fadeOut {
+  opacity: 0;
+  visibility: hidden;
 }
 
 .loaderContent {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 30px; /* المسافة بين الصورة والبار */
 }
 
 .spinner {
@@ -31,46 +38,8 @@
   height: 150px;
   filter: drop-shadow(0 0 30px var(--main-color));
   animation: spinLoader 2s linear infinite;
-}
-
-/* حاوية التقدم */
-.progressWrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-}
-
-.progressContainer {
-  width: 280px;
-  height: 4px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
-  overflow: hidden;
-  position: relative;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.progressBar {
-  height: 100%;
-  background: var(--main-color);
-  box-shadow: 0 0 15px var(--main-color), 0 0 30px var(--main-color);
-  transition: width 0.4s cubic-bezier(0.1, 0.7, 1.0, 0.1); /* حركة انسيابية للبار */
-}
-
-.progressText {
-  color: #fff;
-  font-family: 'JetBrains Mono', monospace; /* أو أي خط تفضله */
-  font-size: 14px;
-  font-weight: 400;
-  letter-spacing: 2px;
-  text-shadow: 0 0 10px var(--main-color);
-}
-
-/* Animations */
-@keyframes fadeOut {
-  from { opacity: 1; visibility: visible; }
-  to { opacity: 0; visibility: hidden; }
+  /* إخبار كرت الشاشة بالاستعداد للدوران لأداء أسلس */
+  will-change: transform;
 }
 
 @keyframes spinLoader {
