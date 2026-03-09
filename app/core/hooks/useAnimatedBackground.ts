@@ -2,9 +2,6 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { debounce } from "lodash";
 
-const FPS_LIMIT = 60;
-const FRAME_MIN_TIME = 1000 / FPS_LIMIT;
-
 interface Bubble {
   x: number; y: number; radius: number; vx: number; vy: number; originalRadius: number;
   phase: number; pulseSpeed: number;
@@ -36,7 +33,7 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
 
   const gridSize = 50;
   const mouseInfluenceRadius = 200;
-  const mouseInfluenceStrength = 1.0; // زودنا القوة شوية للتفاعل
+  const mouseInfluenceStrength = 1.0; 
   const maxRadius = 120;
   const minRadius = 60;
   const bubbleExpansionFactor = 1.2;
@@ -145,7 +142,6 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
     if (!offscreen) return;
     const scale = bubble.radius / maxRadius;
     const drawSize = offscreen.width * scale;
-    // الكريزة: استخدام ~~ بدل Math.floor للسرعة القصوى
     ctx.drawImage(offscreen, ~~(bubble.x - drawSize / 2), ~~(bubble.y - drawSize / 2), ~~drawSize, ~~drawSize);
   }, []);
 
@@ -170,12 +166,16 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
     if (!lastTimeRef.current) lastTimeRef.current = timestamp;
     const elapsed = timestamp - lastTimeRef.current;
 
-    if (elapsed < FRAME_MIN_TIME) {
+    // تحديد الفريمات (30 للموبايل، 60 للشاشات الكبيرة)
+    const targetFPS = isMobileRef.current ? 30 : 60;
+    const frameMinTime = 1000 / targetFPS;
+
+    if (elapsed < frameMinTime) {
       animationFrameIdRef.current = requestAnimationFrame(animate);
       return;
     }
 
-    lastTimeRef.current = timestamp - (elapsed % FRAME_MIN_TIME);
+    lastTimeRef.current = timestamp - (elapsed % frameMinTime);
     const dtMultiplier = Math.min(elapsed / 16.66, 3);
 
     const canvas = canvasRef.current;
@@ -245,7 +245,6 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
     const canvas = canvasRef.current;
     if (canvas && dimensions.width) {
       canvas.width = dimensions.width; canvas.height = dimensions.height;
-      // الكريزة: تفعيل خيارات الأداء المتقدمة للكانفاس
       contextRef.current = canvas.getContext("2d", { 
         alpha: false, 
         desynchronized: true,
