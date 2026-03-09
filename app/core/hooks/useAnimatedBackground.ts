@@ -7,17 +7,13 @@ const FRAME_MIN_TIME = 1000 / FPS_LIMIT;
 
 interface Bubble {
   x: number; y: number; radius: number; vx: number; vy: number; originalRadius: number;
-  phase: number; pulseSpeed: number; // للنبض
+  phase: number; pulseSpeed: number;
 }
 
 interface Meteor {
   x: number; y: number; size: number; speed: number;
   direction: "horizontal" | "vertical";
   trail: { x: number; y: number; alpha: number }[];
-}
-
-interface ClickRipple {
-  x: number; y: number; radius: number; alpha: number; life: number;
 }
 
 interface MousePosition { x: number; y: number; active: boolean; }
@@ -31,7 +27,6 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
 
   const bubblesRef = useRef<Bubble[]>([]);
   const meteorsRef = useRef<Meteor[]>([]);
-  const ripplesRef = useRef<ClickRipple[]>([]);
   const mouseRef = useRef<MousePosition>({ x: 0, y: 0, active: false });
   
   const isMobileRef = useRef(false);
@@ -96,8 +91,8 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
       return {
         x: Math.random() * width, y: Math.random() * height,
         radius, originalRadius: radius,
-        vx: (Math.random() - 0.5) * 4, // سرعة ابتدائية أسرع
-        vy: (Math.random() - 0.5) * 4, // سرعة ابتدائية أسرع
+        vx: (Math.random() - 0.5) * 4,
+        vy: (Math.random() - 0.5) * 4,
         phase: Math.random() * Math.PI * 2,
         pulseSpeed: 0.02 + Math.random() * 0.04,
       };
@@ -125,7 +120,7 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
       dimensionsRef.current = { width: w, height: h };
       setDimensions({ width: w, height: h });
     };
-    const debouncedUpdateDimensions = debounce(updateDimensions, 250); // خليتها 250 بدل 500 عشان الاستجابة تبقى أسرع شوية
+    const debouncedUpdateDimensions = debounce(updateDimensions, 250);
     window.addEventListener("resize", debouncedUpdateDimensions, { passive: true });
     updateDimensions();
     return () => window.removeEventListener("resize", debouncedUpdateDimensions);
@@ -135,30 +130,19 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
     if (dimensions.width) { createBubbles(); createMeteors(); }
   }, [dimensions.width, createBubbles, createMeteors]);
 
-  // إدارة أحداث الماوس والكليك
+  // إدارة أحداث الماوس فقط (بدون الكليك)
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      mouseRef.current.x = e.clientX; mouseRef.current.y = e.clientY; mouseRef.current.active = true;
+      mouseRef.current.x = e.clientX; 
+      mouseRef.current.y = e.clientY; 
+      mouseRef.current.active = true;
     };
     
-    const handleMouseDown = (e: MouseEvent) => {
-      ripplesRef.current.push({
-        x: e.clientX,
-        y: e.clientY,
-        radius: 0,
-        alpha: 1,
-        life: 1.0,
-      });
-      if (ripplesRef.current.length > 15) ripplesRef.current.shift();
-    };
-
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
-    window.addEventListener("mousedown", handleMouseDown, { passive: true });
     window.addEventListener("mouseleave", () => { mouseRef.current.active = false; }, { passive: true });
     
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mousedown", handleMouseDown);
     };
   }, []);
 
@@ -206,7 +190,7 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
     if (preRenderedBgRef.current) { ctx.drawImage(preRenderedBgRef.current, 0, 0); } 
     else { ctx.clearRect(0, 0, canvas.width, canvas.height); }
 
-    // رسم الفقاعات (مع الحركة السريعة والعشوائية والنبض)
+    // رسم الفقاعات
     if (!isMobileRef.current) {
       const mouse = mouseRef.current;
       bubblesRef.current.forEach(bubble => {
@@ -231,7 +215,6 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
           }
         }
         
-        // الحركة العشوائية السريعة المستمرة
         const randomJitter = 1.2; 
         bubble.vx += (Math.random() - 0.5) * randomJitter * dtMultiplier;
         bubble.vy += (Math.random() - 0.5) * randomJitter * dtMultiplier;
@@ -247,25 +230,6 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
         bubble.radius = Math.max(10, newRadius);
         drawBubble(ctx, bubble);
       });
-    }
-
-    // رسم الـ Click Effects (Ripples)
-    for (let i = ripplesRef.current.length - 1; i >= 0; i--) {
-      const ripple = ripplesRef.current[i];
-      ripple.life -= 0.02 * dtMultiplier;
-      ripple.radius += 5 * dtMultiplier;
-      ripple.alpha = Math.max(0, ripple.life);
-
-      if (ripple.life <= 0) {
-        ripplesRef.current.splice(i, 1);
-        continue;
-      }
-
-      ctx.beginPath();
-      ctx.arc(ripple.x, ripple.y, ripple.radius, 0, Math.PI * 2);
-      ctx.strokeStyle = `rgba(253, 242, 225, ${ripple.alpha * 0.4})`;
-      ctx.lineWidth = 1.5;
-      ctx.stroke();
     }
 
     // رسم الشهب
