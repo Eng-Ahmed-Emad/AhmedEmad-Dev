@@ -35,8 +35,7 @@ const SenseiContact = (): JSX.Element => {
                   Ahmed Emad.Mail
                 </a>
                 <div className={styles.social}>
-                  <p className={styles.meon}>Me on Social Network</p>
-
+                  
                   <a
                     aria-label="Go to Linkedin"
                     href="https://www.linkedin.com/in/ahmed-emad-nasr/?originalSubdomain=eg"

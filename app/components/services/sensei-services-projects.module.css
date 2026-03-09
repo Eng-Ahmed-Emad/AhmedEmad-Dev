@@ -1,168 +1,209 @@
 /* ------------------This is Service & Projects Section Style---------- */
-/* ------------------This is Service & Projects Section Style---------- */
-/* ------------------This is Service & Projects Section Style---------- */
-
 /*
-@Author Ahmed Emad Nasr
-@Description A responsive service and projects section with a menu that highlights the active section of the page.
+ * @Author Ahmed Emad Nasr
+ * @Description Modern Services & Projects Section with Light-to-Dark Hover Effect
  */
 
 .section-services,
 .section-projects {
   min-height: 100vh;
-  padding: 60px 0;
+  padding: 10rem 0 6rem; /* مسافة علوية مناسبة لتجنب تداخل الهيدر العائم */
+  position: relative;
+  z-index: 1;
 }
 
 .header-section {
-  margin-top: 35px;
   text-align: center;
+  margin-bottom: 6rem;
 }
 
-.header-section .title {
+/* --- Title Styling with Glowing Line --- */
+.title {
   position: relative;
-  margin-bottom: 40px;
-  padding-bottom: 25px;
-  font-weight: 700;
-  font-size: 3rem;
-  color: var(--main-color);
+  font-weight: 800;
+  font-size: 3.5rem;
+  color: var(--text-color);
+  letter-spacing: 1px;
+  text-shadow: 0 0 15px rgba(var(--main-color-rgb), 0.3);
+  display: inline-block;
+  padding-bottom: 2rem;
 }
 
-.header-section .title::before,
-.header-section .title::after {
-  content: " ";
+.title::before,
+.title::after {
+  content: "";
   position: absolute;
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
+  border-radius: 5px;
 }
 
-.header-section .title::before {
-  width: 140%;
-  height: 1px;
-  background: var(--main-color);
+.title::before {
+  width: 120%;
+  height: 2px;
+  background: rgba(var(--main-color-rgb), 0.2);
 }
 
-.header-section .title::after {
-  width: 45%;
-  height: 3px;
+.title::after {
+  width: 50%;
+  height: 4px;
   background: var(--main-color);
+  box-shadow: 0 0 10px rgba(var(--main-color-rgb), 0.6);
 }
 
 .container {
   margin: 0 auto;
-  padding: 0 5rem 5%;
-}
-
-@media (max-width: 1200px) {
-  .container {
-    padding: 0 3rem 5%;
-  }
-}
-
-@media (max-width: 991px) {
-  .container {
-    padding: 0 1.5rem 5%;
-  }
-}
-
-@media (max-width: 768px) {
-  .container {
-    padding: 0 1.5rem 5%;
-  }
-}
-
-@media (max-width: 480px) {
-  .container {
-    padding: 0 1.5rem 5%;
-  }
+  padding: 0 6%;
+  max-width: 1550px;
 }
 
 .grid-container,
 .grid-containerp {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 3rem;
 }
 
+/* --- The Cards (Light by default, Dark on hover) --- */
 .single-service,
 .single-project {
-  background: var(--main-color);
-  border-radius: 10px;
-  overflow: hidden;
-  padding: 20px;
+  background: var(--main-color); /* اللون الأساسي الفاتح */
+  border: 1px solid var(--main-color);
+  border-radius: 25px;
+  padding: 3rem 2.5rem;
   text-align: left;
-  box-shadow: 0 0 11px var(--main-color);
-  transition: 0.3s ease;
-  border: 2px solid var(--main-color);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
 }
 
 .single-service:hover,
 .single-project:hover {
-  background: transparent;
-  box-shadow: 0 0 28px var(--main-color);
+  background: rgba(15, 15, 15, 0.85); /* التحول للون الأسود الزجاجي */
+  backdrop-filter: blur(15px) saturate(180%);
+  transform: translateY(-10px);
+  border-color: rgba(var(--main-color-rgb), 0.5);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8),
+              0 0 25px rgba(var(--main-color-rgb), 0.15);
+}
+
+.single-project:active {
+  transform: scale(0.97);
+}
+
+/* --- Card Content --- */
+.part-1 {
+  display: flex; /* التعديل الجديد لجبر العناصر */
+  flex-direction: column; /* الأيقونة فوق والعنوان تحت */
+  align-items: flex-start; /* محاذاة لليسار */
+  gap: 1.5rem; /* المسافة بين الأيقونة والعنوان */
+  padding-bottom: 2rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15); /* خط غامق مناسب للخلفية الفاتحة */
+  transition: border-color 0.3s ease;
 }
 
 .single-service:hover .part-1,
 .single-project:hover .part-1 {
-  border-bottom: 2px solid var(--main-color);
+  border-bottom-color: rgba(var(--main-color-rgb), 0.4);
 }
 
-.part-1 {
-  padding: 10px 0;
-  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+/* الأيقونة (دعم الـ i والـ svg معاً) */
+.part-1 i,
+.part-1 svg {
+  font-size: 4rem;
+  width: 4rem;
+  height: 4rem;
+  color: var(--bg-color);
+  transition: all 0.4s ease;
 }
 
-.part-1 i {
-  font-size: 40px;
-  color: black;
+.single-service:hover .part-1 i,
+.single-project:hover .part-1 i,
+.single-service:hover .part-1 svg,
+.single-project:hover .part-1 svg {
+  color: var(--main-color);
+  transform: scale(1.15);
+  text-shadow: 0 0 15px var(--main-color);
+  filter: drop-shadow(0 0 10px var(--main-color));
+}
+
+/* العنوان داخل الكارت */
+.part-1 h3 {
+  font-size: 2.2rem;
+  color: var(--bg-color);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin: 0; /* تم إزالة الهوامش الافتراضية والاعتماد على gap */
+  line-height: 1.3;
   transition: color 0.3s ease;
 }
 
-.part-1 h3 {
-  font-size: 1.5rem;
-  margin: 15px 0;
-  color: black;
+.single-service:hover .part-1 h3,
+.single-project:hover .part-1 h3 {
+  color: var(--text-color);
 }
 
 .part-2 {
-  padding: 20px 0;
+  padding-top: 2rem;
 }
 
-.part-2 .description {
-  margin-bottom: 20px;
-  color: black;
-  font-size: 16px;
-  line-height: 1.6;
-}
-
-.part-2 a {
-  color: var(--main-color);
-  font-weight: bold;
-  text-decoration: underline;
+/* الوصف */
+.description {
+  color: #222222;
+  font-size: 1.5rem;
+  line-height: 1.7;
+  margin-bottom: 2.5rem;
   transition: color 0.3s ease;
+}
+
+.single-service:hover .description,
+.single-project:hover .description {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* --- Action Button (Read more / Link) --- */
+.part-2 a {
+  display: inline-block;
+  color: var(--main-color);
+  background: var(--bg-color);
+  padding: 0.8rem 2.2rem;
+  border-radius: 30px;
+  font-weight: 600;
+  font-size: 1.4rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
 }
 
 .single-service:hover .part-2 a,
 .single-project:hover .part-2 a {
-  color: black;
+  background: var(--main-color);
+  color: var(--bg-color);
 }
 
-.single-service:hover .part-1 i,
-.single-project:hover .part-1 i {
-  color: var(--main-color);
+.part-2 a:hover {
+  box-shadow: 0 5px 20px rgba(var(--main-color-rgb), 0.5);
+  transform: scale(1.05);
 }
 
-.single-service:hover .part-1 h3,
-.single-project:hover .part-1 h3,
-.single-service:hover .part-2 .description,
-.single-project:hover .part-2 .description {
-  color: var(--main-color);
-}
+/* --- Responsive Adjustments --- */
+@media (max-width: 991px) {
+  .container {
+    padding: 0 4%;
+  }
+  
+  .title {
+    font-size: 3rem;
+  }
 
-.single-project:active {
-  transform: scale(0.95);
-}
-
-.description {
-  color: var(--second-bg-color);
+  .grid-container,
+  .grid-containerp {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+  }
+  
+  .single-service,
+  .single-project {
+    padding: 2.5rem 2rem;
+  }
 }

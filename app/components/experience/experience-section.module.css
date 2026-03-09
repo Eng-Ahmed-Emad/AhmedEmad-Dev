@@ -1,216 +1,219 @@
-/*----------------------This is Education Section Style---------------------*/
-/*---------------------This is Education Section Style---------------------*/
-/*--------------------This is Education Section Style---------------------*/
-
+/*----------------------This is Education/Experience Section Style---------------------*/
 /*
-*@Author: Ahmed Emad Nasr
-*@Description: A responsive experience component with a menu that highlights the active section of the page.
+ *@Author: Ahmed Emad Nasr
+ *@Description: Modern Glassmorphism Timeline with Light-to-Dark Hover Effect
  */
+
 .section-education {
   min-height: 100vh;
-  padding: 60px 0 0 0;
-}
-
-.section-education .header-section {
-  margin-top: 35px;
-  text-align: center;
-}
-
-.section-education .header-section .title {
+  padding: 10rem 0 6rem; /* مسافة علوية لتجنب الهيدر العائم */
   position: relative;
-  margin-bottom: 40px;
-  padding-bottom: 25px;
-  font-weight: 700;
-  font-size: 3rem;
-  color: var(--main-color);
+  z-index: 1;
 }
 
-.section-education .header-section .title::before,
-.section-education .header-section .title::after {
-  content: " ";
+.header-section {
+  text-align: center;
+  margin-bottom: 6rem;
+}
+
+/* --- Title Styling with Glowing Line --- */
+.title {
+  position: relative;
+  font-weight: 800;
+  font-size: 3.5rem;
+  color: var(--text-color);
+  letter-spacing: 1px;
+  text-shadow: 0 0 15px rgba(var(--main-color-rgb), 0.3);
+  display: inline-block;
+  padding-bottom: 2rem;
+}
+
+.title::before,
+.title::after {
+  content: "";
   position: absolute;
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
+  border-radius: 5px;
 }
 
-.section-education .header-section .title::before {
-  width: 140%;
-  height: 1px;
-  background: var(--main-color);
+.title::before {
+  width: 120%;
+  height: 2px;
+  background: rgba(var(--main-color-rgb), 0.2);
 }
 
-.section-education .header-section .title::after {
-  width: 45%;
-  height: 3px;
+.title::after {
+  width: 50%;
+  height: 4px;
   background: var(--main-color);
+  box-shadow: 0 0 10px rgba(var(--main-color-rgb), 0.6);
 }
 
 .container {
   margin: 0 auto;
-  padding: 0 2% 0 2%;
+  padding: 0 6%;
+  max-width: 1550px;
 }
 
-@media (max-width: 768px) {
-  .container {
-    padding: 0 1.5rem 5%;
-  }
-}
-
-@media (max-width: 480px) {
-  .container {
-    padding: 0 1.5rem 5%;
-  }
-}
-
+/* --- Timeline Core --- */
 .time-line {
   position: relative;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px 0;
+  padding: 2rem 0;
 }
 
-.time-line:after {
+/* Central Line */
+.time-line::after {
   content: "";
   position: absolute;
   width: 4px;
-  background-color: var(--main-color);
+  background: rgba(var(--main-color-rgb), 0.3); /* خط مركزي شفاف قليلاً */
   top: 0;
   bottom: 0;
   left: 50%;
-  margin-left: -2px;
+  transform: translateX(-50%);
   border-radius: 1rem;
 }
 
 .timeline-container {
-  padding: 20px 40px;
+  padding: 2rem 4rem;
   position: relative;
   width: 50%;
-}
-
-.timeline-container.right {
-  left: 50%;
+  z-index: 2;
 }
 
 .timeline-container.left {
   left: 0;
 }
 
+.timeline-container.right {
+  left: 50%;
+}
+
+/* --- Timeline Dots --- */
+.timeline-container::after {
+  content: "";
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  background: var(--bg-color);
+  border: 4px solid var(--main-color);
+  border-radius: 50%;
+  top: 5rem; /* تمركز النقطة مع الكارت */
+  z-index: 3;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* تظبيط مكان النقطة يمين وشمال الخط */
+.timeline-container.left::after {
+  right: -12px;
+}
+
+.timeline-container.right::after {
+  left: -12px;
+}
+
+/* نقطة التايم لاين تنور وتكبر لما تقف على الكارت */
+.timeline-container:hover::after {
+  background: var(--main-color);
+  box-shadow: 0 0 20px var(--main-color);
+  transform: scale(1.3);
+}
+
+/* --- The Content Cards (Light to Dark) --- */
 .content {
-  background-color: var(--main-color);
-  padding: 20px;
-  border-radius: 12px;
-  border: 2px solid var(--main-color);
-  box-shadow: 0 0 11px var(--main-color);
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease,
-    background-color 0.3s ease;
+  background: var(--main-color);
+  padding: 3rem;
+  border-radius: 25px;
+  border: 1px solid var(--main-color);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  text-align: left;
 }
 
 .content:hover {
   transform: translateY(-10px);
-  background-color: transparent;
-  box-shadow: 0 0 31px var(--main-color);
-  color: var(--main-color);
+  background: rgba(15, 15, 15, 0.85); /* تحول للأسود الزجاجي */
+  backdrop-filter: blur(15px) saturate(180%);
+  border-color: rgba(var(--main-color-rgb), 0.5);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8),
+              0 0 25px rgba(var(--main-color-rgb), 0.15);
 }
 
-.content:hover .tag h2,
-.content:hover .tag h3,
-.content:hover .desc p {
-  color: var(--main-color);
-}
-
-.timeline-container.content {
-  background-color: var(--second-bg-color);
-  box-shadow: 0 0 31px var(--main-color);
-}
-
-.timeline-container::after {
-  content: "";
-  position: absolute;
-  width: 25px;
-  height: 25px;
-  right: 0;
-  background: transparent;
-  border: 3px solid var(--main-color);
-  box-shadow: 0 0 11px var(--main-color);
-  top: 15px;
-  border-radius: 1rem;
-  z-index: 1;
-  transition:
-    background-color 0.3s ease,
-    transform 0.3s ease;
-}
-
-.timeline-container .right::after {
-  left: 10px;
-}
-
-.timeline-container:hover::after {
-  background-color: var(--main-color);
-  box-shadow: 0 0 31px var(--main-color);
-  transform: scale(1.2);
-}
-
+/* --- Card Typography & Inner Content --- */
 .tag h2 {
-  margin: 0;
-  font-size: 1.5rem;
+  margin: 0 0 0.5rem 0;
+  font-size: 2.2rem;
   font-weight: 800;
-  color: var(--bg-color);
+  color: var(--bg-color); /* أسود في العادي */
+  transition: color 0.3s ease;
 }
+
 .tag h3 {
   margin: 0;
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   font-weight: 700;
-  color: var(--bg-color);
+  color: #333333; /* رصاصي غامق */
+  transition: color 0.3s ease;
 }
-.tag:hover h3 {
+
+.tag h3:hover {
   cursor: pointer;
-  text-underline: 2px solid var(--main-color);
+  text-decoration: underline; /* تم تصحيح text-underline */
+  text-decoration-color: var(--main-color);
 }
 
 .desc p {
-  margin: 10px 0 0;
-  font-size: 16px;
-  line-height: 1.6;
-  color: var(--bg-color);
+  margin: 1.5rem 0 0;
+  font-size: 1.5rem;
+  line-height: 1.7;
+  color: #222222;
+  font-weight: 500;
+  transition: color 0.3s ease;
 }
 
 .date-details {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
-  margin-top: 10px;
+  align-items: flex-end; /* لضبط التواريخ على اليمين */
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.15);
+  transition: border-color 0.3s ease;
 }
 
 .experience-time {
-  font-size: 1.2rem;
-  font-weight: 600;
+  font-size: 1.4rem;
+  font-weight: 700;
   color: var(--bg-color);
   margin-bottom: 5px;
+  transition: color 0.3s ease;
 }
 
 .date-range {
-  font-size: 1.1rem;
-  color: var(--bg-color);
-  opacity: 0.7;
+  font-size: 1.2rem;
+  color: #444444;
+  font-weight: 600;
+  transition: color 0.3s ease;
 }
 
-.content:hover .experience-time,
-.content:hover .date-range {
-  color: var(--main-color);
-}
+/* --- Hover Text Inversions --- */
+.content:hover .tag h2 { color: var(--text-color); }
+.content:hover .tag h3 { color: rgba(255, 255, 255, 0.8); }
+.content:hover .desc p { color: rgba(255, 255, 255, 0.7); }
+.content:hover .date-details { border-top-color: rgba(var(--main-color-rgb), 0.3); }
+.content:hover .experience-time { color: var(--main-color); text-shadow: 0 0 10px rgba(var(--main-color-rgb), 0.4); }
+.content:hover .date-range { color: rgba(255, 255, 255, 0.6); }
 
-/* Responsive Design */
-/* Responsive Design */
-/* Responsive Design */
-
-@media (max-width: 768px) {
+/* --- Responsive Design (Mobile Timeline adjustments) --- */
+@media (max-width: 991px) {
   .timeline-container {
     width: 100%;
-    padding-left: 70px;
-    padding-right: 25px;
+    padding-left: 7rem;
+    padding-right: 2rem;
   }
 
   .timeline-container.left,
@@ -218,16 +221,24 @@
     left: 0;
   }
 
-  .time-line:after {
-    left: 20px;
+  /* نقل الخط المركزي لليسار */
+  .time-line::after {
+    left: 3rem;
   }
 
-  .timeline-container::after {
-    left: 29px;
+  /* نقل النقاط لليسار لتتطابق مع الخط */
+  .timeline-container.left::after,
+  .timeline-container.right::after {
+    left: 3rem;
+    right: auto;
+    transform: translateX(-50%);
   }
 
-  .experience-time,
-  .date-range {
-    font-size: 0.8rem;
+  .content {
+    padding: 2.5rem 2rem;
+  }
+
+  .date-details {
+    align-items: flex-start; /* توجيه التواريخ لليسار في الموبايل لسهولة القراءة */
   }
 }

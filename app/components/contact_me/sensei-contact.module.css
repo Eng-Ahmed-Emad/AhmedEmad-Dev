@@ -1,158 +1,182 @@
-/*-------------------- Footer Section Style------------------------- */
-/* -------------------Footer Section Style------------------------- */
-/* ------------------Footer Section Style ------------------------*/
-
-/**
-* Footer Section
-*@Author: Ahmed Emad Nasr
-*@Description: This is the style for the contact me section
+/*
+ * sensei-contact.module.css
+ * @Author Ahmed Emad Nasr
+ * @Description Modern, High-Contrast Floating Contact Card with Glow & Glassmorphism
  */
 
 .Contact-Me-section {
-  min-height: 0;
-  padding: 0;
-}
-
-.Contact-Me-section .header-section {
-  margin-top: 35px;
-  text-align: center;
-}
-
-.Contact-Me-section .header-section .title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 8rem 2rem 4rem; /* مساحة علوية عشان ما يخبطش في السكاشن اللي قبله */
   position: relative;
-  margin-bottom: 40px;
-  padding-bottom: 25px;
-  font-weight: 700;
-  font-size: 3rem;
+  z-index: 1;
+}
+
+.header-section {
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* --- Title Styling --- */
+.title {
+  position: relative;
+  margin-bottom: 5rem;
+  font-weight: 800;
+  font-size: 3.5rem;
+  color: var(--text-color);
+  letter-spacing: 1px;
+  text-shadow: 0 0 15px rgba(var(--main-color-rgb), 0.3);
+}
+
+.title span[lang="ja"] {
   color: var(--main-color);
+  margin-right: 1rem;
 }
 
-.Contact-Me-section .header-section .title::before,
-.Contact-Me-section .header-section .title::after {
-  content: " ";
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.Contact-Me-section .header-section .title::before {
-  width: 140%;
-  height: 1px;
-  background: var(--main-color);
-}
-
-.Contact-Me-section .header-section .title::after {
-  width: 45%;
-  height: 3px;
-  background: var(--main-color);
-}
-
-.Contact-Me-section {
-  margin: 0;
-  padding: 0;
-}
-
+/* --- The Floating Glassmorphism Card (Matches Header) --- */
+/* --- The Floating Glassmorphism Card (Matches Header) --- */
 .footer {
   position: relative;
-  width: 100%;
-  min-height: 200px;
-  text-align: center;
-  color: var(--main-color);
-  overflow: hidden;
+  
+  /* التعديل هنا: نفس عرض الهيدر بالظبط */
+  width: 96%;
+  max-width: 1550px; 
+  
+  padding: 4rem 3rem 3rem;
+  background: rgba(15, 15, 15, 0.85);
+  backdrop-filter: blur(20px) saturate(180%);
+  border-radius: 60px;
+  border: 1.5px solid rgba(var(--main-color-rgb), 0.4);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9), 
+              0 0 20px rgba(var(--main-color-rgb), 0.15);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.content {
-  position: relative;
-  z-index: 10;
-  padding-bottom: 20px;
+.footer:hover {
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.9), 
+              0 0 30px rgba(var(--main-color-rgb), 0.25);
+  transform: translateY(-5px);
 }
 
-.meon {
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* --- Email Link (Styled as a glowing button) --- */
+.link-me {
+  display: inline-block;
   font-size: 1.8rem;
   color: var(--text-color);
-  margin-bottom: 5px;
-}
-
-.link-me {
-  color: var(--main-color);
-  font-size: 2.5rem;
-  text-decoration: none;
+  font-weight: 600;
+  letter-spacing: 1px;
+  padding: 1.2rem 3rem;
+  margin-bottom: 4rem;
+  
+  /* تصميم الزر المودرن */
+  background: rgba(254, 242, 226, 0.05);
+  border: 1px solid rgba(var(--main-color-rgb), 0.3);
+  border-radius: 40px;
   transition: all 0.3s ease;
 }
 
 .link-me:hover {
-  text-shadow: 0 0 9px var(--main-color);
+  background: var(--main-color);
+  color: var(--bg-color);
+  box-shadow: 0 5px 20px rgba(var(--main-color-rgb), 0.4);
+  transform: scale(1.05);
 }
 
+/* --- Social Icons (Matching Header Links) --- */
 .social {
-  margin-top: 5px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 4rem;
 }
+
 .social a {
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  width: 4rem;
-  height: 4rem;
-  background: transparent;
-  border: 0.2rem solid var(--main-color);
-  font-size: 2rem;
-  border-radius: 1rem;
-  color: var(--main-color);
-  margin: 2rem 1.5rem;
-  transition:
-    transform 0.3s ease,
-    background 0.3s ease,
-    border-color 0.3s ease;
+  width: 5rem;
+  height: 5rem;
+  font-size: 2.2rem;
+  color: var(--text-color);
+  
+  /* خلفية زجاجية للأيقونات */
+  background: rgba(15, 15, 15, 0.6);
+  border: 1.5px solid rgba(var(--main-color-rgb), 0.3);
+  border-radius: 50%; /* شكل دائري بيليق أكتر مع الـ Glassmorphism */
+  
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .social a:hover {
-  color: black;
-  transform: scale(1.3) translateY(-5px);
   background: var(--main-color);
-  box-shadow: 0 0 16px var(--main-color);
+  color: var(--bg-color);
+  border-color: var(--main-color);
+  box-shadow: 0 5px 20px rgba(var(--main-color-rgb), 0.5);
+  transform: translateY(-8px) scale(1.1);
 }
-/*.social a[aria-label="Go to Facebook"]:hover {*/
-/*    background: linear-gradient(135deg, #3b5998, #6d84b4, #8b9dc3, #dfe3ee);*/
-/*    border-color: black;*/
-/*}*/
 
-/*.social a[aria-label="Go to Instagram"]:hover {*/
-/*    background: linear-gradient(135deg, #f09433, #f77737, #e1306c, #c13584, #833ab4, #5851db);*/
-/*    border-color: black;*/
-/*}*/
-
-/*.social a[aria-label="Go to Linkedin"]:hover {*/
-/*    background: linear-gradient(135deg, #0077b5, #008cc9, #00a0dc, #00b2ff);*/
-/*    border-color: black;*/
-/*}*/
-
-/*.social a[aria-label="Go to Telegram"]:hover {*/
-/*    background: linear-gradient(135deg, #0088cc, #009edc, #32a5e6, #6cc3f2);*/
-/*    border-color: black;*/
-/*}*/
-
+/* --- Copyright Section --- */
 .copyright {
-  margin-top: 10px;
-  font-size: 14px;
-  color: var(--text-color);
+  width: 100%;
+  padding-top: 2.5rem;
+  margin-top: 1rem;
+  font-size: 1.4rem;
+  color: rgba(255, 255, 255, 0.6);
+  border-top: 1px solid rgba(var(--main-color-rgb), 0.15); /* خط فاصل خفيف */
+  letter-spacing: 0.5px;
 }
 
 .Sensei_Name {
   color: var(--main-color);
-  opacity: 1;
-  font-weight: bold;
-  cursor: pointer;
+  font-weight: 700;
+  text-decoration: none;
   transition: all 0.3s ease;
+  padding: 0 0.5rem;
 }
 
 .Sensei_Name:hover {
-  text-shadow: 0 0 10px var(--main-color);
+  text-shadow: 0 0 15px var(--main-color);
+  letter-spacing: 1px;
 }
 
-.copyright span {
-  color: var(--main-color);
-  opacity: 1;
-  font-weight: bold;
-  cursor: pointer;
+/* --- Mobile Adjustments (Matching Header logic) --- */
+@media (max-width: 994px) {
+  .footer {
+    width: calc(100% - 2rem);
+    padding: 4rem 2rem 2.5rem;
+    border-radius: 25px;
+  }
+
+  .title {
+    font-size: 2.8rem;
+    margin-bottom: 3.5rem;
+  }
+
+  .link-me {
+    font-size: 1.5rem;
+    padding: 1rem 2.5rem;
+  }
+
+  .social {
+    gap: 1.5rem;
+  }
+
+  .social a {
+    width: 4.5rem;
+    height: 4.5rem;
+    font-size: 1.8rem;
+  }
 }
