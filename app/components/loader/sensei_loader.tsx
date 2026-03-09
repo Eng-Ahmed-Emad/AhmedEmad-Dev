@@ -49,7 +49,7 @@ function SenseiLoader(): JSX.Element | null {
       <div className={styles.loaderContent}>
         {/* Spinner Image */}
         <Image
-          src="/Assets/loading/loading.gif"
+          src="/public/Assets/loading/loading.gif"
           alt="A loading spinner"
           width={150}
           height={150}
