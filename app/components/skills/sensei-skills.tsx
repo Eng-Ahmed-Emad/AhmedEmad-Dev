@@ -48,7 +48,8 @@ const SkillCard: React.FC<{
           animate={{ rotate: 0 }}
           whileHover={{ rotate: 15 }}
           transition={{ duration: 0.4 }}
-        ></motion.i>
+          aria-hidden="true"
+        />
         <h3 className={styles.category}>{category}</h3>
       </div>
       <div className={styles["card-body"]}>

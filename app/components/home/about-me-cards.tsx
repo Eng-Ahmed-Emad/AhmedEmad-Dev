@@ -48,10 +48,10 @@ const AboutMeCard = memo(({ icon, title, description, index }: CardProps): JSX.E
       <div className={styles["card-part-1"]}>
         <motion.i
           className={icon}
-          aria-hidden="true" // لتحسين الـ Accessibility
+          aria-hidden="true"
           whileHover={{ rotate: 360 }}
           transition={{ duration: 0.6 }}
-        ></motion.i>
+        />
         <h3 className={styles.title}>{title}</h3>
       </div>
       <div className={styles["card-part-2"]}>

@@ -61,9 +61,10 @@ const ServiceItem: React.FC<{
         <motion.i
           className={icon}
           animate={{ rotate: 0 }}
-          whileHover={{ rotate: 360 }} // Icon rotates on hover
+          whileHover={{ rotate: 360 }}
           transition={{ duration: 0.6 }}
-        ></motion.i>
+          aria-hidden="true"
+        />
         <h3 className={styles.title}>{title}</h3>
       </div>
       <div className={styles["part-2"]}>
