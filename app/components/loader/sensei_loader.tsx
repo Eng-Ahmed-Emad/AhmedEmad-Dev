@@ -4,6 +4,12 @@ import styles from "./sensei_loader.module.css";
 import Image from "next/image";
 
 /**
+ * 💡 ملاحظة: استيراد الصورة بهذا الشكل يضمن ظهورها في الـ Production 
+ * حتى لو كان الموقع مرفوعاً على GitHub Pages في مسار فرعي.
+ */
+import loadingGif from "@/public/Assets/loading/loading.gif";
+
+/**
  * A React component that renders a loading spinner and a progress bar.
  * Designed by Ahmed Emad Nasr.
  */
@@ -30,6 +36,7 @@ function SenseiLoader(): JSX.Element | null {
       }, 600); // تأخير بسيط لإعطاء فرصة للعين لرؤية الـ 100%
     };
 
+    // التحقق من حالة تحميل الصفحة
     if (document.readyState === "complete") {
       handlePageLoader();
     } else {
@@ -48,14 +55,16 @@ function SenseiLoader(): JSX.Element | null {
     <div className={styles.loader} id="page-loader">
       <div className={styles.loaderContent}>
         {/* Spinner Image */}
-     <Image
-  src="/Assets/loading/loading.gif" // ✅ صح
-  alt="A loading spinner"
-  width={150}
-  height={150}
-  priority
-  className={styles.spinner}
-/>
+        <div className={styles.spinnerWrapper}>
+          <Image
+            src={loadingGif} // استخدام المتغير المستورد مباشرة
+            alt="Loading..."
+            width={150}
+            height={150}
+            priority
+            className={styles.spinner}
+          />
+        </div>
 
         {/* Progress Section */}
         <div className={styles.progressWrapper}>
