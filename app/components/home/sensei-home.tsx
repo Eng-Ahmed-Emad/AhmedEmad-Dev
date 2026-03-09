@@ -201,16 +201,16 @@ const SenseiHome = (): JSX.Element => {
   <span className={styles.highlight}>Ahmed Emad Nasr</span>.
 </h1>
 
-          <h3 className={styles.typingText}>
+          <h2 className={styles.typingText}>
 
            <span className={styles.typingHighlight}></span>
 
-          </h3>
+          </h2>
         
 
           <p>
 
-           Computer Science student at Benha University specializing in Security Operations and Incident Response. Focused on threat hunting, alert triage, and defending systems through hands-on SOC projects. Passionate about continuously developing Blue Team skills and securing digital environments.
+           Computer Science student at Benha University specializing in Security Operations, Incident Response and Cybersecurity. Focused on monitoring, alert triage, DFIR, and defending systems with experience gained through hands-on DEPI, ITI Training Programs and  SOC projects. Passionate about continuously developing Blue Team skills and securing digital environments.
 
           </p>
 
