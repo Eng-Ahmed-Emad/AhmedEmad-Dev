@@ -48,14 +48,14 @@ function SenseiLoader(): JSX.Element | null {
     <div className={styles.loader} id="page-loader">
       <div className={styles.loaderContent}>
         {/* Spinner Image */}
-        <Image
-          src="/public/Assets/loading/loading.gif"
-          alt="A loading spinner"
-          width={150}
-          height={150}
-          priority
-          className={styles.spinner}
-        />
+     <Image
+  src="/Assets/loading/loading.gif" // ✅ صح
+  alt="A loading spinner"
+  width={150}
+  height={150}
+  priority
+  className={styles.spinner}
+/>
 
         {/* Progress Section */}
         <div className={styles.progressWrapper}>
