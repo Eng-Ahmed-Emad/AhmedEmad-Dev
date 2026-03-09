@@ -11,15 +11,15 @@
   width: 100vw;
   height: 100vh;
   z-index: -1;
-  
-  /* التعديل الجديد لضمان عدم ظهور مساحات إضافية */
   display: block;
   margin: 0;
   padding: 0;
-  
-  /* إعدادات الأداء الممتازة الخاصة بك */
-  will-change: transform;
-  backface-visibility: hidden;
-  pointer-events: none;
   background-color: #000;
+
+  /* إعدادات الأداء الخارقة */
+  pointer-events: none;
+  will-change: transform;
+  transform: translateZ(0); 
+  perspective: 1000;
+  backface-visibility: hidden;
 }
