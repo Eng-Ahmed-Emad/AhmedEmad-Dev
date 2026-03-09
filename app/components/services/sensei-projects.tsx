@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import { useInView } from "react-intersection-observer";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar, faExclamationCircle, faEye } from "@fortawesome/free-solid-svg-icons";
 import { cubicBezier, motion, Variants } from "framer-motion";
 import styles from "./sensei-services-projects.module.css";
@@ -9,6 +8,7 @@ import { useGitHubRepos, type GitHubRepository } from "@/app/core/hooks/useGitHu
 import { getIconForLanguage, formatDate } from "@/app/core/utils/projectsUtils";
 import MotionInView from "@/app/core/components/MotionInView";
 import SectionHeader from "@/app/core/components/SectionHeader";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 //**
 // @Author Ahmed Emad Nasr
@@ -48,6 +48,7 @@ const ProjectItem: React.FC<{ repo: GitHubRepository; index: number }> = React.m
             animate={{ rotate: 0 }}
             whileHover={{ rotate: 360 }}
             transition={{ duration: 0.6 }}
+            aria-hidden="true"
           />
           <h3>{repo.name}</h3>
         </div>

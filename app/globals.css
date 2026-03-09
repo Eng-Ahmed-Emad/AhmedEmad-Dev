@@ -11,7 +11,7 @@
   border: none;
   outline: none;
   scroll-behavior: smooth;
-  font-family: "Overlock", serif;
+  font-family: var(--font-overlock, serif);
 }
 
 :root {
@@ -23,19 +23,19 @@
 }
 
 html[lang="en"] body {
-  font-family: "Overlock", sans-serif;
+  font-family: var(--font-overlock, sans-serif);
 }
 
 html[lang="ja"] body {
-  font-family: "Yuji Syuku", serif;
+  font-family: var(--font-yuji-syuku, serif);
 }
 
 [lang="en"] {
-  font-family: "Overlock", sans-serif;
+  font-family: var(--font-overlock, sans-serif);
 }
 
 [lang="ja"] {
-  font-family: "Yuji Syuku", serif;
+  font-family: var(--font-yuji-syuku, serif);
 }
 
 html {
@@ -45,7 +45,7 @@ html {
 
 body {
   background-color: var(--second-bg-color);
-  font-family: "Overlock", serif;
+  font-family: var(--font-overlock, serif);
   color: var(--text-color);
   overflow-x: hidden;
   background: linear-gradient(135deg, #000000 0%, #0a0a0a 100%);

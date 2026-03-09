@@ -1,8 +1,7 @@
 import React from "react";
 import "./globals.css";
-import "@fortawesome/fontawesome-svg-core/styles.css";
-import { config } from "@fortawesome/fontawesome-svg-core";
 import type { Metadata, Viewport } from "next";
+import { Overlock, Yuji_Syuku } from "next/font/google";
 
 // Viewport configuration
 export const viewport: Viewport = {
@@ -19,7 +18,19 @@ export const metadata: Metadata = {
   authors: [{ name: "Ahmed Emad Nasr" }],
 };
 
-config.autoAddCss = false;
+const overlock = Overlock({
+  weight: ["400", "700", "900"],
+  subsets: ["latin"],
+  variable: "--font-overlock",
+  display: "swap",
+});
+
+const yujiSyuku = Yuji_Syuku({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-yuji-syuku",
+  display: "swap",
+});
 
 export default function RootLayout({
   children,
@@ -29,17 +40,18 @@ export default function RootLayout({
   return (
     <html lang="en" dir="ltr">
       <head>
-        <meta name="google-site-verification" content="VCIeVhcDb-vQGmE68weZARtruR_F2bUwv6hcjKYdwqo" />
+        <meta
+          name="google-site-verification"
+          content="VCIeVhcDb-vQGmE68weZARtruR_F2bUwv6hcjKYdwqo"
+        />
         <link
           rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
         />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu&amp;family=Overlock&amp;family=Yuji+Syuku&amp;display=swap"
-          rel="stylesheet"
-        />
       </head>
-      <body className="bg-black text-white">{children}</body>
+      <body className={`bg-black text-white ${overlock.variable} ${yujiSyuku.variable}`}>
+        {children}
+      </body>
     </html>
   );
 }
