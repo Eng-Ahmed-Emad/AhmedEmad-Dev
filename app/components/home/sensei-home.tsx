@@ -1,6 +1,6 @@
 "use client";
 import { JSX, useEffect } from "react";
-import { motion, useAnimation } from "framer-motion";
+import { motion, useAnimation, Variants, cubicBezier } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -16,6 +16,60 @@ import styles from "./sensei-home.module.css";
 //**
 
 import { useRandomMedia } from "@/app/core/hooks/useRandomMedia";
+import { aboutMeCards } from "@/app/core/data";
+
+/**
+ * A function component that renders a single about me card.
+ */
+const AboutMeCard: React.FC<{
+  icon: string;
+  title: string;
+  description: string;
+  index: number;
+}> = ({ icon, title, description, index }): JSX.Element => {
+  // useInView hook to track if the element is visible in the viewport
+  const [ref, inView] = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  });
+
+  // Define animation variants for Framer Motion
+  const variants: Variants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        delay: index * 0.1,
+        ease: cubicBezier(0.22, 1, 0.36, 1),
+      },
+    },
+  };
+
+  return (
+    <motion.div
+      ref={ref}
+      className={styles["about-me-card"]}
+      initial="hidden"
+      animate={inView ? "visible" : "hidden"}
+      variants={variants}
+    >
+      <div className={styles["card-part-1"]}>
+        <motion.i
+          className={icon}
+          animate={{ rotate: 0 }}
+          whileHover={{ rotate: 360 }}
+          transition={{ duration: 0.6 }}
+        ></motion.i>
+        <h3 className={styles["card-title"]}>{title}</h3>
+      </div>
+      <div className={styles["card-part-2"]}>
+        <p className={styles["card-description"]}>{description}</p>
+      </div>
+    </motion.div>
+  );
+};
 
 const SenseiHome = (): JSX.Element => {
 
@@ -103,7 +157,11 @@ const SenseiHome = (): JSX.Element => {
 
   };
 
-
+  // useInView hook for about me header
+  const [headerRef, headerInView] = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  });
 
   return (
 
@@ -148,6 +206,7 @@ const SenseiHome = (): JSX.Element => {
            <span className={styles.typingHighlight}></span>
 
           </h3>
+        
 
           <p>
 
@@ -212,6 +271,27 @@ const SenseiHome = (): JSX.Element => {
         </motion.div>
 
       </motion.div>
+
+      {/* About Me Cards Section */}
+      <div className={styles["about-me-section"]}>
+        <motion.div
+          ref={headerRef}
+          className={styles["about-me-header"]}
+          initial={{ opacity: 0, y: -50 }}
+          animate={headerInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
+          <h2 className={styles["about-me-title"]}>
+            <span lang="ja">自己紹介 •</span>
+            <span lang="en"> About Me</span>
+          </h2>
+        </motion.div>
+        <div className={styles["about-me-grid"]}>
+          {aboutMeCards.map((card, index) => (
+            <AboutMeCard key={index} {...card} index={index} />
+          ))}
+        </div>
+      </div>
 
     </section >
 

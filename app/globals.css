@@ -19,6 +19,7 @@
   --second-bg-color: #000000;
   --text-color: #ffffff;
   --main-color: #fef2e2;
+  --main-color-rgb: 254, 242, 226;
 }
 
 html[lang="en"] body {
@@ -47,6 +48,7 @@ body {
   font-family: "Overlock", serif;
   color: var(--text-color);
   overflow-x: hidden;
+  background: linear-gradient(135deg, #000000 0%, #0a0a0a 100%);
 }
 
 html::-webkit-scrollbar {
@@ -59,6 +61,12 @@ html::-webkit-scrollbar-track {
 
 html::-webkit-scrollbar-thumb {
   background: var(--main-color);
+  border-radius: 0.4rem;
+  transition: background 0.3s ease;
+}
+
+html::-webkit-scrollbar-thumb:hover {
+  background: rgba(254, 242, 226, 0.8);
 }
 
 /*---------This is General Section Style---------*/

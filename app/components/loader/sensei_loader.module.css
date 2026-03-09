@@ -1,4 +1,4 @@
-/* /*
+/* 
 @Author Ahmed Emad Nasr
 @Description A loader component that displays a loading spinner until the page is fully loaded.
  */
@@ -9,8 +9,37 @@
   width: 100%;
   height: 100vh;
   z-index: 9999;
-  backdrop-filter: blur(28px);
+  backdrop-filter: blur(10px);
   display: flex;
   align-items: center;
   justify-content: center;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.95) 100%);
+  animation: fadeOut 0.5s ease-in-out forwards;
+  animation-delay: 1.5s;
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+.loader img {
+  width: 150px;
+  height: 150px;
+  filter: drop-shadow(0 0 30px var(--main-color));
+  animation: spinLoader 2s linear infinite;
+}
+
+@keyframes spinLoader {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(180deg) scale(1.05);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
 }
