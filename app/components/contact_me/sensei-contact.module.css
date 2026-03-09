@@ -9,7 +9,7 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  padding: 8rem 2rem 4rem; /* مساحة علوية عشان ما يخبطش في السكاشن اللي قبله */
+  padding: 20rem 2rem 4rem; /* مساحة علوية عشان ما يخبطش في السكاشن اللي قبله */
   position: relative;
   z-index: 1;
 }
