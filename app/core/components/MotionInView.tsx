@@ -2,7 +2,6 @@
 
 import React from "react";
 import { motion, MotionProps } from "framer-motion";
-import { useInView } from "react-intersection-observer";
 
 type MotionInViewProps = MotionProps & {
   children: React.ReactNode;
@@ -19,17 +18,12 @@ const MotionInView: React.FC<MotionInViewProps> = ({
   triggerOnce = true,
   ...rest
 }) => {
-  const [ref, inView] = useInView({
-    triggerOnce,
-    threshold,
-  });
-
   return (
     <motion.div
-      ref={ref}
       className={className}
       initial="hidden"
-      animate={inView ? "visible" : "hidden"}
+      whileInView="visible"
+      viewport={{ once: triggerOnce, amount: threshold }}
       variants={variants}
       {...rest}
     >

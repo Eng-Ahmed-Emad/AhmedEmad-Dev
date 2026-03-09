@@ -4,7 +4,7 @@ import { motion, Variants, cubicBezier } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import styles from "./sensei-skills.module.css";
 import SectionHeader from "@/app/core/components/SectionHeader";
-import { technicalSkills, nonTechnicalSkills } from "@/app/core/data";
+import { technicalSkills} from "@/app/core/data";
 
 /**
  * SkillCard Component
@@ -98,19 +98,6 @@ function SkillsSection(): JSX.Element {
           ))}
         </div>
 
-
-
-        <div className={styles["skills-grid"]}>
-          {nonTechnicalSkills.map((skill, index) => (
-            <SkillCard
-              key={`non-technical-${index}`}
-              category={skill.category}
-              icon={skill.icon}
-              skills={skill.skills}
-              index={index + technicalSkills.length}
-            />
-          ))}
-        </div>
       </div>
     </section>
   );

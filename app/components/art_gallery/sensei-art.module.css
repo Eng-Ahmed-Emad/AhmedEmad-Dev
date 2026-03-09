@@ -2,15 +2,11 @@
 /*-----------------This is Art Gallery Section Style-----------------*/
 /*-----------------This is Art Gallery Section Style-----------------*/
 
-
-
-
 /*
 * Art Gallery Section
 * @Author: Ahmed_Sensei
 * @Description: A responsive art gallery component with a menu that highlights the active section of the page.
  */
-
 
 .art-gallery-section {
     min-height: 100vh;
@@ -21,48 +17,51 @@
     padding: 0 5rem 5%;
 }
 
-
-
-
 .art-gallery-section .header-section {
     margin-top: 35px;
     text-align: center;
 }
 
+/* --- تم تعديل العنوان والخط فقط ليتطابق مع باقي السكاشن --- */
 .art-gallery-section .header-section .title {
     position: relative;
     margin-bottom: 40px;
-    padding-bottom: 25px;
-    font-weight: 700;
-    font-size: 3rem;
-    color: var(--main-color);
+    font-weight: 800;
+    font-size: 3.5rem;
+    color: var(--text-color);
+    letter-spacing: 1px;
+    text-shadow: 0 0 15px rgba(var(--main-color-rgb), 0.3);
+    display: inline-block;
+    padding-bottom: 2rem;
 }
 
 .art-gallery-section .header-section .title::before,
 .art-gallery-section .header-section .title::after {
-    content: " ";
+    content: "";
     position: absolute;
     bottom: 0;
     left: 50%;
     transform: translateX(-50%);
+    border-radius: 5px;
 }
 
 .art-gallery-section .header-section .title::before {
-    width: 140%;
-    height: 1px;
-    background: var(--main-color);
+    width: 120%;
+    height: 2px;
+    background: rgba(var(--main-color-rgb), 0.2);
 }
 
 .art-gallery-section .header-section .title::after {
-    width: 45%;
-    height: 3px;
+    width: 50%;
+    height: 4px;
     background: var(--main-color);
+    box-shadow: 0 0 10px rgba(var(--main-color-rgb), 0.6);
 }
+/* ----------------------------------------------------------- */
 
 .art-gallery-section {
     margin: 0;
 }
-
 
 .art-gallery-section .art-gallery-content .Gallery img {
     border-radius: 1rem;

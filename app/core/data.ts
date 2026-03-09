@@ -94,10 +94,7 @@ export const technicalSkills = [
     icon: "fa-solid fa-chart-line",
     skills: "Log Parsing, Event Correlation, Alert Tuning, Compliance Reporting, Data Visualization",
   },
-];
-
-export const nonTechnicalSkills = [
-  {
+    {
     category: "Communication",
     icon: "fa-solid fa-comments",
     skills: "Technical Writing, Presentation Skills, Cross-functional Collaboration, Stakeholder Management",

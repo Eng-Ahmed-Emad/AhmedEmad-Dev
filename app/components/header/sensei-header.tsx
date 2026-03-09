@@ -1,61 +1,66 @@
 "use client";
-import React, { useState, useEffect, JSX } from "react";
+import React, { JSX } from "react";
 import styles from "./sensei-header.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faHome,
-  faUserSecret,
-  faBook,
-  faFolder,
-  faPalette,
-} from "@fortawesome/free-solid-svg-icons";
-import { IconProp } from "@fortawesome/fontawesome-svg-core";
-
-//**
-// @Author Mostafa Sensei106
-// @Description A responsive header component with a menu that highlights the active section of the page.
-//**
-
-/**
- * The main header component with a responsive menu.
- * @returns The JSX Element for the header.
- */
 import { useHeader } from "@/app/core/hooks/useHeader";
 
+/**
+ * @Author Ahmed Emad Nasr
+ * @Description A responsive header component with a modern progress-aware menu.
+ */
+
 const SenseiHeader = (): JSX.Element => {
-  const { isMenuOpen, activeSection, toggleMenu, sectionIcons, setActiveSection, setIsMenuOpen } = useHeader();
+  const { 
+    isMenuOpen, 
+    activeSection, 
+    toggleMenu, 
+    sectionIcons, 
+    setActiveSection, 
+    setIsMenuOpen 
+  } = useHeader();
+
+  // وظيفة للتعامل مع النقر على الروابط لإغلاق المنيو في الموبايل بسلاسة
+  const handleNavLinkClick = (section: string) => {
+    setActiveSection(section);
+    localStorage.setItem("activeSection", section);
+    if (window.innerWidth <= 994) {
+      setIsMenuOpen(false);
+    }
+  };
 
   return (
     <header className={styles.header}>
-      <a href="#" className={styles.logo}>
-        <span lang="ja"> エンジニア・アハメド</span>
+      {/* Logo Section */}
+      <a href="#" className={styles.logo} onClick={() => handleNavLinkClick("home")}>
+        <span lang="ja">エンジニア・アハメド</span>
       </a>
+
+      {/* Hamburger Menu Icon (Mobile Only) */}
       <div
         className={`${styles.MenuIcon} ${isMenuOpen ? styles.active : ""}`}
         onClick={toggleMenu}
         onKeyDown={(e) => e.key === "Enter" && toggleMenu()}
         tabIndex={0}
         role="button"
+        aria-expanded={isMenuOpen}
         aria-label={isMenuOpen ? "Close menu" : "Open menu"}
       >
         <span></span>
         <span></span>
         <span></span>
       </div>
+
+      {/* Navigation Links */}
       <nav className={`${styles.navbar} ${isMenuOpen ? styles.active : ""}`}>
         {Object.entries(sectionIcons).map(([section, icon]) => (
           <a
             key={section}
             href={`#${section}`}
             className={activeSection === section ? styles.active : ""}
-            onClick={() => {
-              setActiveSection(section);
-              localStorage.setItem("activeSection", section);
-              if (window.innerWidth <= 994) setIsMenuOpen(false);
-            }}
+            onClick={() => handleNavLinkClick(section)}
           >
             <FontAwesomeIcon icon={icon} className={styles.icon} />
-            <span>{section}</span>
+            <span className={styles.navText}>{section}</span>
           </a>
         ))}
       </nav>

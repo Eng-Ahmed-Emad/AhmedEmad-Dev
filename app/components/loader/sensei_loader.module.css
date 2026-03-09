@@ -1,7 +1,8 @@
-/* 
-@Author Ahmed Emad Nasr
-@Description A loader component that displays a loading spinner until the page is fully loaded.
+/**
+ * @Author Ahmed Emad Nasr
+ * @Description Enhanced loader with Progress Bar
  */
+
 .loader {
   position: fixed;
   top: 0;
@@ -9,37 +10,71 @@
   width: 100%;
   height: 100vh;
   z-index: 9999;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.95) 100%);
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 1) 100%);
   animation: fadeOut 0.5s ease-in-out forwards;
-  animation-delay: 1.5s;
+  animation-delay: 2s; /* وقت كافٍ لمشاهدة الـ Bar وهو يكتمل */
 }
 
-@keyframes fadeOut {
-  to {
-    opacity: 0;
-    visibility: hidden;
-  }
+.loaderContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px; /* المسافة بين الصورة والبار */
 }
 
-.loader img {
+.spinner {
   width: 150px;
   height: 150px;
   filter: drop-shadow(0 0 30px var(--main-color));
   animation: spinLoader 2s linear infinite;
 }
 
+/* حاوية التقدم */
+.progressWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.progressContainer {
+  width: 280px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.progressBar {
+  height: 100%;
+  background: var(--main-color);
+  box-shadow: 0 0 15px var(--main-color), 0 0 30px var(--main-color);
+  transition: width 0.4s cubic-bezier(0.1, 0.7, 1.0, 0.1); /* حركة انسيابية للبار */
+}
+
+.progressText {
+  color: #fff;
+  font-family: 'JetBrains Mono', monospace; /* أو أي خط تفضله */
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 2px;
+  text-shadow: 0 0 10px var(--main-color);
+}
+
+/* Animations */
+@keyframes fadeOut {
+  from { opacity: 1; visibility: visible; }
+  to { opacity: 0; visibility: hidden; }
+}
+
 @keyframes spinLoader {
-  0% {
-    transform: rotate(0deg) scale(1);
-  }
-  50% {
-    transform: rotate(180deg) scale(1.05);
-  }
-  100% {
-    transform: rotate(360deg) scale(1);
-  }
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.08); }
+  100% { transform: rotate(360deg) scale(1); }
 }

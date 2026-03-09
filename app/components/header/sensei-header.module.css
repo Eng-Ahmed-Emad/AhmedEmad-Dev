@@ -1,249 +1,193 @@
 /*
  * sensei-header.module.css
- *@Author Mostafa Sensei106
- *@Description A modern silver-themed floating navbar with enhanced animations
+ * @Author Ahmed Emad Nasr
+ * @Description Modern, High-Contrast Floating Navbar with Glow & Borders
  */
 
 .header {
   position: fixed;
-  top: 0.5rem;
+  top: 1.2rem;
   left: 50%;
   transform: translateX(-50%);
-  width: calc(100% - 4rem);
-  max-width: 100%;
-  padding: 1.8rem 1.5%;
-  background: rgba(0, 0, 0, 0.8);
-  backdrop-filter: blur(20px);
-  border-radius: 1.2rem;
+  
+  /* التعديل هنا: زيادة العرض */
+  width: 90%; /* بياخد 96% من عرض الشاشة */
+  max-width: 1550px; /* أقصى عرض كبرناه لـ 1550 بيكسل */
+  
+  padding: 1rem 2.5rem;
+  background: rgba(15, 15, 15, 0.85);
+  backdrop-filter: blur(20px) saturate(180%);
+  border-radius: 60px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  z-index: 100;
-  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-  border: 1px solid rgba(var(--main-color-rgb), 0.3);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  border: 1.5px solid rgba(var(--main-color-rgb), 0.4);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9), 
+              0 0 15px rgba(var(--main-color-rgb), 0.15);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .logo {
-  font-size: 2.5rem;
+  font-size: 2.6rem;
   font-family: "Yuji Syuku", serif;
   color: var(--text-color);
   font-weight: 800;
+  letter-spacing: -1.5px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  will-change: transform, text-shadow;
+  white-space: nowrap;
+  transition: transform 0.3s ease;
 }
 
 .logo:hover {
-  text-shadow:
-    0 0 30px var(--main-color),
-    0 0 10px var(--main-color);
+  transform: scale(1.03);
+  text-shadow: 0 0 20px var(--main-color);
 }
 
 .navbar {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 1.2rem;
 }
 
 .navbar a {
-  font-size: 1.6rem;
+  font-size: 1.4rem; /* الخط الكبير الواضح */
   color: var(--text-color);
-  padding: 0.6rem 1.2rem;
-  border-radius: 0.8rem;
-  font-weight: 500;
-  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  padding: 0.8rem 1.6rem;
+  border-radius: 40px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  transition: all 0.3s ease;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.7rem;
+  text-transform: capitalize;
   position: relative;
-  overflow: hidden;
-  will-change: background, color, box-shadow;
-}
-
-.navbar a::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    120deg,
-    transparent,
-    var(--main-color),
-    transparent
-  );
-  transition: left 0.4s ease-in-out;
-}
-
-.navbar a:hover::before {
-  left: 100%;
 }
 
 .navbar a:hover,
 .navbar a.active {
   background: var(--main-color);
   color: var(--bg-color);
-  box-shadow: 0 8px 24px var(--main-color);
+  box-shadow: 0 5px 20px rgba(var(--main-color-rgb), 0.4);
 }
 
-.navbar a .icon {
-  color: var(--text-color);
-  will-change: transform, color;
-  transition:
-    transform 0.4s ease,
-    color 0.4s ease;
-}
-
-.navbar a:hover .icon,
-.navbar a.active .icon {
-  transform: rotate(20deg);
-  color: var(--bg-color);
-}
-
+/* --- Mobile Menu Icon --- */
 .MenuIcon {
-  width: 30px;
-  height: 20px;
-  position: relative;
-  cursor: pointer;
   display: none;
+  flex-direction: column;
+  gap: 6px;
+  cursor: pointer;
+  z-index: 1001;
+  padding: 5px;
 }
 
 .MenuIcon span {
-  display: block;
-  position: absolute;
-  height: 4px;
-  width: 100%;
+  width: 30px;
+  height: 3px;
   background: var(--main-color);
-  border-radius: 1rem;
-  opacity: 1;
-  left: 0;
-  transform: rotate(0deg);
-  transition: 0.25s ease-in-out;
+  border-radius: 10px;
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
 }
 
-.MenuIcon span:nth-child(1) {
-  top: 0;
-}
-
-.MenuIcon span:nth-child(2) {
-  top: 8px;
-}
-
-.MenuIcon span:nth-child(3) {
-  top: 16px;
-}
-
-.MenuIcon.active span:nth-child(1) {
-  top: 8px;
-  transform: rotate(135deg);
-}
-
-.MenuIcon.active span:nth-child(2) {
-  opacity: 0;
-  left: -60px;
-}
-
-.MenuIcon.active span:nth-child(3) {
-  top: 8px;
-  transform: rotate(-135deg);
-}
-
+/* --- Mobile Adjustments --- */
 @media (max-width: 994px) {
   .header {
     width: calc(100% - 2rem);
-    padding: 1rem 2%;
+    padding: 0.8rem 1.8rem;
+    border-radius: 25px;
   }
 
   .logo {
-    font-size: 2rem;
+    font-size: 2.1rem;
   }
 
   .MenuIcon {
-    display: block;
-    width: 25px;
-    height: 18px;
+    display: flex;
   }
 
   .navbar {
     position: absolute;
-    top: 100%;
+    top: calc(100% + 15px);
     right: 0;
     width: 100%;
-    border: 2px solid var(--main-color);
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(20px);
-    border-radius: 1rem;
+    background: rgba(15, 15, 15, 0.98); /* أغمق قليلاً في الموبايل */
+    backdrop-filter: blur(25px);
+    flex-direction: column;
+    padding: 2.5rem 0;
+    border-radius: 25px;
+    
+    /* إطار للمنيو في الموبايل ليبرز فوق المحتوى */
+    border: 1px solid rgba(var(--main-color-rgb), 0.3);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9),
+                0 0 20px rgba(var(--main-color-rgb), 0.1);
+    
     display: none;
     opacity: 0;
-    transform: translateY(-25px);
-    margin-top: 0.5rem;
-    transition:
-      opacity 0.3s ease,
-      transform 0.4s ease-in-out;
+    transform: translateY(-20px) scale(0.95);
+    pointer-events: none;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
 
   .navbar.active {
-    display: block;
+    display: flex;
     opacity: 1;
-    transform: translateY(0);
-    animation: slideIn 0.4s ease forwards;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+    animation: slideDownIn 0.5s ease forwards;
   }
 
   .navbar a {
-    display: flex;
-    align-items: center;
-    font-size: 2.1rem;
-    margin: 2.5rem;
+    font-size: 1.8rem;
+    width: 85%;
+    justify-content: center;
+    margin: 0.5rem 0;
     opacity: 0;
-    padding: 1rem;
-    transform: translateX(-20px);
-    transition:
-      opacity 0.3s ease,
-      transform 0.3s ease;
   }
 
   .navbar.active a {
-    opacity: 1;
-    transform: translateX(0);
+    animation: fadeInLinks 0.4s ease forwards;
   }
 
-  .navbar.active a:nth-child(1) {
-    animation: slideInLeft 0.5s ease 0.1s forwards;
+  /* تأخير الأنيميشن للروابط */
+  .navbar.active a:nth-child(1) { animation-delay: 0.1s; }
+  .navbar.active a:nth-child(2) { animation-delay: 0.2s; }
+  .navbar.active a:nth-child(3) { animation-delay: 0.3s; }
+  .navbar.active a:nth-child(4) { animation-delay: 0.4s; }
+  .navbar.active a:nth-child(5) { animation-delay: 0.5s; }
+}
+
+/* --- Animations Keyframes --- */
+@keyframes slideDownIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-30px) rotateX(-15deg);
   }
-  .navbar.active a:nth-child(2) {
-    animation: slideInLeft 0.5s ease 0.2s forwards;
-  }
-  .navbar.active a:nth-child(3) {
-    animation: slideInLeft 0.5s ease 0.3s forwards;
-  }
-  .navbar.active a:nth-child(4) {
-    animation: slideInLeft 0.5s ease 0.4s forwards;
-  }
-  .navbar.active a:nth-child(5) {
-    animation: slideInLeft 0.5s ease 0.5s forwards;
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotateX(0);
   }
 }
 
-@keyframes slideIn {
-  from {
+@keyframes fadeInLinks {
+  0% {
     opacity: 0;
-    transform: translateY(-20px);
+    transform: translateY(20px);
   }
-  to {
+  100% {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
-@keyframes slideInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+/* Menu Icon active state */
+.MenuIcon.active span:nth-child(1) {
+  transform: translateY(9px) rotate(45deg);
+}
+.MenuIcon.active span:nth-child(2) {
+  opacity: 0;
+  transform: translateX(-20px);
+}
+.MenuIcon.active span:nth-child(3) {
+  transform: translateY(-9px) rotate(-45deg);
 }
