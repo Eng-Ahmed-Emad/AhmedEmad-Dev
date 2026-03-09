@@ -1,13 +1,15 @@
 /* ------------------About Me Cards Section Style---------- */
-
 /*
-@Author Ahmed Emad Nasr
-@Description A responsive about me cards section with animation.
+ *@Author: Ahmed Emad Nasr
+ *@Optimized by: Gemini
+ *@Description: Responsive About Me cards with optimized Glassmorphism hover effects.
  */
 
 .section-about-me {
   min-height: 60vh;
   padding: 60px 0;
+  position: relative; /* لضمان توافق تأثير الزجاج مع أي عناصر خلفية */
+  z-index: 1;
 }
 
 .header-section {
@@ -15,6 +17,7 @@
   text-align: center;
 }
 
+/* --- Title Styling --- */
 .header-section .title {
   position: relative;
   margin-bottom: 40px;
@@ -26,7 +29,7 @@
 
 .header-section .title::before,
 .header-section .title::after {
-  content: " ";
+  content: "";
   position: absolute;
   bottom: 0;
   left: 50%;
@@ -45,33 +48,10 @@
   background: var(--main-color);
 }
 
+/* --- Container & Grid --- */
 .container {
   margin: 0 auto;
   padding: 0 5rem 5%;
-}
-
-@media (max-width: 1200px) {
-  .container {
-    padding: 0 3rem 5%;
-  }
-}
-
-@media (max-width: 991px) {
-  .container {
-    padding: 0 1.5rem 5%;
-  }
-}
-
-@media (max-width: 768px) {
-  .container {
-    padding: 0 1.5rem 5%;
-  }
-}
-
-@media (max-width: 480px) {
-  .container {
-    padding: 0 1.5rem 5%;
-  }
 }
 
 .grid-container {
@@ -80,6 +60,7 @@
   gap: 20px;
 }
 
+/* --- About Me Cards --- */
 .about-me-card {
   background: var(--main-color);
   border-radius: 10px;
@@ -87,28 +68,37 @@
   padding: 20px;
   text-align: left;
   box-shadow: 0 0 11px var(--main-color);
-  transition: 0.3s ease;
   border: 2px solid var(--main-color);
+  
+  /* Optimization: Specific properties for smoother performance */
+  transition: background-color 0.4s ease, 
+              box-shadow 0.4s ease, 
+              backdrop-filter 0.4s ease;
+  will-change: background-color, box-shadow;
 }
 
+/* Glassmorphism Hover Effect */
 .about-me-card:hover {
-  background: transparent;
+  background: rgba(15, 15, 15, 0.05); /* شفافية خفيفة لتعزيز تأثير الزجاج */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px); /* Safari Support */
   box-shadow: 0 0 28px var(--main-color);
 }
 
-.about-me-card:hover .card-part-1 {
-  border-bottom: 2px solid var(--main-color);
-}
-
+/* --- Card Inner Parts --- */
 .card-part-1 {
   padding: 10px 0;
   border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+  transition: border-bottom-color 0.3s ease;
+}
+
+.about-me-card:hover .card-part-1 {
+  border-bottom-color: var(--main-color);
 }
 
 .card-part-1 i {
   font-size: 40px;
   color: black;
-  transition: color 0.3s ease;
 }
 
 .card-part-1 h3 {
@@ -128,72 +118,53 @@
   line-height: 1.6;
 }
 
+/* Optimization: Grouped Text & Icon Color Transitions */
+.card-part-1 i,
+.card-part-1 h3,
+.card-part-2 .description {
+  transition: color 0.3s ease;
+}
+
+/* Grouped Hover Color Changes */
+.about-me-card:hover .card-part-1 i,
+.about-me-card:hover .card-part-1 h3,
 .about-me-card:hover .card-part-2 .description {
   color: var(--main-color);
 }
 
-.about-me-card:hover .card-part-1 i {
-  color: var(--main-color);
+/* --- Responsive Design (Cleaned and Consolidated) --- */
+@media (max-width: 1200px) {
+  .container { padding: 0 3rem 5%; }
 }
 
-.about-me-card:hover .card-part-1 h3 {
-  color: var(--main-color);
+@media (max-width: 991px) {
+  .container { padding: 0 1.5rem 5%; }
 }
 
 @media (max-width: 768px) {
-  .header-section .title {
-    font-size: 2rem;
-  }
-
+  .header-section .title { font-size: 2rem; }
   .grid-container {
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 15px;
   }
-
-  .card-part-1 i {
-    font-size: 35px;
-  }
-
-  .card-part-1 h3 {
-    font-size: 1.25rem;
-  }
-
-  .card-part-2 .description {
-    font-size: 14px;
-  }
+  .card-part-1 i { font-size: 35px; }
+  .card-part-1 h3 { font-size: 1.25rem; }
+  .card-part-2 .description { font-size: 14px; }
 }
 
 @media (max-width: 480px) {
+  .container { padding: 0 1rem 5%; } /* تم تصحيح البادينج هنا */
   .header-section .title {
     font-size: 1.5rem;
     margin-bottom: 30px;
     padding-bottom: 15px;
   }
-
-  .container {
-    padding: 0 1rem 5%;
-  }
-
   .grid-container {
     grid-template-columns: 1fr;
     gap: 15px;
   }
-
-  .about-me-card {
-    padding: 15px;
-  }
-
-  .card-part-1 i {
-    font-size: 30px;
-  }
-
-  .card-part-1 h3 {
-    font-size: 1.1rem;
-    margin: 10px 0;
-  }
-
-  .card-part-2 .description {
-    font-size: 13px;
-    line-height: 1.5;
-  }
+  .about-me-card { padding: 15px; }
+  .card-part-1 i { font-size: 30px; }
+  .card-part-1 h3 { font-size: 1.1rem; margin: 10px 0; }
+  .card-part-2 .description { font-size: 13px; line-height: 1.5; }
 }

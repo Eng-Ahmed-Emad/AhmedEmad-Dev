@@ -1,35 +1,47 @@
 "use client";
 
-import React from "react";
+import React, { forwardRef, memo } from "react";
 import { motion, MotionProps } from "framer-motion";
 
+// دمج الأنواع لتجنب أي تعارض في الـ TypeScript
 type MotionInViewProps = MotionProps & {
   children: React.ReactNode;
   className?: string;
   threshold?: number;
   triggerOnce?: boolean;
-} & React.HTMLAttributes<HTMLDivElement>;
+} & Omit<React.HTMLAttributes<HTMLDivElement>, keyof MotionProps>;
 
-const MotionInView: React.FC<MotionInViewProps> = ({
-  children,
-  variants,
-  className,
-  threshold = 0.1,
-  triggerOnce = true,
-  ...rest
-}) => {
-  return (
-    <motion.div
-      className={className}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: triggerOnce, amount: threshold }}
-      variants={variants}
-      {...rest}
-    >
-      {children}
-    </motion.div>
-  );
-};
+const MotionInView = forwardRef<HTMLDivElement, MotionInViewProps>(
+  (
+    {
+      children,
+      variants,
+      className,
+      threshold = 0.1,
+      triggerOnce = true,
+      ...rest
+    },
+    ref
+  ) => {
+    return (
+      <motion.div
+        ref={ref}
+        className={className}
+        initial="hidden"
+        whileInView="visible"
+        // هامش الرؤية لبدء الحركة بشكل طبيعي قبل الظهور الكامل
+        viewport={{ once: triggerOnce, amount: threshold, margin: "0px 0px -50px 0px" }}
+        variants={variants}
+        // تفعيل تسريع الأجهزة (GPU) عن طريق إخبار المتصفح بالتغييرات المتوقعة
+        style={{ willChange: "transform, opacity", ...rest.style }}
+        {...rest}
+      >
+        {children}
+      </motion.div>
+    );
+  }
+);
 
-export default MotionInView;
+MotionInView.displayName = "MotionInView";
+
+export default memo(MotionInView);

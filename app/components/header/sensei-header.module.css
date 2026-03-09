@@ -1,7 +1,6 @@
 /*
  * sensei-header.module.css
- * @Author Ahmed Emad Nasr
- * @Description Modern, High-Contrast Floating Navbar with Glow & Borders
+ * @Description Optimized Modern, High-Contrast Floating Navbar with Advanced Glassmorphism
  */
 
 .header {
@@ -9,23 +8,28 @@
   top: 1.2rem;
   left: 50%;
   transform: translateX(-50%);
-  
-  /* التعديل هنا: زيادة العرض */
-  width: 90%; /* بياخد 96% من عرض الشاشة */
-  max-width: 1550px; /* أقصى عرض كبرناه لـ 1550 بيكسل */
-  
+  width: 90%; 
+  max-width: 1550px; 
   padding: 1rem 2.5rem;
-  background: rgba(15, 15, 15, 0.85);
-  backdrop-filter: blur(20px) saturate(180%);
+  
+  /* تحسين تأثير الزجاج: شفافية أقل قليلاً لبروز الـ Blur */
+  background: rgba(15, 15, 15, 0.75);
+  backdrop-filter: blur(24px) saturate(200%);
+  -webkit-backdrop-filter: blur(24px) saturate(200%); /* لدعم متصفحات سفاري */
+  
   border-radius: 60px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   z-index: 1000;
-  border: 1.5px solid rgba(var(--main-color-rgb), 0.4);
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9), 
+  border: 1px solid rgba(var(--main-color-rgb), 0.3);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), 
               0 0 15px rgba(var(--main-color-rgb), 0.15);
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+              
+  /* Optimization: تحديد الخصائص بدلاً من all */
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+              background-color 0.4s ease,
+              box-shadow 0.4s ease;
 }
 
 .logo {
@@ -36,12 +40,13 @@
   letter-spacing: -1.5px;
   cursor: pointer;
   white-space: nowrap;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, text-shadow 0.3s ease;
+  will-change: transform; /* تهيئة الـ GPU */
 }
 
 .logo:hover {
   transform: scale(1.03);
-  text-shadow: 0 0 20px var(--main-color);
+  text-shadow: 0 0 20px rgba(var(--main-color-rgb), 0.8);
 }
 
 .navbar {
@@ -51,18 +56,19 @@
 }
 
 .navbar a {
-  font-size: 1.4rem; /* الخط الكبير الواضح */
+  font-size: 1.4rem;
   color: var(--text-color);
   padding: 0.8rem 1.6rem;
   border-radius: 40px;
   font-weight: 600;
   letter-spacing: 0.8px;
-  transition: all 0.3s ease;
   display: flex;
   align-items: center;
   gap: 0.7rem;
   text-transform: capitalize;
   position: relative;
+  /* Optimization */
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
 }
 
 .navbar a:hover,
@@ -70,6 +76,7 @@
   background: var(--main-color);
   color: var(--bg-color);
   box-shadow: 0 5px 20px rgba(var(--main-color-rgb), 0.4);
+  transform: translateY(-2px); /* حركة خفيفة جداً للروابط عند التمرير */
 }
 
 /* --- Mobile Menu Icon --- */
@@ -87,7 +94,9 @@
   height: 3px;
   background: var(--main-color);
   border-radius: 10px;
-  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  /* Optimization */
+  transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.3s ease;
+  will-change: transform, opacity;
 }
 
 /* --- Mobile Adjustments --- */
@@ -111,30 +120,33 @@
     top: calc(100% + 15px);
     right: 0;
     width: 100%;
-    background: rgba(15, 15, 15, 0.98); /* أغمق قليلاً في الموبايل */
-    backdrop-filter: blur(25px);
+    background: rgba(15, 15, 15, 0.95);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
     flex-direction: column;
     padding: 2.5rem 0;
     border-radius: 25px;
     
-    /* إطار للمنيو في الموبايل ليبرز فوق المحتوى */
     border: 1px solid rgba(var(--main-color-rgb), 0.3);
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9),
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.95),
                 0 0 20px rgba(var(--main-color-rgb), 0.1);
     
-    display: none;
+    /* Optimization: استخدام visibility بدلاً من display: none لأنيميشن سلس */
+    display: flex;
+    visibility: hidden;
     opacity: 0;
     transform: translateY(-20px) scale(0.95);
     pointer-events: none;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), visibility 0.4s;
+    will-change: transform, opacity;
   }
 
   .navbar.active {
-    display: flex;
+    visibility: visible;
     opacity: 1;
     transform: translateY(0) scale(1);
     pointer-events: auto;
-    animation: slideDownIn 0.5s ease forwards;
+    /* تم استبدال الـ Animation بـ Transitions قوية لأداء أفضل */
   }
 
   .navbar a {
@@ -143,41 +155,21 @@
     justify-content: center;
     margin: 0.5rem 0;
     opacity: 0;
-  }
-
-  .navbar.active a {
-    animation: fadeInLinks 0.4s ease forwards;
-  }
-
-  /* تأخير الأنيميشن للروابط */
-  .navbar.active a:nth-child(1) { animation-delay: 0.1s; }
-  .navbar.active a:nth-child(2) { animation-delay: 0.2s; }
-  .navbar.active a:nth-child(3) { animation-delay: 0.3s; }
-  .navbar.active a:nth-child(4) { animation-delay: 0.4s; }
-  .navbar.active a:nth-child(5) { animation-delay: 0.5s; }
-}
-
-/* --- Animations Keyframes --- */
-@keyframes slideDownIn {
-  0% {
-    opacity: 0;
-    transform: translateY(-30px) rotateX(-15deg);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) rotateX(0);
-  }
-}
-
-@keyframes fadeInLinks {
-  0% {
-    opacity: 0;
     transform: translateY(20px);
+    transition: opacity 0.4s ease, transform 0.4s ease, background-color 0.3s ease, color 0.3s ease;
   }
-  100% {
+
+  /* تأخير ظهور الروابط بشفافية وحركة ناعمة */
+  .navbar.active a {
     opacity: 1;
     transform: translateY(0);
   }
+
+  .navbar.active a:nth-child(1) { transition-delay: 0.1s; }
+  .navbar.active a:nth-child(2) { transition-delay: 0.15s; }
+  .navbar.active a:nth-child(3) { transition-delay: 0.2s; }
+  .navbar.active a:nth-child(4) { transition-delay: 0.25s; }
+  .navbar.active a:nth-child(5) { transition-delay: 0.3s; }
 }
 
 /* Menu Icon active state */

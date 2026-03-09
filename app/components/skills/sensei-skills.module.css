@@ -1,6 +1,7 @@
 /*
- * @Author: Ahmed Emad Nasr
- * @Description: Modern Glassmorphism Skills Section - Fixed Layout & Original Colors
+ *@Author: Ahmed Emad Nasr
+ *@Optimized by: Gemini
+ *@Description: Ultra-Smooth Glassmorphism Skills Section - Fixed Layout & Original Colors
  */
 
 .skills-section {
@@ -56,16 +57,13 @@
   max-width: 1550px;
 }
 
-/* --- Grid Layout (الحل النهائي لمنع الالتصاق والتداخل) --- */
+/* --- Grid Layout --- */
 .skills-grid {
   display: grid;
-  /* تقسيم مرن يمنع الكروت من الخروج عن الإطار */
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  /* مسافة ثابتة بين الصفوف والأعمدة لمنع تلاصق الكروت */
   gap: 3rem; 
   width: 100%;
   position: relative;
-  /* يضمن أن جميع الكروت في نفس الصف بنفس الطول تلقائياً */
   align-items: stretch; 
 }
 
@@ -75,24 +73,32 @@
   border: 1px solid var(--main-color);
   border-radius: 25px;
   padding: 3rem 2.5rem;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   cursor: pointer;
   position: relative;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  height: 100%; /* تمدد الكارت ليملأ مساحة الـ Grid */
+  height: 100%;
+  
+  /* Optimization: Replaced 'all' with specific properties & added GPU acceleration */
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+              background-color 0.4s ease,
+              border-color 0.4s ease,
+              box-shadow 0.4s ease,
+              backdrop-filter 0.4s ease;
+  will-change: transform, background-color, box-shadow, backdrop-filter;
 }
 
-/* --- Hover Effect --- */
+/* --- Hover Effect (Glassmorphism) --- */
 .skill-card:hover {
   background: rgba(15, 15, 15, 0.85); 
   backdrop-filter: blur(15px) saturate(180%);
+  -webkit-backdrop-filter: blur(15px) saturate(180%); /* Safari Support */
   transform: translateY(-10px);
   border-color: rgba(var(--main-color-rgb), 0.5);
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8),
               0 0 25px rgba(var(--main-color-rgb), 0.15);
-  z-index: 5; /* لضمان ظهور الكارت فوق الكروت المجاورة عند الرفع */
+  z-index: 5;
 }
 
 /* --- Card Header --- */
@@ -103,7 +109,7 @@
   margin-bottom: 2rem;
   padding-bottom: 1.5rem;
   border-bottom: 1px solid rgba(0, 0, 0, 0.15);
-  transition: border-color 0.3s ease;
+  transition: border-bottom-color 0.3s ease;
   flex-shrink: 0;
 }
 
@@ -111,6 +117,7 @@
   border-bottom-color: rgba(var(--main-color-rgb), 0.4);
 }
 
+/* Icons Optimization */
 .card-header i,
 .card-header svg {
   font-size: 3rem;
@@ -121,7 +128,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  /* Optimization: Specific properties for icon animation */
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), 
+              color 0.5s ease, 
+              filter 0.5s ease,
+              text-shadow 0.5s ease;
+  will-change: transform, color, filter;
 }
 
 .skill-card:hover .card-header i,
@@ -132,25 +144,14 @@
   filter: drop-shadow(0 0 10px var(--main-color));
 }
 
+/* --- Typography Optimization --- */
 .category {
   font-size: 2.2rem;
   font-weight: 700;
   color: var(--bg-color);
   margin: 0;
   letter-spacing: 0.5px;
-  transition: color 0.3s ease;
   line-height: 1.3;
-}
-
-.skill-card:hover .category {
-  color: var(--text-color); 
-}
-
-/* --- Card Body --- */
-.card-body {
-  position: relative;
-  z-index: 1;
-  flex-grow: 1; /* يضمن نزول المحتوى لملء مساحة الكارت الطويل */
 }
 
 .skills-text {
@@ -159,23 +160,28 @@
   color: #222222; 
   margin: 0;
   font-weight: 500;
-  transition: color 0.3s ease;
-  /* منع خروج النص عن الكارت */
   word-wrap: break-word;
 }
 
-.skill-card:hover .skills-text {
-  color: rgba(255, 255, 255, 0.7); 
+/* Grouped text color transitions */
+.category, .skills-text {
+  transition: color 0.3s ease;
+}
+
+.skill-card:hover .category { color: var(--text-color); }
+.skill-card:hover .skills-text { color: rgba(255, 255, 255, 0.7); }
+
+/* --- Card Body --- */
+.card-body {
+  position: relative;
+  z-index: 1;
+  flex-grow: 1;
 }
 
 /* --- Responsive Adjustments --- */
 @media (max-width: 991px) {
-  .container {
-    padding: 0 4%;
-  }
-  .title {
-    font-size: 3rem;
-  }
+  .container { padding: 0 4%; }
+  .title { font-size: 3rem; }
   .skills-grid {
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 2rem;
@@ -184,6 +190,6 @@
 
 @media (max-width: 768px) {
   .skills-grid {
-    grid-template-columns: 1fr; /* كارت واحد في الصف على الموبايل */
+    grid-template-columns: 1fr;
   }
 }

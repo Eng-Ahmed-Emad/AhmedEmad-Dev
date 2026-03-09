@@ -16,6 +16,9 @@ interface Meteor {
   trail: { x: number; y: number; alpha: number }[];
 }
 
+// الإضافة الجديدة: واجهة النجوم الدقيقة
+interface Star { x: number; y: number; size: number; }
+
 interface MousePosition { x: number; y: number; active: boolean; }
 
 export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasElement | null>) => {
@@ -27,6 +30,7 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
 
   const bubblesRef = useRef<Bubble[]>([]);
   const meteorsRef = useRef<Meteor[]>([]);
+  const starsRef = useRef<Star[]>([]); // مرجع النجوم النقطية
   const mouseRef = useRef<MousePosition>({ x: 0, y: 0, active: false });
   
   const isMobileRef = useRef(false);
@@ -36,12 +40,12 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
 
   const gridSize = 50;
   const mouseInfluenceRadius = 200;
-  const mouseInfluenceStrength = 1.0; // زودنا القوة شوية للتفاعل
+  const mouseInfluenceStrength = 1.0; 
   const maxRadius = 120;
   const minRadius = 60;
   const bubbleExpansionFactor = 1.2;
 
-  // 1. التجهيز المسبق للفقاعة (Pre-rendering) لتقليل الـ Draw Calls
+  // 1. التجهيز المسبق للفقاعة (Pre-rendering)
   useEffect(() => {
     const canvas = document.createElement("canvas");
     const size = maxRadius * 3;
@@ -61,21 +65,26 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
     preRenderedBubbleRef.current = canvas;
   }, []);
 
-  // 2. التجهيز المسبق للخلفية والشبكة (Static Background)
+  // 2. التجهيز المسبق للخلفية (Static Background) - تم التعديل للانزلاق
   useEffect(() => {
     if (!dimensions.width || !dimensions.height) return;
     const bgCanvas = document.createElement("canvas");
-    bgCanvas.width = dimensions.width;
-    bgCanvas.height = dimensions.height;
+    // الكريزة 1: زيادة حجم الكانفاس بمقدار مربع واحد لضمان عدم ظهور حواف عند الانزلاق المستمر
+    const extendedWidth = dimensions.width + gridSize;
+    const extendedHeight = dimensions.height + gridSize;
+    
+    bgCanvas.width = extendedWidth;
+    bgCanvas.height = extendedHeight;
     const bgCtx = bgCanvas.getContext("2d", { alpha: false });
+    
     if (bgCtx) {
       bgCtx.fillStyle = "black";
-      bgCtx.fillRect(0, 0, dimensions.width, dimensions.height);
+      bgCtx.fillRect(0, 0, extendedWidth, extendedHeight);
       bgCtx.strokeStyle = "rgba(255, 255, 255, 0.05)";
       bgCtx.lineWidth = 0.4;
       bgCtx.beginPath();
-      for (let x = 0; x <= dimensions.width; x += gridSize) { bgCtx.moveTo(x, 0); bgCtx.lineTo(x, dimensions.height); }
-      for (let y = 0; y <= dimensions.height; y += gridSize) { bgCtx.moveTo(0, y); bgCtx.lineTo(dimensions.width, y); }
+      for (let x = 0; x <= extendedWidth; x += gridSize) { bgCtx.moveTo(x, 0); bgCtx.lineTo(x, extendedHeight); }
+      for (let y = 0; y <= extendedHeight; y += gridSize) { bgCtx.moveTo(0, y); bgCtx.lineTo(extendedWidth, y); }
       bgCtx.stroke();
     }
     preRenderedBgRef.current = bgCanvas;
@@ -111,6 +120,17 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
     }));
   }, []);
 
+  // دالة إنشاء النجوم الدقيقة
+  const createStars = useCallback(() => {
+    const { width, height } = dimensionsRef.current;
+    const multiplier = isMobileRef.current ? 40 : 100;
+    starsRef.current = Array.from({ length: multiplier }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      size: Math.random() < 0.5 ? 1 : 1.5
+    }));
+  }, []);
+
   useEffect(() => {
     const updateDimensions = () => {
       const w = window.innerWidth;
@@ -126,8 +146,12 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
   }, []);
 
   useEffect(() => {
-    if (dimensions.width) { createBubbles(); createMeteors(); }
-  }, [dimensions.width, createBubbles, createMeteors]);
+    if (dimensions.width) { 
+      createBubbles(); 
+      createMeteors(); 
+      createStars(); // استدعاء توليد النجوم
+    }
+  }, [dimensions.width, createBubbles, createMeteors, createStars]);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -145,7 +169,6 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
     if (!offscreen) return;
     const scale = bubble.radius / maxRadius;
     const drawSize = offscreen.width * scale;
-    // الكريزة: استخدام ~~ بدل Math.floor للسرعة القصوى
     ctx.drawImage(offscreen, ~~(bubble.x - drawSize / 2), ~~(bubble.y - drawSize / 2), ~~drawSize, ~~drawSize);
   }, []);
 
@@ -160,9 +183,14 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
     gradient.addColorStop(1, "rgba(254, 242, 226, 0)");
     ctx.strokeStyle = gradient; ctx.lineWidth = meteor.size; ctx.lineCap = "round";
     ctx.stroke();
+    
     ctx.beginPath();
     ctx.arc(~~meteor.x, ~~meteor.y, meteor.size / 2, 0, Math.PI * 2);
-    ctx.fillStyle = "rgba(252, 240, 225, 1)"; ctx.fill();
+    
+    // الكريزة 2: وميض متذبذب ومحسوب للشهاب أثناء حركته باستخدام Math.sin
+    const opacity = 0.5 + Math.abs(Math.sin(meteor.x * 0.05 + meteor.y * 0.05)) * 0.5;
+    ctx.fillStyle = `rgba(252, 240, 225, ${opacity.toFixed(2)})`; 
+    ctx.fill();
   }, []);
 
   const animate = useCallback((timestamp: number) => {
@@ -182,8 +210,23 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
     const ctx = contextRef.current;
     if (!canvas || !ctx) return;
 
-    if (preRenderedBgRef.current) { ctx.drawImage(preRenderedBgRef.current, 0, 0); } 
-    else { ctx.clearRect(0, 0, canvas.width, canvas.height); }
+    if (preRenderedBgRef.current) { 
+      // الكريزة 1: حساب إزاحة بسيطة جداً مع الوقت لخلق انزلاق قطري (Parallax)
+      const offset = (timestamp * 0.01) % gridSize;
+      ctx.drawImage(preRenderedBgRef.current, -offset, -offset); 
+    } else { 
+      ctx.clearRect(0, 0, canvas.width, canvas.height); 
+    }
+
+    // الكريزة 3: رسم النجوم النقطية مع حركة انزلاق خفيفة (تتم هنا بأسرع عملية رسم fillRect)
+    ctx.fillStyle = "rgba(255, 255, 255, 0.35)"; // تعريف اللون مرة واحدة خارج الدائرة التكرارية
+    ctx.beginPath();
+    starsRef.current.forEach(star => {
+      // إزاحة خفيفة للنجوم لتعزيز تأثير الفضاء
+      const starX = (star.x + timestamp * 0.005) % canvas.width;
+      const starY = (star.y + timestamp * 0.002) % canvas.height;
+      ctx.fillRect(~~starX, ~~starY, star.size, star.size);
+    });
 
     if (!isMobileRef.current) {
       const mouse = mouseRef.current;
@@ -245,7 +288,6 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
     const canvas = canvasRef.current;
     if (canvas && dimensions.width) {
       canvas.width = dimensions.width; canvas.height = dimensions.height;
-      // الكريزة: تفعيل خيارات الأداء المتقدمة للكانفاس
       contextRef.current = canvas.getContext("2d", { 
         alpha: false, 
         desynchronized: true,
