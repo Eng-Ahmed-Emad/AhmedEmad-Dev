@@ -11,16 +11,17 @@
   transform: translateX(-50%);
   width: calc(100% - 4rem);
   max-width: 100%;
-  padding: 2rem 1.5%;
-  background: rgba(0, 0, 0, 0.7);
+  padding: 1.8rem 1.5%;
+  background: rgba(0, 0, 0, 0.8);
   backdrop-filter: blur(20px);
-  border-radius: 1rem;
+  border-radius: 1.2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   z-index: 100;
   transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-  border: 1px solid rgb(252, 240, 225);
+  border: 1px solid rgba(var(--main-color-rgb), 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
 .logo {
@@ -46,12 +47,12 @@
 }
 
 .navbar a {
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   color: var(--text-color);
-  padding: 0.5rem 1rem;
-  border-radius: 0.7rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: 0.8rem;
   font-weight: 500;
-  transition: all 0.4s ease-in-out;
+  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -84,9 +85,7 @@
 .navbar a.active {
   background: var(--main-color);
   color: var(--bg-color);
-  box-shadow:
-    0 0 20px var(--main-color),
-    0 0 10px var(--main-color);
+  box-shadow: 0 8px 24px var(--main-color);
 }
 
 .navbar a .icon {

@@ -61,20 +61,6 @@ export const knowledgeEducationItems = [
     endDate: "2025-11-01",
     showDate: true,
   },
-  {
-    tag: "Arabic Language",
-    desc: "Native speaker with strong language proficiency.",
-    isRight: true,
-    startDate: "2019-01-01",
-    showDate: false,
-  },
-  {
-    tag: "English Language",
-    desc: "Professional Working Proficiency (C1) - Strong in speaking, writing, and technical communication.",
-    isRight: false,
-    startDate: "2019-01-01",
-    showDate: false,
-  },
 ];
 
 export const technicalSkills = [
@@ -136,4 +122,67 @@ export const nonTechnicalSkills = [
     icon: "fa-solid fa-fire-extinguisher",
     skills: "Quick Decision Making, Stress Management, Priority Setting, Emergency Response",
   },
+];
+
+export const aboutMeCards = [
+  {
+    icon: "fa-solid fa-user",
+    title: "About Me",
+    description:
+      "Security Operations Center (SOC) Analyst with hands-on experience in SIEM/EDR investigations, alert triage, log and IOC analysis, and incident handling. Passionate about improving detection accuracy and reducing alert fatigue through continuous threat-driven analysis.",
+  },
+  {
+    icon: "fa-solid fa-earth-americas",
+    title: "Languages",
+    description:
+      "Arabic: Native • English: Professional Working Proficiency (C1) - Strong in technical writing, presentations, and cross-functional communication.",
+  },
+  {
+    icon: "fa-solid fa-heart",
+    title: "Hobbies & Interests",
+    description:
+      "Incident response labs, malware analysis, threat hunting, CTF competitions, home lab projects, YARA rule development, and continuous learning in cybersecurity.",
+  },
+  {
+    icon: "fa-solid fa-graduation-cap",
+    title: "Education",
+    description:
+      "Bachelor of Computer Science from Benha University (Oct 2022 - Jul 2026). Major: Information Security and Digital Forensics. GPA: 3.7/4.0",
+  },
+  {
+    icon: "fa-solid fa-certificate",
+    title: "Certifications",
+    description:
+      "eCIR (eLearnSecurity), eJPT v2 (95%), Cisco CCNA (98%), DEPI Information Security Analyst, TryHackMe SOC Analyst Path, Huawei HCIA certifications.",
+  },
+  {
+    icon: "fa-solid fa-trophy",
+    title: "Achievements",
+    description:
+      "Best Cybersecurity Technical Award (GDG), Ranked 44th/400 in joint CTF (ITI & Cybertalents), Top 5 in National University CTF, 4.9/5 trainer rating (120+ learners).",
+  },
+  {
+    icon: "fa-solid fa-code",
+    title: "Projects & Experience",
+    description:
+      "Insider Threat Detection, Malware Analysis with Wazuh SIEM, SOC Environment deployment. Proficiency in Wazuh, ELK Stack, Splunk, Suricata, YARA, VirusTotal, and pfSense.",
+  },
+  {
+    icon: "fa-solid fa-briefcase",
+    title: "Professional Goals",
+    description:
+      "Committed to advancing cybersecurity expertise through hands-on projects, continuous learning, and contributing to secure digital environments. Aiming to become a leading SOC and incident response specialist.",
+  },
+  {
+    icon: "fa-solid fa-running", // أيقونة الجري بتعبر عن ألعاب القوى والخماسي
+    title: "Hobbies & Sports",
+    description: "Modern Pentathlon athlete for 6 years at Banha Club. Currently a Track and Field athlete at Al Ahly SC since 2021, showcasing discipline and endurance.",
+  },
+  
+  // ممكن لو حابب تفصل الهوايات التقنية عن الرياضية:
+  {
+    icon: "fa-solid fa-medal",
+    title: "Athletic Career",
+    description: "Proudly represented Al Ahly SC in Athletics (Track & Field) since 2021. Formerly a Modern Pentathlon competitor at Banha Club for over 6 years.",
+  }
 ];
