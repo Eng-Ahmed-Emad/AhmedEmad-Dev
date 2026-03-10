@@ -87,7 +87,6 @@ const ImageItem = memo(({ image, index, setOpen }: ImageItemProps) => {
         sizes="(max-width: 767px) 100vw, (max-width: 991px) 50vw, (max-width: 1199px) 33vw, 25vw"
         onClick={handleClick}
         loading="lazy"
-        decoding="async"
         quality={10}
         className={styles.galleryImg}
       />
