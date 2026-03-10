@@ -38,7 +38,7 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
   const minRadius = 60;
   const bubbleExpansionFactor = 1.2;
 
-  // 1. التجهيز المسبق للفقاعة (Pre-rendering) لتقليل الـ Draw Calls
+  // 1. التجهيز المسبق للفقاعة
   useEffect(() => {
     const canvas = document.createElement("canvas");
     const size = maxRadius * 3;
@@ -58,7 +58,7 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
     preRenderedBubbleRef.current = canvas;
   }, []);
 
-  // 2. التجهيز المسبق للخلفية والشبكة (Static Background)
+  // 2. التجهيز المسبق للخلفية والشبكة الثابتة
   useEffect(() => {
     if (!dimensions.width || !dimensions.height) return;
     const bgCanvas = document.createElement("canvas");
@@ -81,7 +81,7 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
   const createBubbles = useCallback(() => {
     if (isMobileRef.current) { bubblesRef.current = []; return; }
     const { width, height } = dimensionsRef.current;
-    const numberOfBubbles = Math.floor((width * height) / 80000);
+    const numberOfBubbles = Math.floor((width * height) / 90000);
     bubblesRef.current = Array.from({ length: numberOfBubbles }, () => {
       const radius = Math.random() * (maxRadius - minRadius) + minRadius;
       return {
@@ -96,9 +96,9 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
   }, []);
 
   const createMeteors = useCallback(() => {
+    if (isMobileRef.current) { meteorsRef.current = []; return; }
     const { width, height } = dimensionsRef.current;
-    const multiplier = isMobileRef.current ? 0.7 : 1;
-    const numberOfMeteors = Math.floor((width / 250) * multiplier);
+    const numberOfMeteors = Math.floor((width / 250));
     meteorsRef.current = Array.from({ length: numberOfMeteors }, () => ({
       x: (~~(Math.random() * (width / gridSize))) * gridSize,
       y: (~~(Math.random() * (height / gridSize))) * gridSize,
@@ -128,6 +128,8 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
+      // تجاهل حركة الماوس على الموبايل
+      if (isMobileRef.current) return;
       mouseRef.current.x = e.clientX; 
       mouseRef.current.y = e.clientY; 
       mouseRef.current.active = true;
@@ -162,12 +164,28 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
   }, []);
 
   const animate = useCallback((timestamp: number) => {
+    const canvas = canvasRef.current;
+    const ctx = contextRef.current;
+    if (!canvas || !ctx) return;
+
+    // === الإيقاف الكامل للأنيميشن على الموبايل ===
+    if (isMobileRef.current) {
+      if (preRenderedBgRef.current) {
+        // رسم الخلفية الثابتة مرة واحدة
+        ctx.drawImage(preRenderedBgRef.current, 0, 0);
+        return; // الخروج التام دون طلب فريم جديد
+      }
+      // إذا لم تكن الخلفية جاهزة بعد، ننتظر الفريم القادم لرسمها ثم التوقف
+      animationFrameIdRef.current = requestAnimationFrame(animate);
+      return;
+    }
+
+    // === منطق الشاشات الكبيرة (Desktop) ===
     if (document.hidden) { animationFrameIdRef.current = requestAnimationFrame(animate); return; }
     if (!lastTimeRef.current) lastTimeRef.current = timestamp;
     const elapsed = timestamp - lastTimeRef.current;
 
-    // تحديد الفريمات (30 للموبايل، 60 للشاشات الكبيرة)
-    const targetFPS = isMobileRef.current ? 30 : 60;
+    const targetFPS = 60;
     const frameMinTime = 1000 / targetFPS;
 
     if (elapsed < frameMinTime) {
@@ -178,52 +196,46 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
     lastTimeRef.current = timestamp - (elapsed % frameMinTime);
     const dtMultiplier = Math.min(elapsed / 16.66, 3);
 
-    const canvas = canvasRef.current;
-    const ctx = contextRef.current;
-    if (!canvas || !ctx) return;
-
     if (preRenderedBgRef.current) { ctx.drawImage(preRenderedBgRef.current, 0, 0); } 
     else { ctx.clearRect(0, 0, canvas.width, canvas.height); }
 
-    if (!isMobileRef.current) {
-      const mouse = mouseRef.current;
-      bubblesRef.current.forEach(bubble => {
-        bubble.x += bubble.vx * dtMultiplier;
-        bubble.y += bubble.vy * dtMultiplier;
-        
-        if (bubble.x + bubble.radius > canvas.width || bubble.x - bubble.radius < 0) bubble.vx *= -1;
-        if (bubble.y + bubble.radius > canvas.height || bubble.y - bubble.radius < 0) bubble.vy *= -1;
-        
-        bubble.phase += bubble.pulseSpeed * dtMultiplier;
-        const pulsingRadius = bubble.originalRadius + Math.sin(bubble.phase) * (bubble.originalRadius * 0.2);
-        let newRadius = pulsingRadius;
+    const mouse = mouseRef.current;
+    bubblesRef.current.forEach(bubble => {
+      bubble.x += bubble.vx * dtMultiplier;
+      bubble.y += bubble.vy * dtMultiplier;
+      
+      if (bubble.x + bubble.radius > canvas.width || bubble.x - bubble.radius < 0) bubble.vx *= -1;
+      if (bubble.y + bubble.radius > canvas.height || bubble.y - bubble.radius < 0) bubble.vy *= -1;
+      
+      bubble.phase += bubble.pulseSpeed * dtMultiplier;
+      const pulsingRadius = bubble.originalRadius + Math.sin(bubble.phase) * (bubble.originalRadius * 0.2);
+      let newRadius = pulsingRadius;
 
-        if (mouse.active) {
-          const dx = mouse.x - bubble.x, dy = mouse.y - bubble.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < mouseInfluenceRadius) {
-            const influence = 1 - dist / mouseInfluenceRadius;
-            newRadius = pulsingRadius * (1 + influence * bubbleExpansionFactor);
-            bubble.vx -= (dx / dist) * mouseInfluenceStrength * influence;
-            bubble.vy -= (dy / dist) * mouseInfluenceStrength * influence;
-          }
+      if (mouse.active) {
+        const dx = mouse.x - bubble.x, dy = mouse.y - bubble.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < mouseInfluenceRadius) {
+          const influence = 1 - dist / mouseInfluenceRadius;
+          newRadius = pulsingRadius * (1 + influence * bubbleExpansionFactor);
+          bubble.vx -= (dx / dist) * mouseInfluenceStrength * influence;
+          bubble.vy -= (dy / dist) * mouseInfluenceStrength * influence;
         }
-        
-        const randomJitter = 1.2; 
-        bubble.vx += (Math.random() - 0.5) * randomJitter * dtMultiplier;
-        bubble.vy += (Math.random() - 0.5) * randomJitter * dtMultiplier;
+      }
+      
+      const randomJitter = 1.2; 
+      bubble.vx += (Math.random() - 0.5) * randomJitter * dtMultiplier;
+      bubble.vy += (Math.random() - 0.5) * randomJitter * dtMultiplier;
 
-        const currentSpeed = Math.sqrt(bubble.vx * bubble.vx + bubble.vy * bubble.vy);
-        const maxSpeedLimit = 5; 
-        if (currentSpeed > maxSpeedLimit) {
-          bubble.vx = (bubble.vx / currentSpeed) * maxSpeedLimit;
-          bubble.vy = (bubble.vy / currentSpeed) * maxSpeedLimit;
-        }
+      const currentSpeed = Math.sqrt(bubble.vx * bubble.vx + bubble.vy * bubble.vy);
+      const maxSpeedLimit = 5; 
+      if (currentSpeed > maxSpeedLimit) {
+        bubble.vx = (bubble.vx / currentSpeed) * maxSpeedLimit;
+        bubble.vy = (bubble.vy / currentSpeed) * maxSpeedLimit;
+      }
 
-        bubble.radius = Math.max(10, newRadius);
-        drawBubble(ctx, bubble);
-      });
-    }
+      bubble.radius = Math.max(10, newRadius);
+      drawBubble(ctx, bubble);
+    });
 
     meteorsRef.current.forEach(meteor => {
       if (meteor.direction === "horizontal") {
@@ -251,6 +263,7 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
         willReadFrequently: false 
       });
       lastTimeRef.current = performance.now();
+      // البدء بالأنيميشن (والذي سيتوقف فوراً إن كان الجهاز موبايل)
       animationFrameIdRef.current = requestAnimationFrame(animate);
     }
     return () => { if (animationFrameIdRef.current) cancelAnimationFrame(animationFrameIdRef.current); };
@@ -258,7 +271,7 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
 
   useEffect(() => {
     const handleVisibility = () => {
-      if (!document.hidden) { lastTimeRef.current = performance.now(); }
+      if (!document.hidden && !isMobileRef.current) { lastTimeRef.current = performance.now(); }
     };
     document.addEventListener("visibilitychange", handleVisibility);
     return () => document.removeEventListener("visibilitychange", handleVisibility);
