@@ -53,11 +53,11 @@ const ImageItem = memo(({ image, index, setOpen }: ImageItemProps) => {
         y: 0,
         transition: prefersReducedMotion
           ? {
-              duration: 0.35,
+              duration: 0.15,
             }
           : {
               delay: i * 0.18,
-              duration: 1,
+              duration: 0.5,
               ease: [0.22, 1, 0.36, 1],
             },
       }),
@@ -135,10 +135,10 @@ function SenseiArt() {
         y: 0,
         transition: prefersReducedMotion
           ? {
-              duration: 0.35,
+              duration: 0.15,
             }
           : {
-              duration: 1.2,
+              duration: 0.5,
               ease: [0.22, 1, 0.36, 1],
             },
       },
@@ -152,7 +152,7 @@ function SenseiArt() {
       visible: {
         opacity: 1,
         transition: prefersReducedMotion
-          ? { duration: 0.4 }
+          ? { duration: 0.2 }
           : {
               staggerChildren: 0.18,
               delayChildren: 0.4,

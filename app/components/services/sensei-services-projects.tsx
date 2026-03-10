@@ -74,8 +74,8 @@ const ServiceItem: React.FC<{
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.5,
-        delay: index * 0.1,
+        duration: 0.2,
+        delay: index * 0.05,
         ease: cubicBezier(0.22, 1, 0.36, 1),
       },
     },
@@ -94,7 +94,7 @@ const ServiceItem: React.FC<{
           className={icon}
           animate={{ rotate: 0 }}
           whileHover={{ rotate: 360 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.3 }}
           aria-hidden="true"
         />
         <h3 className={styles.title}>{title}</h3>
@@ -125,7 +125,7 @@ function SenseiServicesProjects(): JSX.Element {
           className={styles["header-section"]}
           initial={{ opacity: 0, y: -50 }}
           animate={headerInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, ease: "easeOut" }}
+          transition={{ duration: 0.3, ease: "easeOut" }}
         >
           <h2 className={styles.title}>
             <span lang="ja">事業 •</span>

@@ -22,7 +22,7 @@ const CONTAINER_VARIANTS: Variants = {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.5,
+      duration: 0.2,
       staggerChildren: 0.2,
     },
   },
@@ -34,7 +34,7 @@ const ITEM_VARIANTS: Variants = {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.5,
+      duration: 0.2,
     },
   },
 };
@@ -61,8 +61,8 @@ const AboutMeCard: React.FC<{
         opacity: 1,
         y: 0,
         transition: {
-          duration: 0.5,
-          delay: index * 0.1,
+          duration: 0.2,
+          delay: index * 0.05,
           ease: cubicBezier(0.22, 1, 0.36, 1),
         },
       },
@@ -83,7 +83,7 @@ const AboutMeCard: React.FC<{
           className={icon}
           animate={{ rotate: 0 }}
           whileHover={{ rotate: 360 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.3 }}
         ></motion.i>
         <h3 className={styles["card-title"]}>{title}</h3>
       </div>
@@ -194,7 +194,7 @@ const SenseiHome = (): JSX.Element => {
           className={styles["about-me-header"]}
           initial={{ opacity: 0, y: -50 }}
           animate={headerInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, ease: "easeOut" }}
+          transition={{ duration: 0.3, ease: "easeOut" }}
         >
           <h2 className={styles["about-me-title"]}>
             <span lang="ja">自己紹介 •</span>

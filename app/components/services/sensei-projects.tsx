@@ -27,8 +27,8 @@ const ProjectItem: React.FC<{ repo: GitHubRepository; index: number }> = memo(
         opacity: 1,
         y: 0,
         transition: {
-          duration: 0.5,
-          delay: index * 0.1,
+          duration: 0.2,
+          delay: index * 0.05,
           ease: cubicBezier(0.22, 1, 0.36, 1),
         },
       },
@@ -50,7 +50,7 @@ const ProjectItem: React.FC<{ repo: GitHubRepository; index: number }> = memo(
             className={getIconForLanguage(repo.language)}
             animate={{ rotate: 0 }}
             whileHover={{ rotate: 360 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.3 }}
             aria-hidden="true"
           />
           <h3>{repo.name}</h3>
@@ -112,7 +112,7 @@ const SenseiProjects: React.FC = () => {
     initial: { scale: 0 },
     animate: headerInView ? { scale: 1 } : {},
     transition: {
-      duration: 0.6,
+      duration: 0.3,
       delay: 0.3,
       type: "spring" as const,
       stiffness: 200,
@@ -128,7 +128,7 @@ const SenseiProjects: React.FC = () => {
           className={styles["header-section"]}
           initial={{ opacity: 0, y: -50 }}
           animate={headerInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, ease: "easeOut" }}
+          transition={{ duration: 0.3, ease: "easeOut" }}
         >
           <SectionHeader
             japaneseText="計画"
