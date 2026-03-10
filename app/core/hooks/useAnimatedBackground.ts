@@ -10,49 +10,39 @@ interface Bubble {
 interface Meteor {
   x: number; y: number; size: number; speed: number;
   direction: "horizontal" | "vertical";
-  trail: { x: number; y: number }[];
+  trail: { x: number; y: number; alpha: number }[];
 }
 
 interface MousePosition { x: number; y: number; active: boolean; }
 
 const GRID_SIZE = 50;
 const MOUSE_INFLUENCE_RADIUS = 200;
-const MOUSE_INFLUENCE_RADIUS_SQ = MOUSE_INFLUENCE_RADIUS * MOUSE_INFLUENCE_RADIUS;
 const MOUSE_INFLUENCE_STRENGTH = 1.0;
 const MAX_RADIUS = 120;
 const MIN_RADIUS = 60;
 const BUBBLE_EXPANSION_FACTOR = 1.2;
 const MAX_SPEED_LIMIT = 5;
-const MAX_SPEED_LIMIT_SQ = MAX_SPEED_LIMIT * MAX_SPEED_LIMIT;
 const TARGET_FRAME_TIME = 1000 / 60;
 const TRAIL_MAX_LENGTH = 12;
 
 const drawBubble = (ctx: CanvasRenderingContext2D, bubble: Bubble, offscreen: HTMLCanvasElement) => {
   const scale = bubble.radius / MAX_RADIUS;
   const drawSize = offscreen.width * scale;
-  // Use bitwise OR 0 (equivalent to ~~) for rapid flooring, slightly cleaner standard. 
-  ctx.drawImage(
-    offscreen, 
-    (bubble.x - drawSize / 2) | 0, 
-    (bubble.y - drawSize / 2) | 0, 
-    drawSize | 0, 
-    drawSize | 0
-  );
+  ctx.drawImage(offscreen, ~~(bubble.x - drawSize / 2), ~~(bubble.y - drawSize / 2), ~~drawSize, ~~drawSize);
 };
 
 const drawMeteor = (ctx: CanvasRenderingContext2D, meteor: Meteor) => {
-  const trail = meteor.trail;
-  const trailLen = trail.length;
+  const trailLen = meteor.trail.length;
   if (trailLen < 2) return;
 
   ctx.beginPath();
-  ctx.moveTo(trail[0].x | 0, trail[0].y | 0);
+  ctx.moveTo(~~meteor.trail[0].x, ~~meteor.trail[0].y);
   for (let i = 1; i < trailLen; i++) {
-    ctx.lineTo(trail[i].x | 0, trail[i].y | 0);
+    ctx.lineTo(~~meteor.trail[i].x, ~~meteor.trail[i].y);
   }
 
-  const last = trail[trailLen - 1];
-  const gradient = ctx.createLinearGradient(meteor.x | 0, meteor.y | 0, last.x | 0, last.y | 0);
+  const last = meteor.trail[trailLen - 1];
+  const gradient = ctx.createLinearGradient(~~meteor.x, ~~meteor.y, ~~last.x, ~~last.y);
   gradient.addColorStop(0, "rgba(254, 242, 226, 0.8)");
   gradient.addColorStop(1, "rgba(254, 242, 226, 0)");
 
@@ -62,20 +52,15 @@ const drawMeteor = (ctx: CanvasRenderingContext2D, meteor: Meteor) => {
   ctx.stroke();
 
   ctx.beginPath();
-  ctx.arc(meteor.x | 0, meteor.y | 0, meteor.size / 2, 0, Math.PI * 2);
+  ctx.arc(~~meteor.x, ~~meteor.y, meteor.size / 2, 0, Math.PI * 2);
   ctx.fillStyle = "rgba(252, 240, 225, 1)";
   ctx.fill();
 };
 
-const buildBackground = (existingCanvas: HTMLCanvasElement | null, w: number, h: number): HTMLCanvasElement => {
-  const canvas = existingCanvas || document.createElement("canvas");
-  
-  // Only resize if dimensions changed to prevent unnecessary re-allocations of the backing store
-  if (canvas.width !== w || canvas.height !== h) {
-    canvas.width = w;
-    canvas.height = h;
-  }
-
+const buildBackground = (w: number, h: number): HTMLCanvasElement => {
+  const canvas = document.createElement("canvas");
+  canvas.width = w;
+  canvas.height = h;
   const ctx = canvas.getContext("2d", { alpha: false });
   if (ctx) {
     ctx.fillStyle = "black";
@@ -102,6 +87,7 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
   const isMobileRef      = useRef(false);
   const dimensionsRef    = useRef({ width: 0, height: 0 });
 
+  // Pre-render bubble sprite once on mount
   useEffect(() => {
     const canvas = document.createElement("canvas");
     const size = MAX_RADIUS * 3;
@@ -139,13 +125,15 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
       });
     }
 
-    // Reuse existing offscreen canvas to prevent memory leaks on resize
-    bgOffscreen.current = buildBackground(bgOffscreen.current, w, h);
+    // Always build the static background (desktop & mobile)
+    bgOffscreen.current = buildBackground(w, h);
 
+    // On mobile: clear entities and stop — static bg is all we render
     if (isMobileRef.current) {
       bubblesRef.current = [];
       meteorsRef.current = [];
 
+      // Immediately paint the static background and stop the loop
       const ctx = contextRef.current;
       if (ctx && bgOffscreen.current) {
         ctx.drawImage(bgOffscreen.current, 0, 0);
@@ -157,6 +145,7 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
       return;
     }
 
+    // Desktop entity generation
     const bubbleCount = Math.floor((w * h) / 90000);
     bubblesRef.current = Array.from({ length: bubbleCount }, () => {
       const radius = Math.random() * (MAX_RADIUS - MIN_RADIUS) + MIN_RADIUS;
@@ -171,8 +160,8 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
     });
 
     meteorsRef.current = Array.from({ length: Math.floor(w / 250) }, () => ({
-      x: ((Math.random() * (w / GRID_SIZE)) | 0) * GRID_SIZE,
-      y: ((Math.random() * (h / GRID_SIZE)) | 0) * GRID_SIZE,
+      x: (~~(Math.random() * (w / GRID_SIZE))) * GRID_SIZE,
+      y: (~~(Math.random() * (h / GRID_SIZE))) * GRID_SIZE,
       size: Math.random() * 2 + 1,
       speed: Math.random() * 2 + 1,
       direction: (Math.random() < 0.5 ? "horizontal" : "vertical") as "horizontal" | "vertical",
@@ -180,6 +169,7 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
     }));
   }, [canvasRef]);
 
+  // Event listeners
   useEffect(() => {
     setupCanvasEnv();
 
@@ -206,17 +196,22 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
   }, [setupCanvasEnv]);
 
   const animate = useCallback((timestamp: number) => {
+    // Guard: skip entirely on mobile — static bg already painted
     if (isMobileRef.current) return;
 
     const canvas = canvasRef.current;
     const ctx = contextRef.current;
     if (!canvas || !ctx) return;
 
+    if (document.hidden) {
+      animFrameRef.current = requestAnimationFrame(animate);
+      return;
+    }
+
     if (!lastTimeRef.current) lastTimeRef.current = timestamp;
     const elapsed = timestamp - lastTimeRef.current;
 
-    // Combined early return to reduce nesting
-    if (document.hidden || elapsed < TARGET_FRAME_TIME) {
+    if (elapsed < TARGET_FRAME_TIME) {
       animFrameRef.current = requestAnimationFrame(animate);
       return;
     }
@@ -251,11 +246,8 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
       if (mouse.active) {
         const dx = mouse.x - b.x;
         const dy = mouse.y - b.y;
-        
-        // Use squared distance to avoid Math.sqrt() on every single bubble every frame
-        const distSq = dx * dx + dy * dy;
-        if (distSq < MOUSE_INFLUENCE_RADIUS_SQ) {
-          const dist = Math.sqrt(distSq); // Only calc root if inside radius
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < MOUSE_INFLUENCE_RADIUS) {
           const influence = 1 - dist / MOUSE_INFLUENCE_RADIUS;
           newRadius = pulsingRadius * (1 + influence * BUBBLE_EXPANSION_FACTOR);
           b.vx -= (dx / dist) * MOUSE_INFLUENCE_STRENGTH * influence;
@@ -266,10 +258,8 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
       b.vx += (Math.random() - 0.5) * 1.2 * dt;
       b.vy += (Math.random() - 0.5) * 1.2 * dt;
 
-      // Use squared speed to avoid Math.sqrt() on speed limits
-      const speedSq = b.vx * b.vx + b.vy * b.vy;
-      if (speedSq > MAX_SPEED_LIMIT_SQ) {
-        const speed = Math.sqrt(speedSq);
+      const speed = Math.sqrt(b.vx * b.vx + b.vy * b.vy);
+      if (speed > MAX_SPEED_LIMIT) {
         b.vx = (b.vx / speed) * MAX_SPEED_LIMIT;
         b.vy = (b.vy / speed) * MAX_SPEED_LIMIT;
       }
@@ -281,33 +271,22 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
     const meteors = meteorsRef.current;
     for (let i = 0, len = meteors.length; i < len; i++) {
       const m = meteors[i];
-      let wrapped = false;
-      
       if (m.direction === "horizontal") {
         m.x += m.speed * dt;
-        if (m.x > cvsW) { 
-          m.x = 0; 
-          m.trail.length = 0; // Empty without destroying the array reference
-          wrapped = true; 
-        }
+        if (m.x > cvsW) { m.x = 0; m.trail = []; }
       } else {
         m.y += m.speed * dt;
-        if (m.y > cvsH) { 
-          m.y = 0; 
-          m.trail.length = 0; 
-          wrapped = true; 
-        }
+        if (m.y > cvsH) { m.y = 0; m.trail = []; }
       }
 
-      if (!wrapped) {
-        if (m.trail.length >= TRAIL_MAX_LENGTH) {
-          const recycled = m.trail.pop()!;
-          recycled.x = m.x;
-          recycled.y = m.y;
-          m.trail.unshift(recycled);
-        } else {
-          m.trail.unshift({ x: m.x, y: m.y });
-        }
+      if (m.trail.length >= TRAIL_MAX_LENGTH) {
+        const recycled = m.trail.pop()!;
+        recycled.x = m.x;
+        recycled.y = m.y;
+        recycled.alpha = 1;
+        m.trail.unshift(recycled);
+      } else {
+        m.trail.unshift({ x: m.x, y: m.y, alpha: 1 });
       }
 
       drawMeteor(ctx, m);
@@ -316,6 +295,7 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
     animFrameRef.current = requestAnimationFrame(animate);
   }, [canvasRef]);
 
+  // Boot animation loop
   useEffect(() => {
     lastTimeRef.current = performance.now();
     animFrameRef.current = requestAnimationFrame(animate);
@@ -324,6 +304,7 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
     };
   }, [animate]);
 
+  // Visibility change: reset time reference on tab re-focus
   useEffect(() => {
     const handleVisibility = () => {
       if (!document.hidden && !isMobileRef.current) {
