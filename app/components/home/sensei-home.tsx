@@ -3,7 +3,7 @@ import React, { JSX, useEffect, useMemo, memo } from "react";
 import { motion, useAnimation, Variants, cubicBezier } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLinkedin, faWhatsapp } from "@fortawesome/free-brands-svg-icons";
+import { faLinkedin, faWhatsapp, faXTwitter } from "@fortawesome/free-brands-svg-icons";
 import { faUserSecret, faFilePdf } from "@fortawesome/free-solid-svg-icons";
 import styles from "./sensei-home.module.css";
 import { useRandomMedia } from "@/app/core/hooks/useRandomMedia";
@@ -170,11 +170,22 @@ const SenseiHome = (): JSX.Element => {
             >
               <FontAwesomeIcon icon={faWhatsapp} />
             </a>
+            <a
+              href="https://x.com/0x3omda"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="X"
+            >
+              <FontAwesomeIcon icon={faXTwitter} />
+            </a>
           </motion.div>
 
           <motion.div className={styles.homeButton} variants={ITEM_VARIANTS}>
-            <a href="mailto:ahmed.emad.nasr@gmail.com" className={`${styles.btn} ${styles.btn1}`}>
-              Mail <FontAwesomeIcon icon={faUserSecret} />
+           <a href="mailto:ahmed.emad.nasr@gmail.com" className={`${styles.btn} ${styles.btn1}`}>
+              <span style={{ visibility: "hidden" }}>CVv</span>
+              Email
+              <FontAwesomeIcon icon={faUserSecret} />
+              <span style={{ visibility: "hidden" }}>CV</span>
             </a>
             <a
               href="Assets/cv/AhmedEmad_SOCAnalyst_CV.pdf"
