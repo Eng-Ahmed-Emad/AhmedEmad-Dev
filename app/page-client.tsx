@@ -7,7 +7,6 @@ import HomeSection from "@/app/components/home/sensei-home";
 
 // Dynamically imported heavy/client-only components
 // Note: Keeping ssr: false prevents hydration mismatches with Framer Motion and canvas APIs
-const LoadingScreen = dynamic(() => import("@/app/components/loader/sensei_loader"), { ssr: false });
 const AnimatedBackground = dynamic(() => import("@/app/components/animated_background/animated_background"), { ssr: false });
 const ServicesSection = dynamic(() => import("@/app/components/services/sensei-services-projects"), { ssr: false });
 const ExperienceSection = dynamic(() => import("@/app/components/experience/experience-section"), { ssr: false });
@@ -19,15 +18,14 @@ const ContactMeSection = dynamic(() => import("@/app/components/contact_me/sense
 const MainClient = () => {
   return (
     <main>
-      <LoadingScreen />
       <AnimatedBackground />
       <AppBar />
       <HomeSection />
       <ServicesSection />
       <ExperienceSection />
       <ProjectsSection />
-      <ArtGallerySection />
       <SkillsSection />
+      <ArtGallerySection />
       <ContactMeSection />
     </main>
   );

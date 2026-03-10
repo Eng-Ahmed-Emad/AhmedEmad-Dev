@@ -71,8 +71,8 @@ export const useHeader = () => {
     Services: faUserSecret,
     Experience: faBook,
     Projects: faFolder,
-    ArtGallery: faPalette,
     Skills: faBrain,
+    ArtGallery: faPalette,
   };
 
   return { isMenuOpen, activeSection, toggleMenu, sectionIcons, setActiveSection, setIsMenuOpen };
