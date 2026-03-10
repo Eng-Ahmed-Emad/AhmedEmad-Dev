@@ -13,7 +13,6 @@ const ExperienceSection = dynamic(() => import("@/app/components/experience/expe
 const ProjectsSection = dynamic(() => import("@/app/components/services/sensei-projects"), { ssr: false });
 const ArtGallerySection = dynamic(() => import("@/app/components/art_gallery/sensei-art"), { ssr: false });
 const SkillsSection = dynamic(() => import("@/app/components/skills/sensei-skills"), { ssr: false });
-const ContactMeSection = dynamic(() => import("@/app/components/contact_me/sensei-contact"), { ssr: false });
 
 const MainClient = () => {
   return (
@@ -26,7 +25,6 @@ const MainClient = () => {
       <ProjectsSection />
       <SkillsSection />
       <ArtGallerySection />
-      <ContactMeSection />
     </main>
   );
 };

@@ -140,7 +140,7 @@ const SenseiHome = (): JSX.Element => {
 
         <motion.div className={styles.homeContent} variants={ITEM_VARIANTS}>
           <h1>
-            <span className={styles.highlight}>Ahmed Emad Nasr</span>.
+            <span className={styles.highlight}>Ahmed Emad Nasr</span>
           </h1>
           <h2 className={styles.typingText}>
             <span className={styles.typingHighlight}></span>
@@ -173,8 +173,8 @@ const SenseiHome = (): JSX.Element => {
           </motion.div>
 
           <motion.div className={styles.homeButton} variants={ITEM_VARIANTS}>
-            <a href="#Contact" className={`${styles.btn} ${styles.btn1}`}>
-              Hire Me <FontAwesomeIcon icon={faUserSecret} />
+            <a href="mailto:ahmed.emad.nasr@gmail.com" className={`${styles.btn} ${styles.btn1}`}>
+              Mail <FontAwesomeIcon icon={faUserSecret} />
             </a>
             <a
               href="Assets/cv/AhmedEmad_SOCAnalyst_CV.pdf"

@@ -84,11 +84,11 @@
 }
 
 @keyframes words {
-  0%, 20% { content: "SOC Analyst."; }
-  21%, 40% { content: "Cybersecurity Analyst."; }
-  41%, 61% { content: "Incident Response Analyst."; } /* Corrected spelling from Resonse to Response here just in case! */
-  62%, 80% { content: "Cybersecurity Engineer."; }
-  81%, 100% { content: "Cybersecurity Instructor."; }
+  0%, 20% { content: "SOC Analyst"; }
+  21%, 40% { content: "Cybersecurity Analyst"; }
+  41%, 61% { content: "Incident Responder "; } /* Corrected spelling from Resonse to Response here just in case! */
+  62%, 80% { content: "Cybersecurity Engineer"; }
+  81%, 100% { content: "Cybersecurity Instructor"; }
 }
 
 @keyframes typing {
@@ -228,7 +228,7 @@
 }
 
 /* About Me Cards Section Styles */
-.about-me-section { width: 100%; padding: 20px 5rem 30px 5rem; }
+.about-me-section { width: 100%; padding: 25px 5rem 30px 5rem; }
 .about-me-header { display: none; }
 .about-me-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; width: 100%; }
 
