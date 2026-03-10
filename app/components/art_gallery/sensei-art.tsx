@@ -88,7 +88,7 @@ const ImageItem = memo(({ image, index, setOpen }: ImageItemProps) => {
         onClick={handleClick}
         loading="lazy"
         decoding="async"
-        quality={20}
+        quality={10}
         className={styles.galleryImg}
       />
     </motion.div>
