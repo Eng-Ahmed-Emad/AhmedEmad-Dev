@@ -20,6 +20,6 @@
   pointer-events: none;
   will-change: transform;
   transform: translateZ(0); 
-  perspective: 1000;
+  perspective: 1000px; /* Fixed: Added 'px' unit to ensure standard compliance */
   backface-visibility: hidden;
 }

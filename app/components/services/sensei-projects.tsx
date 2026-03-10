@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useMemo, useCallback, memo } from "react";
 import { useInView } from "react-intersection-observer";
 import { faStar, faExclamationCircle, faEye } from "@fortawesome/free-solid-svg-icons";
 import { cubicBezier, motion, Variants } from "framer-motion";
@@ -10,20 +10,18 @@ import MotionInView from "@/app/core/components/MotionInView";
 import SectionHeader from "@/app/core/components/SectionHeader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-//**
-// @Author Ahmed Emad Nasr
-// @Description React component that fetches and displays GitHub repositories with animation and styling using Framer Motion and FontAwesome.
 /**
+ * @Author Ahmed Emad Nasr
+ * @Description React component that fetches and displays GitHub repositories with animation and styling using Framer Motion and FontAwesome.
+ */
 
 /**
  * Component representing a single GitHub repository item in the projects list.
- * @param repo - The GitHub repository data.
- * @param index - The index of the repository in the list.
  */
-const ProjectItem: React.FC<{ repo: GitHubRepository; index: number }> = React.memo(
+const ProjectItem: React.FC<{ repo: GitHubRepository; index: number }> = memo(
   ({ repo, index }) => {
-    // Define animation variants for the project item
-    const variants: Variants = {
+    // Memoize variants so they aren't recreated on every re-render
+    const variants: Variants = useMemo(() => ({
       hidden: { opacity: 0, y: 50 },
       visible: {
         opacity: 1,
@@ -34,13 +32,18 @@ const ProjectItem: React.FC<{ repo: GitHubRepository; index: number }> = React.m
           ease: cubicBezier(0.22, 1, 0.36, 1),
         },
       },
-    };
+    }), [index]);
+
+    // Memoize the click handler to prevent passing a new inline function to MotionInView
+    const handleRepoClick = useCallback(() => {
+      window.open(repo.html_url, "_blank");
+    }, [repo.html_url]);
 
     return (
       <MotionInView
         className={styles["single-project"]}
         variants={variants}
-        onClick={() => window.open(repo.html_url, "_blank")}
+        onClick={handleRepoClick}
       >
         <div className={styles["part-1"]}>
           <motion.i
@@ -92,9 +95,10 @@ const ProjectItem: React.FC<{ repo: GitHubRepository; index: number }> = React.m
   (prevProps, nextProps) => prevProps.repo.id === nextProps.repo.id,
 );
 
+ProjectItem.displayName = "ProjectItem";
+
 /**
  * Main component that fetches and displays GitHub repositories.
- * It handles the fetching of repositories and renders them as project items.
  */
 const SenseiProjects: React.FC = () => {
   const repos = useGitHubRepos();
@@ -103,7 +107,8 @@ const SenseiProjects: React.FC = () => {
     threshold: 0.1,
   });
 
-  const motionProps = {
+  // Memoize motionProps to prevent unnecessary prop updates to SectionHeader
+  const motionProps = useMemo(() => ({
     initial: { scale: 0 },
     animate: headerInView ? { scale: 1 } : {},
     transition: {
@@ -113,7 +118,7 @@ const SenseiProjects: React.FC = () => {
       stiffness: 200,
       damping: 10,
     },
-  };
+  }), [headerInView]);
 
   return (
     <section className={styles["section-projects"]} id="Projects">
@@ -143,4 +148,4 @@ const SenseiProjects: React.FC = () => {
   );
 };
 
-export default SenseiProjects;
+export default memo(SenseiProjects);

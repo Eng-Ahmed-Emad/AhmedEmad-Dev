@@ -1,38 +1,48 @@
 "use client";
-import React, { JSX } from "react";
+import React, { JSX, useMemo, memo } from "react";
 import { motion, Variants, cubicBezier } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import styles from "./sensei-skills.module.css";
 import SectionHeader from "@/app/core/components/SectionHeader";
-import { technicalSkills} from "@/app/core/data";
+import { technicalSkills } from "@/app/core/data";
 
 /**
  * SkillCard Component
  * Renders a single skill category card with animation
  */
-const SkillCard: React.FC<{
+const SkillCard = memo(({
+  category,
+  icon,
+  skills,
+  index,
+}: {
   category: string;
   icon: string;
   skills: string;
   index: number;
-}> = ({ category, icon, skills, index }): JSX.Element => {
+}): JSX.Element => {
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
   });
 
-  const variants: Variants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5,
-        delay: index * 0.1,
-        ease: cubicBezier(0.22, 1, 0.36, 1),
+  // Memoize the animation variants so Framer Motion doesn't recalculate
+  // this object for every single card on every render cycle.
+  const variants: Variants = useMemo(
+    () => ({
+      hidden: { opacity: 0, y: 30 },
+      visible: {
+        opacity: 1,
+        y: 0,
+        transition: {
+          duration: 0.5,
+          delay: index * 0.1,
+          ease: cubicBezier(0.22, 1, 0.36, 1),
+        },
       },
-    },
-  };
+    }),
+    [index]
+  );
 
   return (
     <motion.div
@@ -57,7 +67,9 @@ const SkillCard: React.FC<{
       </div>
     </motion.div>
   );
-};
+});
+
+SkillCard.displayName = "SkillCard";
 
 /**
  * SkillsSection Component
@@ -89,7 +101,9 @@ function SkillsSection(): JSX.Element {
         <div className={styles["skills-grid"]}>
           {technicalSkills.map((skill, index) => (
             <SkillCard
-              key={`technical-${index}`}
+              // Using category combined with index creates a much more stable key 
+              // for React's reconciliation engine during DOM updates.
+              key={`technical-${skill.category}-${index}`}
               category={skill.category}
               icon={skill.icon}
               skills={skill.skills}
@@ -97,10 +111,11 @@ function SkillsSection(): JSX.Element {
             />
           ))}
         </div>
-
       </div>
     </section>
   );
 }
 
-export default SkillsSection;
+// Wrapping the entire section in memo prevents global scroll events 
+// from trickling down and needlessly re-rendering this heavy component.
+export default memo(SkillsSection);

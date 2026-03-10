@@ -33,9 +33,7 @@
   height: auto;
   border-radius: 16px;
   box-shadow: 0 0 31px var(--main-color);
-  transition:
-    transform 0.3s ease,
-    filter 0.3s ease;
+  transition: transform 0.3s ease, filter 0.3s ease;
   cursor: pointer;
 }
 
@@ -53,6 +51,7 @@
 .highlight {
   color: var(--main-color);
 }
+
 .typingText {
   font-size: 34px;
   font-weight: 600;
@@ -77,66 +76,24 @@
   height: 100%;
   border-left: 3px solid var(--bg-color);
   right: 0;
-  animation:
-    cursor 0.6s infinite,
-    typing 20s steps(14) infinite;
+  animation: cursor 0.6s infinite, typing 20s steps(14) infinite;
 }
 
 @keyframes cursor {
-  to {
-    border-left: 2px solid var(--main-color);
-  }
+  to { border-left: 2px solid var(--main-color); }
 }
 
-/* Keyframe for changing the words in the text */
 @keyframes words {
-  0%,
-  20% {
-    content: "SOC Analyst.";
-  }
-  21%,
-  40% {
-    content: "Cybersecurity Analyst.";
-  }
-  41%,
-  61% {
-    content: "Incident Resonse Analyst.";
-  }
-  62%,
-  80% {
-    content: "Cybersecurity Engineer.";
-  }
-  81%,
-  100% {
-    content: "Cybersecurity Instructor.";
-  }
+  0%, 20% { content: "SOC Analyst."; }
+  21%, 40% { content: "Cybersecurity Analyst."; }
+  41%, 61% { content: "Incident Response Analyst."; } /* Corrected spelling from Resonse to Response here just in case! */
+  62%, 80% { content: "Cybersecurity Engineer."; }
+  81%, 100% { content: "Cybersecurity Instructor."; }
 }
 
-/* Keyframe for the typing effect */
 @keyframes typing {
-  10%,
-  15%,
-  30%,
-  35%,
-  50%,
-  55%,
-  70%,
-  75%,
-  90%,
-  95% {
-    width: 0;
-  }
-  5%,
-  20%,
-  25%,
-  40%,
-  45%,
-  60%,
-  65%,
-  80%,
-  85% {
-    width: calc(100% + 7px);
-  }
+  10%, 15%, 30%, 35%, 50%, 55%, 70%, 75%, 90%, 95% { width: 0; }
+  5%, 20%, 25%, 40%, 45%, 60%, 65%, 80%, 85% { width: calc(100% + 7px); }
 }
 
 .homeContent p {
@@ -209,7 +166,6 @@
   background: var(--main-color);
   color: var(--bg-color);
   border: 2px solid transparent;
-  /* السطر ده هو اللي هيضيف الأنيميشن زي السوشيال ميديا */
   transform: scale(1.05) translateY(-5px); 
 }
 
@@ -224,160 +180,57 @@
   color: var(--main-color);
   border: 2px solid var(--main-color);
   box-shadow: 0 0 18px var(--main-color);
-  /* السطر ده هو اللي هيضيف الأنيميشن زي السوشيال ميديا */
   transform: scale(1.05) translateY(-5px); 
 }
 
 @media (max-width: 968px) {
-  .container {
-    flex-direction: column;
-    text-align: center;
-    gap: 3rem;
-  }
-
-  .homeImg {
-    margin-top: 15rem;
-    width: 100%;
-    height: auto;
-    max-width: 450px;
-  }
-
-  .socialIcon,
-  .homeButton {
-    justify-content: center;
-  }
-
-  .homeContent p {
-    text-align: justify;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .homeContent h3 {
-    font-size: 2.5rem;
-  }
-
-  .btn {
-    padding: 1rem 2rem;
-    font-size: 1.7rem;
-  }
+  .container { flex-direction: column; text-align: center; gap: 3rem; }
+  .homeImg { margin-top: 15rem; width: 100%; height: auto; max-width: 450px; }
+  .socialIcon, .homeButton { justify-content: center; }
+  .homeContent p { text-align: justify; margin-left: auto; margin-right: auto; }
+  .homeContent h3 { font-size: 2.5rem; }
+  .btn { padding: 1rem 2rem; font-size: 1.7rem; }
 }
 
-@media (max-width: 1017px) {
-  .homeContent h1 {
-    font-size: 5.4rem;
-  }
-}
-
-@media (max-width: 1003px) {
-  .homeContent h1 {
-    font-size: 5rem;
-  }
-}
-
-@media (max-width: 993px) {
-  .homeContent h1,
-  .homeContent h3 {
-    font-size: 5rem;
-  }
-}
+@media (max-width: 1017px) { .homeContent h1 { font-size: 5.4rem; } }
+@media (max-width: 1003px) { .homeContent h1 { font-size: 5rem; } }
+@media (max-width: 993px) { .homeContent h1, .homeContent h3 { font-size: 5rem; } }
 
 @media (max-width: 768px) {
-  .homeContent h1 {
-    font-size: 4.8rem;
-  }
-
-  .homeContent h3 {
-    font-size: 3rem;
-  }
-
-  .homeButton {
-    flex-direction: row;
-    align-items: center;
-  }
+  .homeContent h1 { font-size: 4.8rem; }
+  .homeContent h3 { font-size: 3rem; }
+  .homeButton { flex-direction: row; align-items: center; }
 }
 
 @media (max-width: 600px) {
-  .homeContent h1 {
-    font-size: 4.5rem;
-  }
-
-  .homeContent h3 {
-    font-size: 3rem;
-  }
-
-  .btn {
-    font-size: 1.7rem;
-  }
+  .homeContent h1 { font-size: 4.5rem; }
+  .homeContent h3 { font-size: 3rem; }
+  .btn { font-size: 1.7rem; }
+  .homeImg { max-width: 300px; margin-bottom: 1rem; margin-top: 5rem; }
 }
 
 @media (max-width: 547px) {
-  .homeContent h1 {
-    font-size: 4rem;
-  }
-
-  .homeContent h3 {
-    font-size: 3rem;
-  }
-
-  .homeButton {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .btn {
-    justify-content: center;
-  }
+  .homeContent h1 { font-size: 4rem; }
+  .homeContent h3 { font-size: 3rem; }
+  .homeButton { flex-direction: column; align-items: stretch; }
+  .btn { justify-content: center; }
 }
 
 @media (max-width: 500px) {
-  .homeContent h1 {
-    font-size: 3.5rem;
-  }
-
-  .homeContent h3 {
-    font-size: 3rem;
-  }
+  .homeContent h1 { font-size: 3.5rem; }
+  .homeContent h3 { font-size: 3rem; }
 }
 
 @media (max-width: 495px) {
-  .homeContent h1 {
-    font-size: 3rem;
-  }
-
-  .homeContent h3 {
-    font-size: 3rem;
-  }
-
-  .homeButton {
-    flex-direction: column;
-    align-items: stretch;
-  }
+  .homeContent h1 { font-size: 3rem; }
+  .homeContent h3 { font-size: 3rem; }
+  .homeButton { flex-direction: column; align-items: stretch; }
 }
 
-@media (max-width: 600px) {
-  .homeImg {
-    max-width: 300px;
-    margin-bottom: 1rem;
-    margin-top: 5rem;
-  }
-}
 /* About Me Cards Section Styles */
-.about-me-section {
-  width: 100%;
-  padding: 20px 5rem 30px 5rem;
-}
-
-.about-me-header {
-  display: none;
-}
-
-.about-me-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-  width: 100%;
-}
+.about-me-section { width: 100%; padding: 20px 5rem 30px 5rem; }
+.about-me-header { display: none; }
+.about-me-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; width: 100%; }
 
 .about-me-card {
   background: var(--main-color);
@@ -397,126 +250,43 @@
   transform: translateY(-5px);
 }
 
-.about-me-card:hover .card-part-1 {
-  border-bottom: 2px solid var(--main-color);
-}
+.about-me-card:hover .card-part-1 { border-bottom: 2px solid var(--main-color); }
+.card-part-1 { padding: 10px 0 20px 0; border-bottom: 2px solid rgba(0, 0, 0, 0.15); }
+.card-part-1 i { font-size: 45px; color: black; transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1); }
+.card-title { font-size: 1.6rem; margin: 15px 0 0 0; color: black; font-weight: 700; }
+.card-part-2 { padding: 20px 0; }
+.card-description { margin-bottom: 0; color: black; font-size: 15px; line-height: 1.7; font-weight: 500; }
 
-.card-part-1 {
-  padding: 10px 0 20px 0;
-  border-bottom: 2px solid rgba(0, 0, 0, 0.15);
-}
-
-.card-part-1 i {
-  font-size: 45px;
-  color: black;
-  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.card-title {
-  font-size: 1.6rem;
-  margin: 15px 0 0 0;
-  color: black;
-  font-weight: 700;
-}
-
-.card-part-2 {
-  padding: 20px 0;
-}
-
-.card-description {
-  margin-bottom: 0;
-  color: black;
-  font-size: 15px;
-  line-height: 1.7;
-  font-weight: 500;
-}
-
-.about-me-card:hover .card-description {
-  color: var(--main-color);
-}
-
-.about-me-card:hover .card-part-1 i {
-  color: var(--main-color);
-}
-
+.about-me-card:hover .card-description,
+.about-me-card:hover .card-part-1 i,
 .about-me-card:hover .card-title {
   color: var(--main-color);
 }
 
 @media (max-width: 1200px) {
-  .about-me-section {
-    padding: 60px 3rem;
-  }
-
-  .about-me-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
+  .about-me-section { padding: 60px 3rem; }
+  .about-me-grid { grid-template-columns: repeat(3, 1fr); }
 }
 
 @media (max-width: 991px) {
-  .about-me-section {
-    padding: 60px 1.5rem;
-  }
-
-  .about-me-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  .about-me-section { padding: 60px 1.5rem; }
+  .about-me-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 768px) {
-  .about-me-title {
-    font-size: 2rem;
-  }
-
-  .about-me-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-  }
-
-  .card-part-1 i {
-    font-size: 35px;
-  }
-
-  .card-title {
-    font-size: 1.25rem;
-  }
-
-  .card-description {
-    font-size: 14px;
-  }
+  .about-me-title { font-size: 2rem; }
+  .about-me-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
+  .card-part-1 i { font-size: 35px; }
+  .card-title { font-size: 1.25rem; }
+  .card-description { font-size: 14px; }
 }
 
 @media (max-width: 480px) {
-  .about-me-section {
-    padding: 40px 1rem;
-  }
-
-  .about-me-title {
-    font-size: 1.5rem;
-    margin-bottom: 30px;
-    padding-bottom: 15px;
-  }
-
-  .about-me-grid {
-    grid-template-columns: 1fr;
-    gap: 15px;
-  }
-
-  .about-me-card {
-    padding: 15px;
-  }
-
-  .card-part-1 i {
-    font-size: 30px;
-  }
-
-  .card-title {
-    font-size: 1.1rem;
-    margin: 10px 0;
-  }
-
-  .card-description {
-    font-size: 13px;
-    line-height: 1.5;
-  }
+  .about-me-section { padding: 40px 1rem; }
+  .about-me-title { font-size: 1.5rem; margin-bottom: 30px; padding-bottom: 15px; }
+  .about-me-grid { grid-template-columns: 1fr; gap: 15px; }
+  .about-me-card { padding: 15px; }
+  .card-part-1 i { font-size: 30px; }
+  .card-title { font-size: 1.1rem; margin: 10px 0; }
+  .card-description { font-size: 13px; line-height: 1.5; }
 }

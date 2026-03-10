@@ -11,7 +11,6 @@
   --main-color: #fef2e2;
   --main-color-rgb: 254, 242, 226;
   
-  /* System preference for default browser UI elements */
   color-scheme: dark; 
 }
 
@@ -21,7 +20,6 @@
   box-sizing: border-box;
   text-decoration: none;
   border: none;
-  /* Better accessibility: only remove outline for mouse users, keep it for keyboard */
   outline-offset: 4px;
 }
 
@@ -38,11 +36,8 @@ html {
 body {
   font-family: var(--font-overlock, sans-serif);
   color: var(--text-color);
-  background: var(--bg-color); /* Fallback */
   background: linear-gradient(135deg, #000000 0%, #0a0a0a 100%);
   overflow-x: hidden;
-  
-  /* Typography improvements for dark themes */
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -65,8 +60,6 @@ body {
 ::-webkit-scrollbar-thumb {
   background: var(--main-color);
   border-radius: 0.4rem;
-  /* Note: transitions on webkit scrollbars don't work in most browsers, 
-     but keeping hover state is good */
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -79,7 +72,6 @@ section {
   padding: 6rem 6% 5rem;
 }
 
-/* Consolidated Media Queries */
 @media (max-width: 991px) {
   section {
     min-height: 100vh;

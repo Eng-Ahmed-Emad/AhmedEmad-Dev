@@ -6,7 +6,7 @@
 
 .section-education {
   min-height: 100vh;
-  padding: 10rem 0 6rem; /* مسافة علوية لتجنب الهيدر العائم */
+  padding: 10rem 0 6rem;
   position: relative;
   z-index: 1;
 }
@@ -70,7 +70,7 @@
   content: "";
   position: absolute;
   width: 4px;
-  background: rgba(var(--main-color-rgb), 0.3); /* خط مركزي شفاف قليلاً */
+  background: rgba(var(--main-color-rgb), 0.3);
   top: 0;
   bottom: 0;
   left: 50%;
@@ -102,12 +102,11 @@
   background: var(--bg-color);
   border: 4px solid var(--main-color);
   border-radius: 50%;
-  top: 5rem; /* تمركز النقطة مع الكارت */
+  top: 5rem;
   z-index: 3;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* تظبيط مكان النقطة يمين وشمال الخط */
 .timeline-container.left::after {
   right: -12px;
 }
@@ -116,7 +115,6 @@
   left: -12px;
 }
 
-/* نقطة التايم لاين تنور وتكبر لما تقف على الكارت */
 .timeline-container:hover::after {
   background: var(--main-color);
   box-shadow: 0 0 20px var(--main-color);
@@ -136,7 +134,7 @@
 
 .content:hover {
   transform: translateY(-10px);
-  background: rgba(15, 15, 15, 0.85); /* تحول للأسود الزجاجي */
+  background: rgba(15, 15, 15, 0.85);
   backdrop-filter: blur(15px) saturate(180%);
   border-color: rgba(var(--main-color-rgb), 0.5);
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8),
@@ -148,7 +146,7 @@
   margin: 0 0 0.5rem 0;
   font-size: 2.2rem;
   font-weight: 800;
-  color: var(--bg-color); /* أسود في العادي */
+  color: var(--bg-color);
   transition: color 0.3s ease;
 }
 
@@ -156,13 +154,13 @@
   margin: 0;
   font-size: 1.6rem;
   font-weight: 700;
-  color: #333333; /* رصاصي غامق */
+  color: #333333;
   transition: color 0.3s ease;
 }
 
 .tag h3:hover {
   cursor: pointer;
-  text-decoration: underline; /* تم تصحيح text-underline */
+  text-decoration: underline;
   text-decoration-color: var(--main-color);
 }
 
@@ -178,7 +176,7 @@
 .date-details {
   display: flex;
   flex-direction: column;
-  align-items: flex-end; /* لضبط التواريخ على اليمين */
+  align-items: flex-end;
   margin-top: 2rem;
   padding-top: 1.5rem;
   border-top: 1px solid rgba(0, 0, 0, 0.15);
@@ -221,12 +219,10 @@
     left: 0;
   }
 
-  /* نقل الخط المركزي لليسار */
   .time-line::after {
     left: 3rem;
   }
 
-  /* نقل النقاط لليسار لتتطابق مع الخط */
   .timeline-container.left::after,
   .timeline-container.right::after {
     left: 3rem;
@@ -239,6 +235,6 @@
   }
 
   .date-details {
-    align-items: flex-start; /* توجيه التواريخ لليسار في الموبايل لسهولة القراءة */
+    align-items: flex-start;
   }
 }

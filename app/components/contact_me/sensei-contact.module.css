@@ -9,7 +9,7 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  padding: 20rem 2rem 4rem; /* مساحة علوية عشان ما يخبطش في السكاشن اللي قبله */
+  padding: 20rem 2rem 4rem;
   position: relative;
   z-index: 1;
 }
@@ -39,14 +39,10 @@
 }
 
 /* --- The Floating Glassmorphism Card (Matches Header) --- */
-/* --- The Floating Glassmorphism Card (Matches Header) --- */
 .footer {
   position: relative;
-  
-  /* التعديل هنا: نفس عرض الهيدر بالظبط */
   width: 96%;
   max-width: 1550px; 
-  
   padding: 4rem 3rem 3rem;
   background: rgba(15, 15, 15, 0.85);
   backdrop-filter: blur(20px) saturate(180%);
@@ -79,8 +75,6 @@
   letter-spacing: 1px;
   padding: 1.2rem 3rem;
   margin-bottom: 4rem;
-  
-  /* تصميم الزر المودرن */
   background: rgba(254, 242, 226, 0.05);
   border: 1px solid rgba(var(--main-color-rgb), 0.3);
   border-radius: 40px;
@@ -111,12 +105,9 @@
   height: 5rem;
   font-size: 2.2rem;
   color: var(--text-color);
-  
-  /* خلفية زجاجية للأيقونات */
   background: rgba(15, 15, 15, 0.6);
   border: 1.5px solid rgba(var(--main-color-rgb), 0.3);
-  border-radius: 50%; /* شكل دائري بيليق أكتر مع الـ Glassmorphism */
-  
+  border-radius: 50%;
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
@@ -135,7 +126,7 @@
   margin-top: 1rem;
   font-size: 1.4rem;
   color: rgba(255, 255, 255, 0.6);
-  border-top: 1px solid rgba(var(--main-color-rgb), 0.15); /* خط فاصل خفيف */
+  border-top: 1px solid rgba(var(--main-color-rgb), 0.15); 
   letter-spacing: 0.5px;
 }
 

@@ -7,7 +7,7 @@
 .section-services,
 .section-projects {
   min-height: 100vh;
-  padding: 10rem 0 6rem; /* مسافة علوية مناسبة لتجنب تداخل الهيدر العائم */
+  padding: 10rem 0 6rem; 
   position: relative;
   z-index: 1;
 }
@@ -68,7 +68,7 @@
 /* --- The Cards (Light by default, Dark on hover) --- */
 .single-service,
 .single-project {
-  background: var(--main-color); /* اللون الأساسي الفاتح */
+  background: var(--main-color); 
   border: 1px solid var(--main-color);
   border-radius: 25px;
   padding: 3rem 2.5rem;
@@ -80,7 +80,7 @@
 
 .single-service:hover,
 .single-project:hover {
-  background: rgba(15, 15, 15, 0.85); /* التحول للون الأسود الزجاجي */
+  background: rgba(15, 15, 15, 0.85); 
   backdrop-filter: blur(15px) saturate(180%);
   transform: translateY(-10px);
   border-color: rgba(var(--main-color-rgb), 0.5);
@@ -94,12 +94,12 @@
 
 /* --- Card Content --- */
 .part-1 {
-  display: flex; /* التعديل الجديد لجبر العناصر */
-  flex-direction: column; /* الأيقونة فوق والعنوان تحت */
-  align-items: flex-start; /* محاذاة لليسار */
-  gap: 1.5rem; /* المسافة بين الأيقونة والعنوان */
+  display: flex; 
+  flex-direction: column; 
+  align-items: flex-start; 
+  gap: 1.5rem; 
   padding-bottom: 2rem;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.15); /* خط غامق مناسب للخلفية الفاتحة */
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15); 
   transition: border-color 0.3s ease;
 }
 
@@ -128,13 +128,12 @@
   filter: drop-shadow(0 0 10px var(--main-color));
 }
 
-/* العنوان داخل الكارت */
 .part-1 h3 {
   font-size: 2.2rem;
   color: var(--bg-color);
   font-weight: 700;
   letter-spacing: 0.5px;
-  margin: 0; /* تم إزالة الهوامش الافتراضية والاعتماد على gap */
+  margin: 0; 
   line-height: 1.3;
   transition: color 0.3s ease;
 }
@@ -148,7 +147,6 @@
   padding-top: 2rem;
 }
 
-/* الوصف */
 .description {
   color: #222222;
   font-size: 1.5rem;
@@ -162,7 +160,6 @@
   color: rgba(255, 255, 255, 0.7);
 }
 
-/* --- Action Button (Read more / Link) --- */
 .part-2 a {
   display: inline-block;
   color: var(--main-color);

@@ -1,24 +1,48 @@
-import React, { JSX } from "react";
+import React, { JSX, memo } from "react";
 import styles from "./sensei-contact.module.css";
 
-//**
-// @Author Ahmed Emad Nasr
-// @Description A responsive contact me component with a menu that highlights the active section of the page.
-//**
-
 /**
- * @function SenseiContact
- * @description A functional component that renders the contact me section
- * @returns {JSX.Element} The JSX Element for the contact me section
- * @example
- * <SenseiContact />
+ * @Author Ahmed Emad Nasr
+ * @Description A responsive contact me component with a menu that highlights the active section of the page.
  */
+
+// 1. Extract static data outside the component to prevent recreating these objects on every render.
+const SOCIAL_LINKS = [
+  {
+    href: "https://www.linkedin.com/in/ahmed-emad-nasr/?originalSubdomain=eg",
+    ariaLabel: "Go to Linkedin",
+    iconClass: "fa-brands fa-linkedin",
+  },
+  {
+    href: "https://wa.me/201018166445",
+    ariaLabel: "Contact on WhatsApp",
+    iconClass: "fa-brands fa-whatsapp",
+  },
+  {
+    href: "https://www.instagram.com/ahmed.em.nasr/",
+    ariaLabel: "Go to Instagram",
+    iconClass: "fa-brands fa-instagram",
+  },
+  {
+    href: "https://www.facebook.com/ahmed.em.nasr",
+    ariaLabel: "Go to Facebook",
+    iconClass: "fa-brands fa-square-facebook",
+  },
+  {
+    href: "https://t.me/Ox3omda",
+    ariaLabel: "Go to Telegram",
+    iconClass: "fa-brands fa-telegram",
+  },
+];
+
+// 2. Compute the current year once when the file loads, rather than executing the Date object on every render.
+const CURRENT_YEAR = new Date().getFullYear();
+
 const SenseiContact = (): JSX.Element => {
   return (
     <section className={styles["Contact-Me-section"]} id="Contact">
       <div className={styles["header-section"]}>
         <h2 className={styles.title}>
-          {/* A title with a Japanese and English string */}
           <span lang="ja">連絡先 •</span>
           <span lang="en"> Contact Me</span>
         </h2>
@@ -35,56 +59,24 @@ const SenseiContact = (): JSX.Element => {
                   Ahmed Emad.Mail
                 </a>
                 <div className={styles.social}>
-                  
-                  <a
-                    aria-label="Go to Linkedin"
-                    href="https://www.linkedin.com/in/ahmed-emad-nasr/?originalSubdomain=eg"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {/* LinkedIn icon */}
-                    <i className="fa-brands fa-linkedin"></i>
-                  </a>
-                  <a
-                    aria-label="Contact on WhatsApp"
-                    href="https://wa.me/201018166445"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <i className="fa-brands fa-whatsapp"></i>
-                  </a>
-                  <a
-                    aria-label="Go to Instagram"
-                    href="https://www.instagram.com/ahmed.em.nasr/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <i className="fa-brands fa-instagram"></i>
-                  </a>
-                  <a
-                    aria-label="Go to Facebook"
-                    href="https://www.facebook.com/ahmed.em.nasr"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <i className="fa-brands fa-square-facebook"></i>
-                  </a>
-                   <a
-                    aria-label="Go to Telegram"
-                    href="https://t.me/Ox3omda"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {/* Telegram icon */}
-                    <i className="fa-brands fa-telegram"></i>
-                  </a>
-                
+                  {/* 3. Map over the extracted array for cleaner, more maintainable code */}
+                  {SOCIAL_LINKS.map((link) => (
+                    <a
+                      key={link.iconClass}
+                      aria-label={link.ariaLabel}
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <i className={link.iconClass} aria-hidden="true"></i>
+                    </a>
+                  ))}
                 </div>
               </div>
             </div>
             {/* Copyright footer */}
             <div className={styles.copyright}>
-              &copy; 2024 - {new Date().getFullYear()}{" "}
+              &copy; 2024 - {CURRENT_YEAR}{" "}
               <span>
                 <a
                   className={styles.Sensei_Name}
@@ -104,4 +96,6 @@ const SenseiContact = (): JSX.Element => {
   );
 };
 
-export default SenseiContact;
+// 4. Wrap in React.memo. Since this component takes no props and has no internal state, 
+// this guarantees it will NEVER needlessly re-render if a parent component updates.
+export default memo(SenseiContact);

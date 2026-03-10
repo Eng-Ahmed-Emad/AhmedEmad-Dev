@@ -56,16 +56,13 @@
   max-width: 1550px;
 }
 
-/* --- Grid Layout (الحل النهائي لمنع الالتصاق والتداخل) --- */
+/* --- Grid Layout --- */
 .skills-grid {
   display: grid;
-  /* تقسيم مرن يمنع الكروت من الخروج عن الإطار */
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  /* مسافة ثابتة بين الصفوف والأعمدة لمنع تلاصق الكروت */
   gap: 3rem; 
   width: 100%;
   position: relative;
-  /* يضمن أن جميع الكروت في نفس الصف بنفس الطول تلقائياً */
   align-items: stretch; 
 }
 
@@ -81,7 +78,10 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  height: 100%; /* تمدد الكارت ليملأ مساحة الـ Grid */
+  height: 100%; 
+  
+  /* PERFORMANCE FIX: Forces the browser to offload animations and painting to the GPU */
+  will-change: transform, opacity;
 }
 
 /* --- Hover Effect --- */
@@ -92,7 +92,7 @@
   border-color: rgba(var(--main-color-rgb), 0.5);
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8),
               0 0 25px rgba(var(--main-color-rgb), 0.15);
-  z-index: 5; /* لضمان ظهور الكارت فوق الكروت المجاورة عند الرفع */
+  z-index: 5; 
 }
 
 /* --- Card Header --- */
@@ -150,7 +150,7 @@
 .card-body {
   position: relative;
   z-index: 1;
-  flex-grow: 1; /* يضمن نزول المحتوى لملء مساحة الكارت الطويل */
+  flex-grow: 1; 
 }
 
 .skills-text {
@@ -160,7 +160,6 @@
   margin: 0;
   font-weight: 500;
   transition: color 0.3s ease;
-  /* منع خروج النص عن الكارت */
   word-wrap: break-word;
 }
 
@@ -184,6 +183,6 @@
 
 @media (max-width: 768px) {
   .skills-grid {
-    grid-template-columns: 1fr; /* كارت واحد في الصف على الموبايل */
+    grid-template-columns: 1fr; 
   }
 }
