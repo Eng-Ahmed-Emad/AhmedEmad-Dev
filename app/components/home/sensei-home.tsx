@@ -189,11 +189,9 @@ const SenseiHome = memo(function SenseiHome() {
           </motion.div>
 
           <motion.div className={styles.homeButton} variants={ITEM_VARIANTS}>
-            <a href="mailto:ahmed.emad.nasr@gmail.com" className={BTN_1_CLASS}>
-              <span style={HIDDEN_STYLE}>CVv</span>
-              Email
+            <a href="#Contact" className={BTN_1_CLASS}>
+              Hire Me
               <FontAwesomeIcon icon={faUserSecret} />
-              <span style={HIDDEN_STYLE}>CV</span>
             </a>
             <a
               href="Assets/cv/AhmedEmad_SOCAnalyst_CV.pdf"
