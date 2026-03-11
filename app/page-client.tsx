@@ -5,12 +5,12 @@ import dynamic from "next/dynamic";
 import AppBar from "@/app/components/header/sensei-header";
 import HomeSection from "@/app/components/home/sensei-home";
 
+// ─── استدعاء الـ Loader بشكل عادي عشان يظهر فوراً في اللحظة صفر ───
+import LoadingScreen from "@/app/components/loader/sensei_loader";
+
 // ─── Dynamic imports ──────────────────────────────────────────────────────────
 // ssr: false prevents hydration mismatches with Framer Motion and canvas APIs.
 // Each section is code-split — only downloaded when needed.
-const LoadingScreen = dynamic(() => import("@/app/components/loader/sensei_loader")
-, { ssr: false }
-);
 
 const AnimatedBackground = dynamic(
   () => import("@/app/components/animated_background/animated_background"),

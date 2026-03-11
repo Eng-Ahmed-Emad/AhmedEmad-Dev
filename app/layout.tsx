@@ -58,7 +58,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
         />
       </head>
-      <body className={BODY_CLASS}>{children}</body>
+      <body className={BODY_CLASS}>
+        {children}
+      </body>
     </html>
   );
 }
