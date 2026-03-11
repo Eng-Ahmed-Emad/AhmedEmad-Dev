@@ -9,7 +9,7 @@ import SectionHeader from "@/app/core/components/SectionHeader";
 
 /**
  * @Author Ahmed Emad Nasr
- * @Description High-performance Glassmorphism Contact Section.
+ * @Description High-performance Glassmorphism Contact Section with Formspree Integration.
  */
 
 // ─── Statics ──────────────────────────────────────────────────────────────────
@@ -43,22 +43,33 @@ const SenseiContact = memo(function SenseiContact() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
-  // Handle Form Submission (Simulated for now)
-  const handleSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
+  // Handle Form Submission using Formspree API
+  const handleSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
     setIsSuccess(false);
 
-    // هنا هتحط كود الـ EmailJS أو الـ API بتاعك مستقبلاً
-    // حالياً بنعمل Fake Delay لمدة ثانيتين عشان ندي شكل احترافي
-    setTimeout(() => {
+    try {
+      const response = await fetch("https://formspree.io/f/mlgpbpdr", {
+        method: "POST",
+        body: new FormData(e.currentTarget),
+        headers: {
+          'Accept': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        setIsSuccess(true);
+        (e.target as HTMLFormElement).reset(); // تفريغ الحقول بعد الإرسال الناجح
+        setTimeout(() => setIsSuccess(false), 5000); // إخفاء رسالة النجاح بعد 5 ثواني
+      } else {
+        console.error("Failed to send message. Server responded with an error.");
+      }
+    } catch (error) {
+      console.error("Error sending message:", error);
+    } finally {
       setIsSubmitting(false);
-      setIsSuccess(true);
-      (e.target as HTMLFormElement).reset(); // تفريغ الحقول بعد الإرسال
-      
-      // إخفاء رسالة النجاح بعد 5 ثواني
-      setTimeout(() => setIsSuccess(false), 5000);
-    }, 2000);
+    }
   }, []);
 
   return (
@@ -123,16 +134,16 @@ const SenseiContact = memo(function SenseiContact() {
           <motion.div className={styles["form-card"]} variants={ITEM_VARIANTS}>
             <form onSubmit={handleSubmit}>
               <div className={styles["input-group"]}>
-                <input type="text" placeholder="Your Name" required className={styles["input-field"]} />
+                <input type="text" name="name" placeholder="Your Name" required className={styles["input-field"]} />
               </div>
               <div className={styles["input-group"]}>
-                <input type="email" placeholder="Your Email" required className={styles["input-field"]} />
+                <input type="email" name="email" placeholder="Your Email" required className={styles["input-field"]} />
               </div>
               <div className={styles["input-group"]}>
-                <input type="text" placeholder="Subject" required className={styles["input-field"]} />
+                <input type="text" name="subject" placeholder="Subject" required className={styles["input-field"]} />
               </div>
               <div className={styles["input-group"]}>
-                <textarea placeholder="Your Message..." required className={styles["input-field"]}></textarea>
+                <textarea name="message" placeholder="Your Message..." required className={styles["input-field"]}></textarea>
               </div>
 
               <button type="submit" className={styles["submit-btn"]} disabled={isSubmitting}>

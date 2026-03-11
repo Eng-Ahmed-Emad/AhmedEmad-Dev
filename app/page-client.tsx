@@ -40,6 +40,10 @@ const ContactSection = dynamic(
   () => import("@/app/components/contact/sensei-contact"), // تأكد من المسار حسب ما سميت الفولدر
   { ssr: false }
 );
+const FooterSection = dynamic(
+  () => import("@/app/components/footer/sensei-footer"),
+  { ssr: false }
+);
 
 // ─── MainClient ───────────────────────────────────────────────────────────────
 
@@ -57,6 +61,7 @@ const MainClient = memo(function MainClient() {
       <SkillsSection />
       <ArtGallerySection />
       <ContactSection />
+      <FooterSection />
     </main>
   );
 });
