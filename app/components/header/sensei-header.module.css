@@ -1,7 +1,7 @@
 /*
  * sensei-header.module.css
  * @Author Ahmed Emad Nasr
- * @Description Modern, High-Contrast Floating Navbar with Glow & Borders
+ * @Description Modern, High-Contrast Floating Navbar with Glow & Borders (Transparent)
  */
 
 .header {
@@ -11,8 +11,11 @@
   transform: translateX(-50%);
   width: 92%;
   padding: 1rem 2.5rem;
-  background: rgba(15, 15, 15, 0.85);
-  backdrop-filter: blur(20px) saturate(180%);
+  
+  /* الشفافية الكاملة: خلفية شفافة وإلغاء تأثير الزجاج للحفاظ على الأداء */
+  background: transparent;
+  backdrop-filter: none;
+  
   border-radius: 60px;
   display: flex;
   justify-content: space-between;
@@ -47,7 +50,8 @@
 }
 
 .navbar a {
-  font-size: 1.4rem;
+  /* رجعنا الحجم الأصلي للخط هنا */
+  font-size: 1.4rem; 
   color: var(--text-color);
   padding: 0.8rem 1.6rem;
   border-radius: 40px;
