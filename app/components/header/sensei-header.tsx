@@ -1,5 +1,5 @@
 "use client";
-import { JSX, useCallback, useMemo, memo } from "react";
+import { useCallback, useMemo, memo } from "react";
 import styles from "./sensei-header.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useHeader } from "@/app/core/hooks/useHeader";
@@ -9,7 +9,18 @@ import { useHeader } from "@/app/core/hooks/useHeader";
  * @Description A responsive header component with a modern progress-aware menu.
  */
 
-const SenseiHeader = (): JSX.Element => {
+// ─── Statics ──────────────────────────────────────────────────────────────────
+
+// Stable class strings derived once at module level.
+// The conditional variants are kept inline (they depend on runtime state),
+// but the base + active combinations are predictable enough to note here.
+const MENU_ICON_BASE = styles.MenuIcon;
+const NAVBAR_BASE    = styles.navbar;
+const ACTIVE_CLASS   = styles.active;
+
+// ─── SenseiHeader ─────────────────────────────────────────────────────────────
+
+const SenseiHeader = memo(function SenseiHeader() {
   const {
     isMenuOpen,
     activeSection,
@@ -19,46 +30,73 @@ const SenseiHeader = (): JSX.Element => {
     setIsMenuOpen,
   } = useHeader();
 
-  const handleNavLinkClick = useCallback((section: string) => {
-    setActiveSection(section);
-    localStorage.setItem("activeSection", section);
-    if (window.innerWidth <= 994) {
-      setIsMenuOpen(false);
-    }
-  }, [setActiveSection, setIsMenuOpen]);
+  // Stable handler — only recreated if setActiveSection / setIsMenuOpen change,
+  // which only happens on initial mount (hook-provided setters are stable).
+  const handleNavLinkClick = useCallback(
+    (section: string) => {
+      setActiveSection(section);
+      localStorage.setItem("activeSection", section);
+      if (window.innerWidth <= 994) {
+        setIsMenuOpen(false);
+      }
+    },
+    [setActiveSection, setIsMenuOpen]
+  );
 
-  // Memoize the navigation links to prevent unnecessary re-renders of the array
-  // during state changes (e.g., when scrolling updates the activeSection).
-  const navLinks = useMemo(() => {
-    return Object.entries(sectionIcons).map(([section, icon]) => (
-      <a
-        key={section}
-        href={`#${section}`}
-        className={activeSection === section ? styles.active : undefined}
-        onClick={() => handleNavLinkClick(section)}
-      >
-        <FontAwesomeIcon icon={icon} aria-hidden="true" />
-        <span className={styles.navText}>{section}</span>
-      </a>
-    ));
-  }, [sectionIcons, activeSection, handleNavLinkClick]);
+  // Stable logo click — extracted from inline arrow to avoid a new function
+  // reference on every render of the logo anchor.
+  const handleLogoClick = useCallback(
+    () => handleNavLinkClick("home"),
+    [handleNavLinkClick]
+  );
+
+  // Stable keyboard handler for the hamburger button.
+  const handleMenuKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === "Enter") toggleMenu();
+    },
+    [toggleMenu]
+  );
+
+  // Rebuilds only when sectionIcons, activeSection, or handleNavLinkClick change.
+  // All three are stable across scroll-driven re-renders once mounted.
+  const navLinks = useMemo(
+    () =>
+      Object.entries(sectionIcons).map(([section, icon]) => (
+        <a
+          key={section}
+          href={`#${section}`}
+          className={activeSection === section ? ACTIVE_CLASS : undefined}
+          onClick={() => handleNavLinkClick(section)}
+        >
+          <FontAwesomeIcon icon={icon} aria-hidden="true" />
+          <span className={styles.navText}>{section}</span>
+        </a>
+      )),
+    [sectionIcons, activeSection, handleNavLinkClick]
+  );
+
+  // Derived class strings — computed inline but trivially cheap.
+  const menuIconClass = isMenuOpen
+    ? `${MENU_ICON_BASE} ${ACTIVE_CLASS}`
+    : MENU_ICON_BASE;
+
+  const navbarClass = isMenuOpen
+    ? `${NAVBAR_BASE} ${ACTIVE_CLASS}`
+    : NAVBAR_BASE;
 
   return (
     <header className={styles.header}>
       {/* Logo */}
-      <a 
-        href="#" 
-        className={styles.logo} 
-        onClick={() => handleNavLinkClick("home")}
-      >
+      <a href="#" className={styles.logo} onClick={handleLogoClick}>
         <span lang="ja">エンジニア・アハメド</span>
       </a>
 
       {/* Hamburger Menu Icon (Mobile Only) */}
       <div
-        className={`${styles.MenuIcon} ${isMenuOpen ? styles.active : ""}`.trim()}
+        className={menuIconClass}
         onClick={toggleMenu}
-        onKeyDown={(e) => e.key === "Enter" && toggleMenu()}
+        onKeyDown={handleMenuKeyDown}
         tabIndex={0}
         role="button"
         aria-expanded={isMenuOpen}
@@ -70,16 +108,11 @@ const SenseiHeader = (): JSX.Element => {
       </div>
 
       {/* Navigation Links */}
-      <nav
-        className={`${styles.navbar} ${isMenuOpen ? styles.active : ""}`.trim()}
-        aria-label="Main navigation"
-      >
+      <nav className={navbarClass} aria-label="Main navigation">
         {navLinks}
       </nav>
     </header>
   );
-};
+});
 
-// Wrap the export in React.memo to prevent re-renders from parent components 
-// unless the internal hook state forces an update.
-export default memo(SenseiHeader);
+export default SenseiHeader;

@@ -1,6 +1,6 @@
 "use client";
-import React, { JSX, useEffect, useMemo, memo } from "react";
-import { motion, useAnimation, Variants, cubicBezier } from "framer-motion";
+import { memo, useMemo } from "react";
+import { motion, type Variants, cubicBezier } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLinkedin, faWhatsapp, faXTwitter } from "@fortawesome/free-brands-svg-icons";
@@ -11,20 +11,23 @@ import { aboutMeCards } from "@/app/core/data";
 
 /**
  * @Author Ahmed Emad Nasr
- * @Description A React component that serves as the home section of the portfolio, featuring an image, social links, and animations.
+ * @Description A React component that serves as the home section of the portfolio,
+ * featuring an image, social links, and animations.
  */
 
-// 1. Move static animation variants OUTSIDE the component.
-// This prevents Framer Motion from rebuilding these objects on every single render.
+// ─── Statics ──────────────────────────────────────────────────────────────────
+
+// All static Framer Motion objects hoisted at module level — created once,
+// never reallocated during the component lifecycle.
+
+const SLIDE_EASE = cubicBezier(0.22, 1, 0.36, 1);
+
 const CONTAINER_VARIANTS: Variants = {
   hidden: { opacity: 0, y: 50 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: {
-      duration: 0.2,
-      staggerChildren: 0.2,
-    },
+    transition: { duration: 0.2, staggerChildren: 0.2 },
   },
 };
 
@@ -33,38 +36,46 @@ const ITEM_VARIANTS: Variants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: {
-      duration: 0.2,
-    },
+    transition: { duration: 0.2 },
   },
 };
 
-/**
- * A function component that renders a single about me card.
- */
-const AboutMeCard: React.FC<{
+const HEADER_INITIAL     = { opacity: 0, y: -50 } as const;
+const HEADER_ANIMATE_IN  = { opacity: 1, y: 0 }   as const;
+const HEADER_ANIMATE_OUT = {}                      as const;
+const HEADER_TRANSITION  = { duration: 0.3, ease: "easeOut" } as const;
+
+const ICON_ANIMATE    = { rotate: 0 }   as const;
+const ICON_HOVER      = { rotate: 360 } as const;
+const ICON_TRANSITION = { duration: 0.3 } as const;
+
+// Static button class strings — avoids template-literal allocation on every render.
+const BTN_1_CLASS = `${styles.btn} ${styles.btn1}`;
+const BTN_2_CLASS = `${styles.btn} ${styles.btn2}`;
+
+// Hidden spacer style — object literal hoisted to avoid inline allocation.
+const HIDDEN_STYLE = { visibility: "hidden" } as const;
+
+// ─── AboutMeCard ──────────────────────────────────────────────────────────────
+
+type AboutMeCardProps = {
   icon: string;
   title: string;
   description: string;
   index: number;
-}> = memo(({ icon, title, description, index }): JSX.Element => {
-  const [ref, inView] = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-  });
+};
 
-  // Memoize variants based on index to prevent unnecessary recalculations
+const AboutMeCard = memo<AboutMeCardProps>(({ icon, title, description, index }) => {
+  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
+
+  // Recomputes only when index changes — SLIDE_EASE is stable (module-level).
   const variants: Variants = useMemo(
     () => ({
       hidden: { opacity: 0, y: 50 },
       visible: {
         opacity: 1,
         y: 0,
-        transition: {
-          duration: 0.2,
-          delay: index * 0.05,
-          ease: cubicBezier(0.22, 1, 0.36, 1),
-        },
+        transition: { duration: 0.2, delay: index * 0.05, ease: SLIDE_EASE },
       },
     }),
     [index]
@@ -81,10 +92,10 @@ const AboutMeCard: React.FC<{
       <div className={styles["card-part-1"]}>
         <motion.i
           className={icon}
-          animate={{ rotate: 0 }}
-          whileHover={{ rotate: 360 }}
-          transition={{ duration: 0.3 }}
-        ></motion.i>
+          animate={ICON_ANIMATE}
+          whileHover={ICON_HOVER}
+          transition={ICON_TRANSITION}
+        />
         <h3 className={styles["card-title"]}>{title}</h3>
       </div>
       <div className={styles["card-part-2"]}>
@@ -96,11 +107,15 @@ const AboutMeCard: React.FC<{
 
 AboutMeCard.displayName = "AboutMeCard";
 
-const SenseiHome = (): JSX.Element => {
+// ─── SenseiHome ───────────────────────────────────────────────────────────────
+
+const SenseiHome = memo(function SenseiHome() {
   const { handleImageClick } = useRandomMedia();
-  const controls = useAnimation();
-  
-  const [ref, inView] = useInView({
+
+  // useAnimation + useEffect pattern replaced with direct animate prop.
+  // `triggerOnce: false` is preserved so re-entering the viewport re-triggers
+  // the animation, which was the intent of the original useEffect guard.
+  const [containerRef, containerInView] = useInView({
     triggerOnce: false,
     threshold: 0.1,
   });
@@ -110,21 +125,14 @@ const SenseiHome = (): JSX.Element => {
     threshold: 0.1,
   });
 
-  // Trigger animations when the container comes into view
-  useEffect(() => {
-    if (inView) {
-      controls.start("visible");
-    }
-  }, [controls, inView]);
-
   return (
     <section className={styles.home} id="Home">
       <motion.div
+        ref={containerRef}
         className={styles.container}
         initial="hidden"
-        animate={controls}
+        animate={containerInView ? "visible" : "hidden"}
         variants={CONTAINER_VARIANTS}
-        ref={ref}
       >
         <motion.div className={styles.homeImg} variants={ITEM_VARIANTS}>
           <img
@@ -143,13 +151,13 @@ const SenseiHome = (): JSX.Element => {
             <span className={styles.highlight}>Ahmed Emad Nasr</span>
           </h1>
           <h2 className={styles.typingText}>
-            <span className={styles.typingHighlight}></span>
+            <span className={styles.typingHighlight} />
           </h2>
           <p>
-            Computer Science student at Benha University specializing in Security Operations, 
-            Incident Response and Cybersecurity. Focused on monitoring, alert triage, DFIR, 
-            and defending systems with experience gained through hands-on DEPI, ITI Training 
-            Programs and SOC projects. Passionate about continuously developing Blue Team 
+            Computer Science student at Benha University specializing in Security Operations,
+            Incident Response and Cybersecurity. Focused on monitoring, alert triage, DFIR,
+            and defending systems with experience gained through hands-on DEPI, ITI Training
+            Programs and SOC projects. Passionate about continuously developing Blue Team
             skills and securing digital environments.
           </p>
 
@@ -181,16 +189,16 @@ const SenseiHome = (): JSX.Element => {
           </motion.div>
 
           <motion.div className={styles.homeButton} variants={ITEM_VARIANTS}>
-           <a href="mailto:ahmed.emad.nasr@gmail.com" className={`${styles.btn} ${styles.btn1}`}>
-              <span style={{ visibility: "hidden" }}>CVv</span>
+            <a href="mailto:ahmed.emad.nasr@gmail.com" className={BTN_1_CLASS}>
+              <span style={HIDDEN_STYLE}>CVv</span>
               Email
               <FontAwesomeIcon icon={faUserSecret} />
-              <span style={{ visibility: "hidden" }}>CV</span>
+              <span style={HIDDEN_STYLE}>CV</span>
             </a>
             <a
               href="Assets/cv/AhmedEmad_SOCAnalyst_CV.pdf"
               download
-              className={`${styles.btn} ${styles.btn2}`}
+              className={BTN_2_CLASS}
             >
               Download CV <FontAwesomeIcon icon={faFilePdf} />
             </a>
@@ -203,9 +211,9 @@ const SenseiHome = (): JSX.Element => {
         <motion.div
           ref={headerRef}
           className={styles["about-me-header"]}
-          initial={{ opacity: 0, y: -50 }}
-          animate={headerInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.3, ease: "easeOut" }}
+          initial={HEADER_INITIAL}
+          animate={headerInView ? HEADER_ANIMATE_IN : HEADER_ANIMATE_OUT}
+          transition={HEADER_TRANSITION}
         >
           <h2 className={styles["about-me-title"]}>
             <span lang="ja">自己紹介 •</span>
@@ -214,13 +222,12 @@ const SenseiHome = (): JSX.Element => {
         </motion.div>
         <div className={styles["about-me-grid"]}>
           {aboutMeCards.map((card, index) => (
-            // Use card.title as part of the key for better list stability
             <AboutMeCard key={`${card.title}-${index}`} {...card} index={index} />
           ))}
         </div>
       </div>
     </section>
   );
-};
+});
 
-export default memo(SenseiHome);
+export default SenseiHome;

@@ -5,16 +5,39 @@ import dynamic from "next/dynamic";
 import AppBar from "@/app/components/header/sensei-header";
 import HomeSection from "@/app/components/home/sensei-home";
 
-// Dynamically imported heavy/client-only components
-// Note: Keeping ssr: false prevents hydration mismatches with Framer Motion and canvas APIs
-const AnimatedBackground = dynamic(() => import("@/app/components/animated_background/animated_background"), { ssr: false });
-const ServicesSection = dynamic(() => import("@/app/components/services/sensei-services-projects"), { ssr: false });
-const ExperienceSection = dynamic(() => import("@/app/components/experience/experience-section"), { ssr: false });
-const ProjectsSection = dynamic(() => import("@/app/components/services/sensei-projects"), { ssr: false });
-const ArtGallerySection = dynamic(() => import("@/app/components/art_gallery/sensei-art"), { ssr: false });
-const SkillsSection = dynamic(() => import("@/app/components/skills/sensei-skills"), { ssr: false });
+// ─── Dynamic imports ──────────────────────────────────────────────────────────
+// ssr: false prevents hydration mismatches with Framer Motion and canvas APIs.
+// Each section is code-split — only downloaded when needed.
 
-const MainClient = () => {
+const AnimatedBackground = dynamic(
+  () => import("@/app/components/animated_background/animated_background"),
+  { ssr: false }
+);
+const ServicesSection = dynamic(
+  () => import("@/app/components/services/sensei-services-projects"),
+  { ssr: false }
+);
+const ExperienceSection = dynamic(
+  () => import("@/app/components/experience/experience-section"),
+  { ssr: false }
+);
+const ProjectsSection = dynamic(
+  () => import("@/app/components/services/sensei-projects"),
+  { ssr: false }
+);
+const ArtGallerySection = dynamic(
+  () => import("@/app/components/art_gallery/sensei-art"),
+  { ssr: false }
+);
+const SkillsSection = dynamic(
+  () => import("@/app/components/skills/sensei-skills"),
+  { ssr: false }
+);
+
+// ─── MainClient ───────────────────────────────────────────────────────────────
+
+// Memoised to prevent cascading re-renders from any parent context changes.
+const MainClient = memo(function MainClient() {
   return (
     <main>
       <AnimatedBackground />
@@ -27,7 +50,6 @@ const MainClient = () => {
       <ArtGallerySection />
     </main>
   );
-};
+});
 
-// Memoize the root client component to prevent cascading re-renders
-export default memo(MainClient);
+export default MainClient;

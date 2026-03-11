@@ -1,15 +1,17 @@
-import React from "react";
 import "./globals.css";
 import type { Metadata, Viewport } from "next";
+import type { ReactNode } from "react";
 import { Overlock, Yuji_Syuku } from "next/font/google";
 
-// Viewport configuration extracted natively
+// ─── Viewport ─────────────────────────────────────────────────────────────────
+
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
 };
 
-// Metadata configuration using Next.js native attributes for SEO & Verification
+// ─── Metadata ─────────────────────────────────────────────────────────────────
+
 export const metadata: Metadata = {
   title: "Ahmed Emad Nasr",
   description:
@@ -22,6 +24,10 @@ export const metadata: Metadata = {
   },
 };
 
+// ─── Fonts ────────────────────────────────────────────────────────────────────
+
+// Font objects are created once at module load by next/font/google —
+// calling these outside the component is the correct and required pattern.
 const overlock = Overlock({
   weight: ["400", "700", "900"],
   subsets: ["latin"],
@@ -36,24 +42,23 @@ const yujiSyuku = Yuji_Syuku({
   display: "swap",
 });
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+// Derived once — the class string never changes between renders.
+const BODY_CLASS = `bg-black text-white ${overlock.variable} ${yujiSyuku.variable}`;
+
+// ─── Layout ───────────────────────────────────────────────────────────────────
+
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" dir="ltr">
       <head>
-        {/* Preconnect to FontAwesome CDN to establish early network connections, speeding up icon loading */}
+        {/* Preconnect to FontAwesome CDN for early network connection */}
         <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossOrigin="anonymous" />
         <link
           rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
         />
       </head>
-      <body className={`bg-black text-white ${overlock.variable} ${yujiSyuku.variable}`.trim()}>
-        {children}
-      </body>
+      <body className={BODY_CLASS}>{children}</body>
     </html>
   );
 }

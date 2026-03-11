@@ -1,8 +1,13 @@
 "use client";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { GITHUB_USERNAME } from "@/app/core/data";
 
+// ─── Constants ────────────────────────────────────────────────────────────────
+
+// Constructed once at module load — not rebuilt on every hook call.
 const API_URL = `https://api.github.com/users/${GITHUB_USERNAME}/repos`;
+
+// ─── Types ────────────────────────────────────────────────────────────────────
 
 export interface GitHubRepository {
   id: number;
@@ -21,30 +26,36 @@ export interface GitHubRepository {
   topics: string[];
   default_branch: string;
   watchers_count: number;
-  license: {
-    name: string;
-  } | null;
+  license: { name: string } | null;
 }
 
-export const useGitHubRepos = () => {
+// ─── Hook ─────────────────────────────────────────────────────────────────────
+
+export const useGitHubRepos = (): GitHubRepository[] => {
   const [repos, setRepos] = useState<GitHubRepository[]>([]);
 
-  const fetchGitHubRepos = useCallback(async () => {
-    try {
-      const response = await fetch(API_URL);
-      if (!response.ok) {
-        throw new Error("Failed to fetch repositories");
-      }
-      const data = await response.json();
-      setRepos(data);
-    } catch (error) {
-      console.error("Error fetching repositories:", error);
-    }
-  }, []);
-
   useEffect(() => {
-    fetchGitHubRepos();
-  }, [fetchGitHubRepos]);
+    // Abort controller prevents a stale setState call if the component unmounts
+    // before the fetch resolves (e.g. during fast navigation).
+    const controller = new AbortController();
+
+    const fetchRepos = async (): Promise<void> => {
+      try {
+        const response = await fetch(API_URL, { signal: controller.signal });
+        if (!response.ok) throw new Error("Failed to fetch repositories");
+        const data: GitHubRepository[] = await response.json();
+        setRepos(data);
+      } catch (error) {
+        // Ignore abort errors — they are expected on unmount.
+        if (error instanceof Error && error.name !== "AbortError") {
+          console.error("Error fetching repositories:", error);
+        }
+      }
+    };
+
+    fetchRepos();
+    return () => controller.abort();
+  }, []); // No external dependencies — API_URL is a module-level constant.
 
   return repos;
 };

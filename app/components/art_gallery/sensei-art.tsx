@@ -1,20 +1,25 @@
 "use client";
-import React, { useCallback, useEffect, useMemo, useState, memo } from "react";
+import { useCallback, useEffect, useMemo, useState, memo } from "react";
 import Image from "next/image";
 import dynamic from "next/dynamic";
-import { Variants, motion, useReducedMotion } from "framer-motion";
+import { type Variants, motion, useReducedMotion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import "yet-another-react-lightbox/styles.css";
 import styles from "./sensei-art.module.css";
 
 /**
  * @Author: Ahmed_emad
- * @Description: A responsive experience component with a menu that highlights the active section of the page.
+ * @Description: A responsive art gallery component with lightbox support,
+ * accessibility-aware animations, and keyboard navigation.
  */
+
+// ─── Dynamic import ───────────────────────────────────────────────────────────
 
 const Lightbox = dynamic(() => import("yet-another-react-lightbox"), {
   ssr: false,
 });
+
+// ─── Types ────────────────────────────────────────────────────────────────────
 
 interface GalleryImage {
   src: string;
@@ -27,24 +32,27 @@ interface ImageItemProps {
   setOpen: (index: number) => void;
 }
 
-// 1. Extract static array generation OUTSIDE the component.
-// This executes exactly once when the file is loaded, avoiding the need for useMemo entirely.
+// ─── Statics ──────────────────────────────────────────────────────────────────
+
+// Both arrays are derived from pure data — generated once at module load.
 const GALLERY_IMAGES: GalleryImage[] = Array.from({ length: 24 }, (_, k) => ({
   src: `Assets/art-gallery/Images/image_display/${k + 1}.png`,
   thumb: `Assets/art-gallery/Images/image_display_thumb/${k + 1}.webp`,
 }));
 
 const LIGHTBOX_SLIDES = GALLERY_IMAGES.map((image) => ({ src: image.src }));
+const SLIDE_COUNT = LIGHTBOX_SLIDES.length; // avoids repeated .length lookups
+
+// Static easing tuple — hoisted so it isn't reallocated inside useMemo.
+const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
+
+// ─── ImageItem ────────────────────────────────────────────────────────────────
 
 const ImageItem = memo(({ image, index, setOpen }: ImageItemProps) => {
-  const [ref, inView] = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-  });
-
+  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
   const prefersReducedMotion = useReducedMotion();
 
-  // 2. Memoize variants using prefersReducedMotion as the dependency
+  // Rebuilds only when the accessibility preference changes (very rare).
   const variants: Variants = useMemo(
     () => ({
       hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 32 },
@@ -52,23 +60,14 @@ const ImageItem = memo(({ image, index, setOpen }: ImageItemProps) => {
         opacity: 1,
         y: 0,
         transition: prefersReducedMotion
-          ? {
-              duration: 0.15,
-            }
-          : {
-              delay: i * 0.18,
-              duration: 0.5,
-              ease: [0.22, 1, 0.36, 1],
-            },
+          ? { duration: 0.15 }
+          : { delay: i * 0.18, duration: 0.5, ease: EASE },
       }),
     }),
     [prefersReducedMotion]
   );
 
-  // 3. Prevent inline function recreation inside the Image onClick handler
-  const handleClick = useCallback(() => {
-    setOpen(index);
-  }, [setOpen, index]);
+  const handleClick = useCallback(() => setOpen(index), [setOpen, index]);
 
   return (
     <motion.div
@@ -96,28 +95,25 @@ const ImageItem = memo(({ image, index, setOpen }: ImageItemProps) => {
 
 ImageItem.displayName = "ImageItem";
 
-function SenseiArt() {
+// ─── SenseiArt ────────────────────────────────────────────────────────────────
+
+const SenseiArt = memo(function SenseiArt() {
   const [index, setIndex] = useState(-1);
   const open = index >= 0;
 
-  const [headerRef, headerInView] = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-  });
-
+  const [headerRef, headerInView] = useInView({ triggerOnce: true, threshold: 0.1 });
   const prefersReducedMotion = useReducedMotion();
 
-  // Changed type to standard KeyboardEvent for better TS support
+  // Stable handler — no dependencies change after mount.
   const handleKeyDown = useCallback((event: KeyboardEvent) => {
     if (event.key === "ArrowRight") {
-      setIndex((i) => (i + 1) % LIGHTBOX_SLIDES.length);
+      setIndex((i) => (i + 1) % SLIDE_COUNT);
     } else if (event.key === "ArrowLeft") {
-      setIndex(
-        (i) => (i - 1 + LIGHTBOX_SLIDES.length) % LIGHTBOX_SLIDES.length
-      );
+      setIndex((i) => (i - 1 + SLIDE_COUNT) % SLIDE_COUNT);
     }
   }, []);
 
+  // Attach / detach keyboard listener only while the lightbox is open.
   useEffect(() => {
     if (open) {
       window.addEventListener("keydown", handleKeyDown);
@@ -125,7 +121,7 @@ function SenseiArt() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [open, handleKeyDown]);
 
-  // 4. Memoize the container/header variants
+  // Rebuilds only when the accessibility preference changes.
   const headerVariants: Variants = useMemo(
     () => ({
       hidden: { opacity: 0, y: prefersReducedMotion ? 0 : -50 },
@@ -133,13 +129,8 @@ function SenseiArt() {
         opacity: 1,
         y: 0,
         transition: prefersReducedMotion
-          ? {
-              duration: 0.15,
-            }
-          : {
-              duration: 0.5,
-              ease: [0.22, 1, 0.36, 1],
-            },
+          ? { duration: 0.15 }
+          : { duration: 0.5, ease: EASE },
       },
     }),
     [prefersReducedMotion]
@@ -152,19 +143,14 @@ function SenseiArt() {
         opacity: 1,
         transition: prefersReducedMotion
           ? { duration: 0.2 }
-          : {
-              staggerChildren: 0.18,
-              delayChildren: 0.4,
-            },
+          : { staggerChildren: 0.18, delayChildren: 0.4 },
       },
     }),
     [prefersReducedMotion]
   );
 
-  // 5. Memoize the close handler for Lightbox to prevent re-renders
-  const handleCloseLightbox = useCallback(() => {
-    setIndex(-1);
-  }, []);
+  // Stable close handler — setIndex is a stable React dispatcher.
+  const handleCloseLightbox = useCallback(() => setIndex(-1), []);
 
   return (
     <section className={styles["art-gallery-section"]} id="ArtGallery">
@@ -190,7 +176,7 @@ function SenseiArt() {
           <div className={styles.Gallery}>
             {GALLERY_IMAGES.map((image, i) => (
               <ImageItem
-                key={image.src} /* Using stable unique src instead of array index */
+                key={image.src}
                 image={image}
                 index={i}
                 setOpen={setIndex}
@@ -207,7 +193,6 @@ function SenseiArt() {
       />
     </section>
   );
-}
+});
 
-// 6. Wrap main export in memo
-export default memo(SenseiArt);
+export default SenseiArt;

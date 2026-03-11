@@ -1,6 +1,9 @@
 "use client";
 import { useEffect, useRef, useCallback } from "react";
 import debounce from "lodash/debounce";
+import type { RefObject } from "react";
+
+// ─── Types ────────────────────────────────────────────────────────────────────
 
 interface Bubble {
   x: number; y: number; radius: number; vx: number; vy: number;
@@ -15,23 +18,38 @@ interface Meteor {
 
 interface MousePosition { x: number; y: number; active: boolean; }
 
-const GRID_SIZE = 50;
-const MOUSE_INFLUENCE_RADIUS = 200;
-const MOUSE_INFLUENCE_STRENGTH = 1.0;
-const MAX_RADIUS = 120;
-const MIN_RADIUS = 60;
-const BUBBLE_EXPANSION_FACTOR = 1.2;
-const MAX_SPEED_LIMIT = 5;
-const TARGET_FRAME_TIME = 1000 / 60;
-const TRAIL_MAX_LENGTH = 12;
+// ─── Constants ────────────────────────────────────────────────────────────────
 
-const drawBubble = (ctx: CanvasRenderingContext2D, bubble: Bubble, offscreen: HTMLCanvasElement) => {
-  const scale = bubble.radius / MAX_RADIUS;
+const GRID_SIZE               = 50;
+const MOUSE_INFLUENCE_RADIUS  = 200;
+const MOUSE_INFLUENCE_STRENGTH = 1.0;
+const MAX_RADIUS              = 120;
+const MIN_RADIUS              = 60;
+const BUBBLE_EXPANSION_FACTOR = 1.2;
+const MAX_SPEED_LIMIT         = 5;
+const TARGET_FRAME_TIME       = 1000 / 60;
+const TRAIL_MAX_LENGTH        = 12;
+const TWO_PI                  = Math.PI * 2; // Avoids recomputing Math.PI * 2 every frame
+
+// ─── Pure render helpers (module-level, never recreated) ──────────────────────
+
+const drawBubble = (
+  ctx: CanvasRenderingContext2D,
+  bubble: Bubble,
+  offscreen: HTMLCanvasElement
+): void => {
+  const scale    = bubble.radius / MAX_RADIUS;
   const drawSize = offscreen.width * scale;
-  ctx.drawImage(offscreen, ~~(bubble.x - drawSize / 2), ~~(bubble.y - drawSize / 2), ~~drawSize, ~~drawSize);
+  ctx.drawImage(
+    offscreen,
+    ~~(bubble.x - drawSize / 2),
+    ~~(bubble.y - drawSize / 2),
+    ~~drawSize,
+    ~~drawSize
+  );
 };
 
-const drawMeteor = (ctx: CanvasRenderingContext2D, meteor: Meteor) => {
+const drawMeteor = (ctx: CanvasRenderingContext2D, meteor: Meteor): void => {
   const trailLen = meteor.trail.length;
   if (trailLen < 2) return;
 
@@ -41,32 +59,32 @@ const drawMeteor = (ctx: CanvasRenderingContext2D, meteor: Meteor) => {
     ctx.lineTo(~~meteor.trail[i].x, ~~meteor.trail[i].y);
   }
 
-  const last = meteor.trail[trailLen - 1];
+  const last     = meteor.trail[trailLen - 1];
   const gradient = ctx.createLinearGradient(~~meteor.x, ~~meteor.y, ~~last.x, ~~last.y);
   gradient.addColorStop(0, "rgba(254, 242, 226, 0.8)");
   gradient.addColorStop(1, "rgba(254, 242, 226, 0)");
 
   ctx.strokeStyle = gradient;
-  ctx.lineWidth = meteor.size;
-  ctx.lineCap = "round";
+  ctx.lineWidth   = meteor.size;
+  ctx.lineCap     = "round";
   ctx.stroke();
 
   ctx.beginPath();
-  ctx.arc(~~meteor.x, ~~meteor.y, meteor.size / 2, 0, Math.PI * 2);
+  ctx.arc(~~meteor.x, ~~meteor.y, meteor.size / 2, 0, TWO_PI);
   ctx.fillStyle = "rgba(252, 240, 225, 1)";
   ctx.fill();
 };
 
 const buildBackground = (w: number, h: number): HTMLCanvasElement => {
   const canvas = document.createElement("canvas");
-  canvas.width = w;
+  canvas.width  = w;
   canvas.height = h;
   const ctx = canvas.getContext("2d", { alpha: false });
   if (ctx) {
-    ctx.fillStyle = "black";
+    ctx.fillStyle   = "black";
     ctx.fillRect(0, 0, w, h);
     ctx.strokeStyle = "rgba(255, 255, 255, 0.05)";
-    ctx.lineWidth = 0.4;
+    ctx.lineWidth   = 0.4;
     ctx.beginPath();
     for (let x = 0; x <= w; x += GRID_SIZE) { ctx.moveTo(x, 0); ctx.lineTo(x, h); }
     for (let y = 0; y <= h; y += GRID_SIZE) { ctx.moveTo(0, y); ctx.lineTo(w, y); }
@@ -75,48 +93,50 @@ const buildBackground = (w: number, h: number): HTMLCanvasElement => {
   return canvas;
 };
 
-export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasElement | null>) => {
-  const contextRef       = useRef<CanvasRenderingContext2D | null>(null);
-  const animFrameRef     = useRef<number | null>(null);
-  const bubbleOffscreen  = useRef<HTMLCanvasElement | null>(null);
-  const bgOffscreen      = useRef<HTMLCanvasElement | null>(null);
-  const lastTimeRef      = useRef<number>(0);
-  const bubblesRef       = useRef<Bubble[]>([]);
-  const meteorsRef       = useRef<Meteor[]>([]);
-  const mouseRef         = useRef<MousePosition>({ x: 0, y: 0, active: false });
-  const isMobileRef      = useRef(false);
-  const dimensionsRef    = useRef({ width: 0, height: 0 });
+// ─── Hook ─────────────────────────────────────────────────────────────────────
 
-  // Pre-render bubble sprite once on mount
+export const useAnimatedBackground = (
+  canvasRef: RefObject<HTMLCanvasElement | null>
+): void => {
+  const contextRef      = useRef<CanvasRenderingContext2D | null>(null);
+  const animFrameRef    = useRef<number | null>(null);
+  const bubbleOffscreen = useRef<HTMLCanvasElement | null>(null);
+  const bgOffscreen     = useRef<HTMLCanvasElement | null>(null);
+  const lastTimeRef     = useRef<number>(0);
+  const bubblesRef      = useRef<Bubble[]>([]);
+  const meteorsRef      = useRef<Meteor[]>([]);
+  const mouseRef        = useRef<MousePosition>({ x: 0, y: 0, active: false });
+  const isMobileRef     = useRef(false);
+
+  // ── Pre-render bubble sprite once on mount ──────────────────────────────────
   useEffect(() => {
     const canvas = document.createElement("canvas");
-    const size = MAX_RADIUS * 3;
-    canvas.width = size;
-    canvas.height = size;
+    const size   = MAX_RADIUS * 3;
+    canvas.width = canvas.height = size;
     const ctx = canvas.getContext("2d");
     if (ctx) {
-      const center = size / 2;
-      ctx.filter = "blur(30px)";
+      const center   = size / 2;
+      ctx.filter     = "blur(30px)";
       const gradient = ctx.createRadialGradient(center, center, 0, center, center, MAX_RADIUS);
       gradient.addColorStop(0, "rgba(253, 242, 225, 0.8)");
       gradient.addColorStop(1, "rgba(253, 242, 225, 0)");
       ctx.fillStyle = gradient;
       ctx.beginPath();
-      ctx.arc(center, center, MAX_RADIUS, 0, Math.PI * 2);
+      ctx.arc(center, center, MAX_RADIUS, 0, TWO_PI);
       ctx.fill();
     }
     bubbleOffscreen.current = canvas;
   }, []);
 
+  // ── Canvas + entity setup (also called on resize) ───────────────────────────
   const setupCanvasEnv = useCallback(() => {
     const w = window.innerWidth;
     const h = window.innerHeight;
     isMobileRef.current = w <= 768;
-    dimensionsRef.current = { width: w, height: h };
 
     const mainCanvas = canvasRef.current;
     if (mainCanvas) {
-      mainCanvas.width = w;
+      mainCanvas.width  = w;
       mainCanvas.height = h;
       contextRef.current = mainCanvas.getContext("2d", {
         alpha: false,
@@ -125,19 +145,14 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
       });
     }
 
-    // Always build the static background (desktop & mobile)
     bgOffscreen.current = buildBackground(w, h);
 
-    // On mobile: clear entities and stop — static bg is all we render
     if (isMobileRef.current) {
       bubblesRef.current = [];
       meteorsRef.current = [];
-
-      // Immediately paint the static background and stop the loop
+      // Paint static background immediately and halt the loop.
       const ctx = contextRef.current;
-      if (ctx && bgOffscreen.current) {
-        ctx.drawImage(bgOffscreen.current, 0, 0);
-      }
+      if (ctx && bgOffscreen.current) ctx.drawImage(bgOffscreen.current, 0, 0);
       if (animFrameRef.current) {
         cancelAnimationFrame(animFrameRef.current);
         animFrameRef.current = null;
@@ -145,64 +160,68 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
       return;
     }
 
-    // Desktop entity generation
-    const bubbleCount = Math.floor((w * h) / 90000);
+    const bubbleCount  = Math.floor((w * h) / 90000);
+    const radiusRange  = MAX_RADIUS - MIN_RADIUS;
+
     bubblesRef.current = Array.from({ length: bubbleCount }, () => {
-      const radius = Math.random() * (MAX_RADIUS - MIN_RADIUS) + MIN_RADIUS;
+      const radius = Math.random() * radiusRange + MIN_RADIUS;
       return {
-        x: Math.random() * w, y: Math.random() * h,
-        radius, originalRadius: radius,
+        x: Math.random() * w,
+        y: Math.random() * h,
+        radius,
+        originalRadius: radius,
         vx: (Math.random() - 0.5) * 4,
         vy: (Math.random() - 0.5) * 4,
-        phase: Math.random() * Math.PI * 2,
+        phase: Math.random() * TWO_PI,
         pulseSpeed: 0.02 + Math.random() * 0.04,
       };
     });
 
     meteorsRef.current = Array.from({ length: Math.floor(w / 250) }, () => ({
-      x: (~~(Math.random() * (w / GRID_SIZE))) * GRID_SIZE,
-      y: (~~(Math.random() * (h / GRID_SIZE))) * GRID_SIZE,
-      size: Math.random() * 2 + 1,
-      speed: Math.random() * 2 + 1,
+      x:         (~~(Math.random() * (w / GRID_SIZE))) * GRID_SIZE,
+      y:         (~~(Math.random() * (h / GRID_SIZE))) * GRID_SIZE,
+      size:      Math.random() * 2 + 1,
+      speed:     Math.random() * 2 + 1,
       direction: (Math.random() < 0.5 ? "horizontal" : "vertical") as "horizontal" | "vertical",
-      trail: [],
+      trail:     [],
     }));
   }, [canvasRef]);
 
-  // Event listeners
+  // ── Event listeners ─────────────────────────────────────────────────────────
   useEffect(() => {
     setupCanvasEnv();
 
     const debouncedSetup = debounce(setupCanvasEnv, 250);
     window.addEventListener("resize", debouncedSetup, { passive: true });
 
-    const handleMouseMove = (e: MouseEvent) => {
+    const handleMouseMove = (e: MouseEvent): void => {
       if (isMobileRef.current) return;
-      mouseRef.current.x = e.clientX;
-      mouseRef.current.y = e.clientY;
+      mouseRef.current.x      = e.clientX;
+      mouseRef.current.y      = e.clientY;
       mouseRef.current.active = true;
     };
-    const handleMouseLeave = () => { mouseRef.current.active = false; };
+    const handleMouseLeave = (): void => { mouseRef.current.active = false; };
 
-    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    window.addEventListener("mousemove",  handleMouseMove,  { passive: true });
     window.addEventListener("mouseleave", handleMouseLeave, { passive: true });
 
     return () => {
-      window.removeEventListener("resize", debouncedSetup);
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mouseleave", handleMouseLeave);
+      window.removeEventListener("resize",      debouncedSetup);
+      window.removeEventListener("mousemove",   handleMouseMove);
+      window.removeEventListener("mouseleave",  handleMouseLeave);
       debouncedSetup.cancel();
     };
   }, [setupCanvasEnv]);
 
-  const animate = useCallback((timestamp: number) => {
-    // Guard: skip entirely on mobile — static bg already painted
+  // ── Animation loop ───────────────────────────────────────────────────────────
+  const animate = useCallback((timestamp: number): void => {
     if (isMobileRef.current) return;
 
     const canvas = canvasRef.current;
-    const ctx = contextRef.current;
+    const ctx    = contextRef.current;
     if (!canvas || !ctx) return;
 
+    // Yield frame while tab is hidden — keeps rAF alive so it resumes instantly.
     if (document.hidden) {
       animFrameRef.current = requestAnimationFrame(animate);
       return;
@@ -211,13 +230,14 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
     if (!lastTimeRef.current) lastTimeRef.current = timestamp;
     const elapsed = timestamp - lastTimeRef.current;
 
+    // Skip frame if we're ahead of the target frame time.
     if (elapsed < TARGET_FRAME_TIME) {
       animFrameRef.current = requestAnimationFrame(animate);
       return;
     }
 
     lastTimeRef.current = timestamp - (elapsed % TARGET_FRAME_TIME);
-    const dt = Math.min(elapsed / 16.66, 3);
+    const dt   = Math.min(elapsed / 16.66, 3);
     const cvsW = canvas.width;
     const cvsH = canvas.height;
 
@@ -227,8 +247,8 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
       ctx.clearRect(0, 0, cvsW, cvsH);
     }
 
-    const mouse = mouseRef.current;
-    const bubbles = bubblesRef.current;
+    const mouse        = mouseRef.current;
+    const bubbles      = bubblesRef.current;
     const bubbleSprite = bubbleOffscreen.current;
 
     for (let i = 0, len = bubbles.length; i < len; i++) {
@@ -244,8 +264,8 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
       let newRadius = pulsingRadius;
 
       if (mouse.active) {
-        const dx = mouse.x - b.x;
-        const dy = mouse.y - b.y;
+        const dx   = mouse.x - b.x;
+        const dy   = mouse.y - b.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
         if (dist < MOUSE_INFLUENCE_RADIUS) {
           const influence = 1 - dist / MOUSE_INFLUENCE_RADIUS;
@@ -260,8 +280,9 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
 
       const speed = Math.sqrt(b.vx * b.vx + b.vy * b.vy);
       if (speed > MAX_SPEED_LIMIT) {
-        b.vx = (b.vx / speed) * MAX_SPEED_LIMIT;
-        b.vy = (b.vy / speed) * MAX_SPEED_LIMIT;
+        const inv = MAX_SPEED_LIMIT / speed; // one division instead of two
+        b.vx *= inv;
+        b.vy *= inv;
       }
 
       b.radius = Math.max(10, newRadius);
@@ -280,9 +301,10 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
       }
 
       if (m.trail.length >= TRAIL_MAX_LENGTH) {
+        // Object recycling: reuse the popped trail point instead of allocating a new one.
         const recycled = m.trail.pop()!;
-        recycled.x = m.x;
-        recycled.y = m.y;
+        recycled.x     = m.x;
+        recycled.y     = m.y;
         recycled.alpha = 1;
         m.trail.unshift(recycled);
       } else {
@@ -295,18 +317,18 @@ export const useAnimatedBackground = (canvasRef: React.RefObject<HTMLCanvasEleme
     animFrameRef.current = requestAnimationFrame(animate);
   }, [canvasRef]);
 
-  // Boot animation loop
+  // ── Boot animation loop ──────────────────────────────────────────────────────
   useEffect(() => {
-    lastTimeRef.current = performance.now();
+    lastTimeRef.current  = performance.now();
     animFrameRef.current = requestAnimationFrame(animate);
     return () => {
       if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
     };
   }, [animate]);
 
-  // Visibility change: reset time reference on tab re-focus
+  // ── Reset time reference on tab re-focus ────────────────────────────────────
   useEffect(() => {
-    const handleVisibility = () => {
+    const handleVisibility = (): void => {
       if (!document.hidden && !isMobileRef.current) {
         lastTimeRef.current = performance.now();
       }

@@ -1,44 +1,50 @@
 "use client";
-import React, { JSX, useMemo, memo } from "react";
-import { motion, Variants, cubicBezier } from "framer-motion";
+import { memo, useMemo } from "react";
+import { motion, type Variants, cubicBezier } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import styles from "./sensei-skills.module.css";
 import SectionHeader from "@/app/core/components/SectionHeader";
 import { technicalSkills } from "@/app/core/data";
 
-/**
- * SkillCard Component
- * Renders a single skill category card with animation
- */
-const SkillCard = memo(({
-  category,
-  icon,
-  skills,
-  index,
-}: {
+// ─── Statics ──────────────────────────────────────────────────────────────────
+
+// Hoisted at module level — allocated once, never recreated during renders.
+const SLIDE_EASE = cubicBezier(0.22, 1, 0.36, 1);
+
+const HEADER_INITIAL     = { opacity: 0, y: -50 } as const;
+const HEADER_ANIMATE_IN  = { opacity: 1, y: 0 }   as const;
+const HEADER_ANIMATE_OUT = {}                      as const;
+const HEADER_TRANSITION  = { duration: 0.3 }       as const;
+
+const ICON_ANIMATE    = { rotate: 0 }  as const;
+const ICON_HOVER      = { rotate: 15 } as const;
+const ICON_TRANSITION = { duration: 0.2 } as const;
+
+// ─── Types ────────────────────────────────────────────────────────────────────
+
+type SkillCardProps = {
   category: string;
   icon: string;
   skills: string;
   index: number;
-}): JSX.Element => {
-  const [ref, inView] = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-  });
+};
 
-  // Memoize the animation variants so Framer Motion doesn't recalculate
-  // this object for every single card on every render cycle.
+// ─── SkillCard ────────────────────────────────────────────────────────────────
+
+/**
+ * Renders a single skill category card with entrance and hover animations.
+ */
+const SkillCard = memo<SkillCardProps>(({ category, icon, skills, index }) => {
+  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
+
+  // Recomputes only when index changes — SLIDE_EASE is stable (module-level).
   const variants: Variants = useMemo(
     () => ({
       hidden: { opacity: 0, y: 30 },
       visible: {
         opacity: 1,
         y: 0,
-        transition: {
-          duration: 0.2,
-          delay: index * 0.05,
-          ease: cubicBezier(0.22, 1, 0.36, 1),
-        },
+        transition: { duration: 0.2, delay: index * 0.05, ease: SLIDE_EASE },
       },
     }),
     [index]
@@ -55,9 +61,9 @@ const SkillCard = memo(({
       <div className={styles["card-header"]}>
         <motion.i
           className={icon}
-          animate={{ rotate: 0 }}
-          whileHover={{ rotate: 15 }}
-          transition={{ duration: 0.2 }}
+          animate={ICON_ANIMATE}
+          whileHover={ICON_HOVER}
+          transition={ICON_TRANSITION}
           aria-hidden="true"
         />
         <h3 className={styles.category}>{category}</h3>
@@ -71,15 +77,14 @@ const SkillCard = memo(({
 
 SkillCard.displayName = "SkillCard";
 
+// ─── SkillsSection ────────────────────────────────────────────────────────────
+
 /**
- * SkillsSection Component
- * Main component that renders technical and non-technical skills
+ * Main section component. Wrapped in memo to prevent re-renders driven
+ * by parent scroll or unrelated state changes.
  */
-function SkillsSection(): JSX.Element {
-  const [headerRef, headerInView] = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-  });
+const SkillsSection = memo(function SkillsSection() {
+  const [headerRef, headerInView] = useInView({ triggerOnce: true, threshold: 0.1 });
 
   return (
     <section className={styles["skills-section"]} id="Skills">
@@ -87,9 +92,9 @@ function SkillsSection(): JSX.Element {
         <motion.div
           ref={headerRef}
           className={styles["header-section"]}
-          initial={{ opacity: 0, y: -50 }}
-          animate={headerInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.3 }}
+          initial={HEADER_INITIAL}
+          animate={headerInView ? HEADER_ANIMATE_IN : HEADER_ANIMATE_OUT}
+          transition={HEADER_TRANSITION}
         >
           <SectionHeader
             japaneseText="技能 スキル"
@@ -101,8 +106,6 @@ function SkillsSection(): JSX.Element {
         <div className={styles["skills-grid"]}>
           {technicalSkills.map((skill, index) => (
             <SkillCard
-              // Using category combined with index creates a much more stable key 
-              // for React's reconciliation engine during DOM updates.
               key={`technical-${skill.category}-${index}`}
               category={skill.category}
               icon={skill.icon}
@@ -114,8 +117,6 @@ function SkillsSection(): JSX.Element {
       </div>
     </section>
   );
-}
+});
 
-// Wrapping the entire section in memo prevents global scroll events 
-// from trickling down and needlessly re-rendering this heavy component.
-export default memo(SkillsSection);
+export default SkillsSection;

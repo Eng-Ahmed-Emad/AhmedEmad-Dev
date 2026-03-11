@@ -1,11 +1,19 @@
 "use client";
 
+// ─── Statics ──────────────────────────────────────────────────────────────────
+
+// Hoisted at module level — the URL never changes, so there's no reason to
+// recreate it inside the hook on every call.
+const VIDEO_URL = "https://youtu.be/9gK7uyTGxz8?si=N6eSrfE-wHK6UsI6&t=212";
+
+// ─── Hook ─────────────────────────────────────────────────────────────────────
+
 export const useRandomMedia = () => {
-  const videoUrl: string = "https://youtu.be/9gK7uyTGxz8?si=N6eSrfE-wHK6UsI6&t=212";
-
-  const handleImageClick = (): void => {
-    window.open(videoUrl, "_blank");
-  };
-
+  // handleImageClick is a stable module-level reference — no closure over
+  // component state, so it never needs to be recreated.
   return { handleImageClick };
 };
+
+function handleImageClick(): void {
+  window.open(VIDEO_URL, "_blank");
+}
