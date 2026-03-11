@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useEffect, useMemo, useState, memo } from "react";
+import { useCallback, useMemo, useState, memo } from "react";
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import { type Variants, motion, useReducedMotion } from "framer-motion";
@@ -8,9 +8,9 @@ import "yet-another-react-lightbox/styles.css";
 import styles from "./sensei-art.module.css";
 
 /**
- * @Author: Ahmed_emad
+ * @Author: Ahmed Emad Nasr
  * @Description: A responsive art gallery component with lightbox support,
- * accessibility-aware animations, and keyboard navigation.
+ * accessibility-aware animations.
  */
 
 // ─── Dynamic import ───────────────────────────────────────────────────────────
@@ -41,7 +41,6 @@ const GALLERY_IMAGES: GalleryImage[] = Array.from({ length: 24 }, (_, k) => ({
 }));
 
 const LIGHTBOX_SLIDES = GALLERY_IMAGES.map((image) => ({ src: image.src }));
-const SLIDE_COUNT = LIGHTBOX_SLIDES.length; // avoids repeated .length lookups
 
 // Static easing tuple — hoisted so it isn't reallocated inside useMemo.
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
@@ -52,16 +51,16 @@ const ImageItem = memo(({ image, index, setOpen }: ImageItemProps) => {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
   const prefersReducedMotion = useReducedMotion();
 
-  // Rebuilds only when the accessibility preference changes (very rare).
+  // Rebuilds only when the accessibility preference changes.
   const variants: Variants = useMemo(
     () => ({
-      hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 32 },
+      hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 30 },
       visible: (i: number) => ({
         opacity: 1,
         y: 0,
         transition: prefersReducedMotion
-          ? { duration: 0.15 }
-          : { delay: i * 0.18, duration: 0.5, ease: EASE },
+          ? { duration: 0.2 }
+          : { delay: i * 0.1, duration: 0.5, ease: EASE },
       }),
     }),
     [prefersReducedMotion]
@@ -86,7 +85,7 @@ const ImageItem = memo(({ image, index, setOpen }: ImageItemProps) => {
         sizes="(max-width: 767px) 100vw, (max-width: 991px) 50vw, (max-width: 1199px) 33vw, 25vw"
         onClick={handleClick}
         loading="lazy"
-        quality={10}
+        quality={75} /* رفعت الجودة شوية عشان الصور تطلع أنقى، وتقدر ترجعها 10 لو حابب تقليل الحجم جداً */
         className={styles.galleryImg}
       />
     </motion.div>
@@ -104,32 +103,15 @@ const SenseiArt = memo(function SenseiArt() {
   const [headerRef, headerInView] = useInView({ triggerOnce: true, threshold: 0.1 });
   const prefersReducedMotion = useReducedMotion();
 
-  // Stable handler — no dependencies change after mount.
-  const handleKeyDown = useCallback((event: KeyboardEvent) => {
-    if (event.key === "ArrowRight") {
-      setIndex((i) => (i + 1) % SLIDE_COUNT);
-    } else if (event.key === "ArrowLeft") {
-      setIndex((i) => (i - 1 + SLIDE_COUNT) % SLIDE_COUNT);
-    }
-  }, []);
-
-  // Attach / detach keyboard listener only while the lightbox is open.
-  useEffect(() => {
-    if (open) {
-      window.addEventListener("keydown", handleKeyDown);
-    }
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [open, handleKeyDown]);
-
   // Rebuilds only when the accessibility preference changes.
   const headerVariants: Variants = useMemo(
     () => ({
-      hidden: { opacity: 0, y: prefersReducedMotion ? 0 : -50 },
+      hidden: { opacity: 0, y: prefersReducedMotion ? 0 : -30 },
       visible: {
         opacity: 1,
         y: 0,
         transition: prefersReducedMotion
-          ? { duration: 0.15 }
+          ? { duration: 0.2 }
           : { duration: 0.5, ease: EASE },
       },
     }),
@@ -143,7 +125,7 @@ const SenseiArt = memo(function SenseiArt() {
         opacity: 1,
         transition: prefersReducedMotion
           ? { duration: 0.2 }
-          : { staggerChildren: 0.18, delayChildren: 0.4 },
+          : { staggerChildren: 0.1, delayChildren: 0.2 },
       },
     }),
     [prefersReducedMotion]
@@ -185,6 +167,8 @@ const SenseiArt = memo(function SenseiArt() {
           </div>
         </motion.div>
       </div>
+      
+      {/* Lightbox component handles keyboard navigation naturally */}
       <Lightbox
         slides={LIGHTBOX_SLIDES}
         open={open}

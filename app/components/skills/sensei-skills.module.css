@@ -1,6 +1,6 @@
 /*
  * @Author: Ahmed Emad Nasr
- * @Description: Modern Glassmorphism Skills Section - Fixed Layout & Original Colors
+ * @Description: Modern Glassmorphism Skills Section - With Interactive Tags
  */
 
 .skills-section {
@@ -79,8 +79,6 @@
   display: flex;
   flex-direction: column;
   height: 100%; 
-  
-  /* PERFORMANCE FIX: Forces the browser to offload animations and painting to the GPU */
   will-change: transform, opacity;
 }
 
@@ -146,26 +144,46 @@
   color: var(--text-color); 
 }
 
-/* --- Card Body --- */
+/* --- Card Body (Tags Layout) --- */
 .card-body {
   position: relative;
   z-index: 1;
   flex-grow: 1; 
 }
 
-.skills-text {
-  font-size: 1.5rem;
-  line-height: 1.7;
-  color: #222222; 
-  margin: 0;
-  font-weight: 500;
-  transition: color 0.3s ease;
-  word-wrap: break-word;
+.skills-tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
-.skill-card:hover .skills-text {
-  color: rgba(255, 255, 255, 0.7); 
+.skill-tag {
+  background: rgba(0, 0, 0, 0.05); /* لون خفيف في الوضع العادي (الفاتح) */
+  color: #222222;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px; /* شكل المربع ذو الحواف الدائرية */
+  font-size: 1.3rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
 }
+
+/* تأثير عند عمل Hover على الكارت كله */
+.skill-card:hover .skill-tag {
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.8);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* تأثير عند عمل Hover على الـ Tag نفسه (الأداة نفسها) */
+.skill-card:hover .skill-tag:hover {
+  background: rgba(var(--main-color-rgb), 0.15);
+  color: var(--main-color);
+  border-color: rgba(var(--main-color-rgb), 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+}
+
 
 /* --- Responsive Adjustments --- */
 @media (max-width: 991px) {

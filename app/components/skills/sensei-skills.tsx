@@ -8,7 +8,6 @@ import { technicalSkills } from "@/app/core/data";
 
 // ─── Statics ──────────────────────────────────────────────────────────────────
 
-// Hoisted at module level — allocated once, never recreated during renders.
 const SLIDE_EASE = cubicBezier(0.22, 1, 0.36, 1);
 
 const HEADER_INITIAL     = { opacity: 0, y: -50 } as const;
@@ -25,19 +24,15 @@ const ICON_TRANSITION = { duration: 0.2 } as const;
 type SkillCardProps = {
   category: string;
   icon: string;
-  skills: string;
+  skills: string; // Still a string, e.g., "Wazuh, ELK Stack, Splunk"
   index: number;
 };
 
 // ─── SkillCard ────────────────────────────────────────────────────────────────
 
-/**
- * Renders a single skill category card with entrance and hover animations.
- */
 const SkillCard = memo<SkillCardProps>(({ category, icon, skills, index }) => {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
 
-  // Recomputes only when index changes — SLIDE_EASE is stable (module-level).
   const variants: Variants = useMemo(
     () => ({
       hidden: { opacity: 0, y: 30 },
@@ -49,6 +44,11 @@ const SkillCard = memo<SkillCardProps>(({ category, icon, skills, index }) => {
     }),
     [index]
   );
+
+  // Split the skills string into an array and trim whitespace
+  const skillsArray = useMemo(() => {
+    return skills.split(",").map(skill => skill.trim()).filter(Boolean);
+  }, [skills]);
 
   return (
     <motion.div
@@ -68,8 +68,17 @@ const SkillCard = memo<SkillCardProps>(({ category, icon, skills, index }) => {
         />
         <h3 className={styles.category}>{category}</h3>
       </div>
+      
+      {/* بدلاً من عرض نص واحد طويل، بنعرض المهارات كـ Tags منفصلة 
+      */}
       <div className={styles["card-body"]}>
-        <p className={styles["skills-text"]}>{skills}</p>
+        <div className={styles["skills-tags-container"]}>
+          {skillsArray.map((skillItem, i) => (
+            <span key={`${category}-${i}`} className={styles["skill-tag"]}>
+              {skillItem}
+            </span>
+          ))}
+        </div>
       </div>
     </motion.div>
   );
@@ -79,10 +88,6 @@ SkillCard.displayName = "SkillCard";
 
 // ─── SkillsSection ────────────────────────────────────────────────────────────
 
-/**
- * Main section component. Wrapped in memo to prevent re-renders driven
- * by parent scroll or unrelated state changes.
- */
 const SkillsSection = memo(function SkillsSection() {
   const [headerRef, headerInView] = useInView({ triggerOnce: true, threshold: 0.1 });
 

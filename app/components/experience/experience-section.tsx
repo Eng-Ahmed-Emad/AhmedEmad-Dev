@@ -8,6 +8,15 @@ import SectionHeader from "@/app/core/components/SectionHeader";
 import { calculateExperience } from "@/app/core/utils/experienceUtils";
 import { knowledgeEducationItems } from "@/app/core/data";
 
+// --- استدعاء الأيقونات ---
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { 
+  faCalendarAlt, 
+  faClock, 
+  faArrowUpRightFromSquare,
+  faBriefcase // ممكن تستخدم faGraduationCap للتعليم لو حابب تمررها من الداتا
+} from "@fortawesome/free-solid-svg-icons";
+
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 type TimelineItemProps = {
@@ -20,15 +29,12 @@ type TimelineItemProps = {
   endDate?: string;
   showDate?: boolean;
   index: number;
+  // icon?: any; // لو حبيت مستقبلاً تمرر أيقونة مخصصة لكل عنصر من الداتا
 };
 
 // ─── Statics ──────────────────────────────────────────────────────────────────
 
-// cubicBezier() creates a new easing function object on every call.
-// Hoisting it as a module-level constant avoids recreating it on each render.
 const SLIDE_EASE = cubicBezier(0.22, 1, 0.36, 1);
-
-// The header animation objects are static — no need to recreate them per render.
 const HEADER_INITIAL = { opacity: 0, y: -50 } as const;
 const HEADER_ANIMATE_IN = { opacity: 1, y: 0 } as const;
 const HEADER_ANIMATE_OUT = {} as const;
@@ -48,13 +54,11 @@ const TimelineItem = memo<TimelineItemProps>(
     endDate,
     showDate = true,
   }) => {
-    // Recompute only when dates change.
     const experienceTime = useMemo(
       () => calculateExperience(startDate, endDate),
       [startDate, endDate]
     );
 
-    // Variants depend only on isRight + index — memoised accordingly.
     const variants: Variants = useMemo(
       () => ({
         hidden: { opacity: 0, x: isRight ? 100 : -100 },
@@ -71,13 +75,10 @@ const TimelineItem = memo<TimelineItemProps>(
       [isRight, index]
     );
 
-    // Derived once per render — cheaper than an extra useCallback + closure.
     const containerClass = `${styles["timeline-container"]} ${
       isRight ? styles.right : styles.left
     }`;
 
-    // Stable inline object avoided: only rendered when subTagHyperlink is truthy,
-    // so the conditional style below is evaluated at most once per item.
     const subTagStyle = subTagHyperlink
       ? ({ cursor: "pointer" } as const)
       : ({ cursor: "default" } as const);
@@ -86,10 +87,12 @@ const TimelineItem = memo<TimelineItemProps>(
       <MotionInView className={containerClass} variants={variants}>
         <div className={styles.content}>
           <div className={styles.tag}>
-            <h2>{tag}</h2>
+            <h2>
+              <FontAwesomeIcon icon={faBriefcase} className={styles.titleIcon} aria-hidden="true" />
+              {tag}
+            </h2>
             {subTag && (
               <h3
-                // Opens the link directly — no extra handler wrapper needed.
                 onClick={
                   subTagHyperlink
                     ? () => window.open(subTagHyperlink, "_blank")
@@ -98,6 +101,10 @@ const TimelineItem = memo<TimelineItemProps>(
                 style={subTagStyle}
               >
                 {subTag}
+                {/* إظهار أيقونة الرابط الخارجي لو فيه لينك */}
+                {subTagHyperlink && (
+                  <FontAwesomeIcon icon={faArrowUpRightFromSquare} className={styles.linkIcon} aria-hidden="true" />
+                )}
               </h3>
             )}
           </div>
@@ -107,9 +114,13 @@ const TimelineItem = memo<TimelineItemProps>(
           </div>
           {showDate && (
             <div className={styles["date-details"]}>
-              <div className={styles["experience-time"]}>{experienceTime}</div>
+              <div className={styles["experience-time"]}>
+                <FontAwesomeIcon icon={faClock} aria-hidden="true" />
+                <span>{experienceTime}</span>
+              </div>
               <div className={styles["date-range"]}>
-                {startDate} {endDate ? `- ${endDate}` : "- Present"}
+                <FontAwesomeIcon icon={faCalendarAlt} aria-hidden="true" />
+                <span>{startDate} {endDate ? `- ${endDate}` : "- Present"}</span>
               </div>
             </div>
           )}

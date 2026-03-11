@@ -1,27 +1,29 @@
 /*-----------------This is Art Gallery Section Style-----------------*/
 /*
  * Art Gallery Section
- * @Author: Ahmed_Sensei
- * @Description: A responsive art gallery component with a menu that highlights the active section of the page.
+ * @Author: Ahmed Emad Nasr
+ * @Description: A responsive art gallery component with smooth hover effects (No Layout Shift).
  */
 
 .art-gallery-section {
   min-height: 100vh;
   padding: 60px 0;
   margin: 0;
+  position: relative;
+  z-index: 1;
 }
 
 .art-gallery-content {
   padding: 0 5rem 5%;
 }
 
-.art-gallery-section .header-section {
+.header-section {
   margin-top: 35px;
   text-align: center;
 }
 
 /* --- Title Styling --- */
-.art-gallery-section .header-section .title {
+.title {
   position: relative;
   margin-bottom: 40px;
   font-weight: 800;
@@ -33,8 +35,8 @@
   padding-bottom: 2rem;
 }
 
-.art-gallery-section .header-section .title::before,
-.art-gallery-section .header-section .title::after {
+.title::before,
+.title::after {
   content: "";
   position: absolute;
   bottom: 0;
@@ -43,51 +45,57 @@
   border-radius: 5px;
 }
 
-.art-gallery-section .header-section .title::before {
+.title::before {
   width: 120%;
   height: 2px;
   background: rgba(var(--main-color-rgb), 0.2);
 }
 
-.art-gallery-section .header-section .title::after {
+.title::after {
   width: 50%;
   height: 4px;
   background: var(--main-color);
   box-shadow: 0 0 10px rgba(var(--main-color-rgb), 0.6);
 }
 
-/* --- Gallery Images --- */
-.art-gallery-section .art-gallery-content .Gallery img {
-  border-radius: 1rem;
-  width: 100%;
-  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), 
-              box-shadow 0.5s ease, 
-              border 0.4s ease;
-  will-change: transform;
-}
-
-.art-gallery-section .art-gallery-content .Gallery img:hover {
-  border: 2px solid var(--main-color);
-  transform: translateY(-10px);
-  box-shadow: 0 0 24px var(--main-color);
-}
-
+/* --- Gallery Grid --- */
 .Gallery {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
+  gap: 20px; /* مسافة مريحة للعين بين الصور */
 }
 
-.Gallery .art_pic {
+.art_pic {
   display: block;
   width: 100%;
+  position: relative;
 }
 
-.Gallery .galleryImg {
+/* --- Gallery Images --- */
+.galleryImg {
   width: 100%;
   height: auto;
-  object-fit: cover;
+  object-fit: cover; /* بيضمن إن الصورة متتمطش وتحافظ على أبعادها */
   display: block;
+  border-radius: 1rem;
+  
+  /* إضافة إطار شفاف لمنع اهتزاز الصورة (Layout Shift) عند الـ Hover */
+  border: 2px solid transparent; 
+  
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), 
+              box-shadow 0.4s ease, 
+              border-color 0.4s ease;
+  will-change: transform;
+  cursor: pointer;
+}
+
+/* --- Hover Effect --- */
+.art_pic:hover .galleryImg {
+  border-color: var(--main-color); /* تلوين الإطار الشفاف */
+  transform: translateY(-8px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.6),
+              0 0 20px rgba(var(--main-color-rgb), 0.3); /* توهج حول الصورة */
+  z-index: 2;
 }
 
 /* --- Responsive Layout --- */
@@ -96,7 +104,7 @@
     grid-template-columns: repeat(3, 1fr);
   }
   .art-gallery-content {
-    padding: 0 1.5rem 5%;
+    padding: 0 3rem 5%;
   }
 }
 
@@ -105,13 +113,17 @@
     grid-template-columns: repeat(2, 1fr);
   }
   .art-gallery-content {
-    padding: 0 1.5rem 5%;
+    padding: 0 2rem 5%;
+  }
+  .title {
+    font-size: 3rem;
   }
 }
 
 @media (max-width: 767px) {
   .Gallery {
     grid-template-columns: 1fr;
+    gap: 25px;
   }
   .art-gallery-content {
     padding: 0 1.5rem 5%;

@@ -1,7 +1,7 @@
 /*----------------------This is Education/Experience Section Style---------------------*/
 /*
  *@Author: Ahmed Emad Nasr
- *@Description: Modern Glassmorphism Timeline with Light-to-Dark Hover Effect
+ *@Description: Modern Glassmorphism Timeline with Light-to-Dark Hover Effect & Icons
  */
 
 .section-education {
@@ -143,11 +143,20 @@
 
 /* --- Card Typography & Inner Content --- */
 .tag h2 {
-  margin: 0 0 0.5rem 0;
+  margin: 0 0 0.8rem 0;
   font-size: 2.2rem;
   font-weight: 800;
   color: var(--bg-color);
   transition: color 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.titleIcon {
+  font-size: 1.8rem;
+  opacity: 0.9;
+  transition: all 0.3s ease;
 }
 
 .tag h3 {
@@ -156,12 +165,27 @@
   font-weight: 700;
   color: #333333;
   transition: color 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.linkIcon {
+  font-size: 1.2rem;
+  opacity: 0;
+  transform: translateY(2px);
+  transition: all 0.3s ease;
 }
 
 .tag h3:hover {
   cursor: pointer;
   text-decoration: underline;
   text-decoration-color: var(--main-color);
+}
+
+.tag h3:hover .linkIcon {
+  opacity: 1;
+  color: var(--main-color);
 }
 
 .desc p {
@@ -181,13 +205,20 @@
   padding-top: 1.5rem;
   border-top: 1px solid rgba(0, 0, 0, 0.15);
   transition: border-color 0.3s ease;
+  gap: 0.8rem;
+}
+
+.experience-time,
+.date-range {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
 }
 
 .experience-time {
   font-size: 1.4rem;
   font-weight: 700;
   color: var(--bg-color);
-  margin-bottom: 5px;
   transition: color 0.3s ease;
 }
 
@@ -200,6 +231,7 @@
 
 /* --- Hover Text Inversions --- */
 .content:hover .tag h2 { color: var(--text-color); }
+.content:hover .titleIcon { color: var(--main-color); transform: scale(1.1); }
 .content:hover .tag h3 { color: rgba(255, 255, 255, 0.8); }
 .content:hover .desc p { color: rgba(255, 255, 255, 0.7); }
 .content:hover .date-details { border-top-color: rgba(var(--main-color-rgb), 0.3); }

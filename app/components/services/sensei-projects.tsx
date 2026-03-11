@@ -1,7 +1,7 @@
 "use client";
 import { memo, useMemo } from "react";
 import { useInView } from "react-intersection-observer";
-import { faStar, faExclamationCircle, faEye } from "@fortawesome/free-solid-svg-icons";
+import { faStar, faCodeBranch, faEye, faArrowUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
 import { cubicBezier, motion, type Variants } from "framer-motion";
 import styles from "./sensei-services-projects.module.css";
 import { useGitHubRepos, type GitHubRepository } from "@/app/core/hooks/useGitHubRepos";
@@ -13,24 +13,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 /**
  * @Author Ahmed Emad Nasr
  * @Description React component that fetches and displays GitHub repositories with animation
- * and styling using Framer Motion and FontAwesome.
+ * and Badges for stats.
  */
 
-// ─── Statics ──────────────────────────────────────────────────────────────────
-
-// Created once at module load — never reallocated during the component lifecycle.
 const SLIDE_EASE = cubicBezier(0.22, 1, 0.36, 1);
-
 const HEADER_INITIAL     = { opacity: 0, y: -50 } as const;
 const HEADER_ANIMATE_IN  = { opacity: 1, y: 0 }   as const;
 const HEADER_ANIMATE_OUT = {}                      as const;
 const HEADER_TRANSITION  = { duration: 0.3, ease: "easeOut" } as const;
-
 const ICON_ANIMATE    = { rotate: 0 }   as const;
 const ICON_HOVER      = { rotate: 360 } as const;
 const ICON_TRANSITION = { duration: 0.3 } as const;
 
-// The spring transition for SectionHeader motionProps is also fully static.
 const SECTION_HEADER_TRANSITION = {
   duration: 0.3,
   delay: 0.3,
@@ -43,13 +37,10 @@ const MOTION_PROPS_SCALE_IN  = { scale: 1 } as const;
 const MOTION_PROPS_SCALE_OUT = {}           as const;
 const MOTION_PROPS_INITIAL   = { scale: 0 } as const;
 
-// ─── ProjectItem ──────────────────────────────────────────────────────────────
-
 type ProjectItemProps = { repo: GitHubRepository; index: number };
 
 const ProjectItem = memo<ProjectItemProps>(
   ({ repo, index }) => {
-    // Recomputes only when index changes.
     const variants: Variants = useMemo(
       () => ({
         hidden: { opacity: 0, y: 50 },
@@ -66,8 +57,6 @@ const ProjectItem = memo<ProjectItemProps>(
       <MotionInView
         className={styles["single-project"]}
         variants={variants}
-        // Inline arrow is acceptable here: MotionInView is memoised and onClick
-        // only changes when repo.html_url changes (same frequency as repo.id).
         onClick={() => window.open(repo.html_url, "_blank")}
       >
         <div className={styles["part-1"]}>
@@ -78,57 +67,62 @@ const ProjectItem = memo<ProjectItemProps>(
             transition={ICON_TRANSITION}
             aria-hidden="true"
           />
-          <h3>{repo.name}</h3>
+          <h3>
+            {repo.name}
+            <FontAwesomeIcon icon={faArrowUpRightFromSquare} className={styles["link-icon"]} />
+          </h3>
         </div>
+        
         <div className={styles["part-2"]}>
           <p className={styles.description}>
-            {repo.description || "No description available."}
+            {repo.description || "No description available for this repository."}
           </p>
-          <div className={styles.description}>
-            <strong>Stars:</strong> {repo.stargazers_count}{" "}
-            <FontAwesomeIcon icon={faStar} /> |<strong>Issues:</strong>{" "}
-            {repo.open_issues_count}{" "}
-            <FontAwesomeIcon icon={faExclamationCircle} /> |
-            <strong>Watchers:</strong> {repo.watchers_count}{" "}
-            <FontAwesomeIcon icon={faEye} />
-            <br />
-            <strong>Created:</strong> {formatDate(repo.created_at)}
-            <br />
-            <strong>Updated:</strong> {formatDate(repo.updated_at)}
-            <br />
-            {repo.topics.length > 0 && (
-              <p className={styles.description}>
-                <strong>Topics:</strong> {repo.topics.join(", ")}
-              </p>
-            )}
+          
+          {/* GitHub Stats Badges */}
+          <div className={styles["stats-container"]}>
+            <span className={styles["stat-badge"]} title="Stars">
+              <FontAwesomeIcon icon={faStar} /> {repo.stargazers_count}
+            </span>
+            <span className={styles["stat-badge"]} title="Forks/Issues">
+              <FontAwesomeIcon icon={faCodeBranch} /> {repo.open_issues_count}
+            </span>
+            <span className={styles["stat-badge"]} title="Watchers">
+              <FontAwesomeIcon icon={faEye} /> {repo.watchers_count}
+            </span>
           </div>
-          <div className={styles.description}>
-            <strong>Owner:</strong> {repo.owner.login}
-            <br />
-            <strong>Language:</strong> {repo.language ?? "Markdown"}
-            {repo.license && (
-              <p className={styles.description}>
-                <strong>License:</strong> {repo.license.name}
-              </p>
-            )}
+
+          {/* Topics Pills */}
+          {repo.topics.length > 0 && (
+            <div className={styles["topics-container"]}>
+              {repo.topics.slice(0, 4).map((topic, i) => (
+                <span key={i} className={styles["topic-tag"]}>
+                  {topic}
+                </span>
+              ))}
+              {repo.topics.length > 4 && (
+                <span className={styles["topic-tag"]}>+{repo.topics.length - 4}</span>
+              )}
+            </div>
+          )}
+
+          {/* Footer Meta */}
+          <div className={styles["meta-info"]}>
+            <span>Lang: <strong>{repo.language ?? "N/A"}</strong></span>
+            <span>Upd: {formatDate(repo.updated_at)}</span>
           </div>
         </div>
       </MotionInView>
     );
   },
-  // Custom comparator: skip re-render if repo identity hasn't changed.
   (prev, next) => prev.repo.id === next.repo.id && prev.index === next.index
 );
 
 ProjectItem.displayName = "ProjectItem";
 
-// ─── SenseiProjects ───────────────────────────────────────────────────────────
-
 const SenseiProjects = memo(function SenseiProjects() {
   const repos = useGitHubRepos();
   const [headerRef, headerInView] = useInView({ triggerOnce: true, threshold: 0.1 });
 
-  // Only the `animate` value changes with headerInView — hoist everything else.
   const motionProps = useMemo(
     () => ({
       initial: MOTION_PROPS_INITIAL,
