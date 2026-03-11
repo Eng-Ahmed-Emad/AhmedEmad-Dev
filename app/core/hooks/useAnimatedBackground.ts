@@ -259,7 +259,7 @@ export const useAnimatedBackground = (
     }
 
     // Desktop: full dynamic entity setup.
-    const bubbleCount = Math.floor((w * h) / 80000);
+    const bubbleCount = Math.floor((w * h) / 85000);
     const radiusRange = MAX_RADIUS - MIN_RADIUS;
 
     bubblesRef.current = Array.from({ length: bubbleCount }, () => {

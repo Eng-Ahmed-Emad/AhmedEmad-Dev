@@ -65,24 +65,14 @@ export const knowledgeEducationItems = [
 
 export const technicalSkills = [
   {
-    category: "Tools & Platforms",
-    icon: "fa-solid fa-wrench",
-    skills: "Wazuh, ELK Stack, Splunk, Sysmon, Suricata, pfSense, VirusTotal, YARA, Wireshark",
-  },
-  {
     category: "Security Operations",
     icon: "fa-solid fa-shield-halved",
     skills: "Incident Response, Threat Hunting, Alert Triage, Detection Engineering, IOC Analysis, Playbook Execution",
   },
   {
-    category: "Frameworks & Methodologies",
-    icon: "fa-solid fa-sitemap",
-    skills: "MITRE ATT&CK, Incident Response Lifecycle, Security Best Practices",
-  },
-  {
-    category: "Networking",
-    icon: "fa-solid fa-network-wired",
-    skills: "TCP/IP, Network Traffic Analysis (NTA), IDS/IPS",
+    category: "Tools & Platforms",
+    icon: "fa-solid fa-wrench",
+    skills: "Wazuh, ELK Stack, Splunk, Sysmon, Suricata, pfSense, VirusTotal, YARA, Wireshark",
   },
   {
     category: "Malware Analysis",
@@ -94,40 +84,19 @@ export const technicalSkills = [
     icon: "fa-solid fa-chart-line",
     skills: "Log Parsing, Event Correlation, Alert Tuning, Compliance Reporting, Data Visualization",
   },
-    {
-    category: "Communication",
-    icon: "fa-solid fa-comments",
-    skills: "Technical Writing, Presentation Skills, Cross-functional Collaboration, Stakeholder Management",
+  {
+    category: "Networking & Frameworks",
+    icon: "fa-solid fa-network-wired",
+    skills: "TCP/IP, Network Traffic Analysis (NTA), IDS/IPS, MITRE ATT&CK, Incident Response Lifecycle",
   },
   {
-    category: "Leadership & Teamwork",
-    icon: "fa-solid fa-people-group",
-    skills: "Team Collaboration, Mentorship, Problem-solving, Analytical Thinking",
-  },
-  {
-    category: "Professional Development",
-    icon: "fa-solid fa-graduation-cap",
-    skills: "Continuous Learning, Adaptability, Time Management, Technical Training",
-  },
-  {
-    category: "Documentation & Reporting",
+    category: "Professional Skills & Reporting",
     icon: "fa-solid fa-file-lines",
-    skills: "Incident Reports, Technical Documentation, Process Documentation, Executive Summaries",
-  },
-  {
-    category: "Crisis Management",
-    icon: "fa-solid fa-fire-extinguisher",
-    skills: "Quick Decision Making, Stress Management, Priority Setting, Emergency Response",
+    skills: "Technical Writing, Crisis Management, Incident Reports, Cross-functional Collaboration, Quick Decision Making",
   },
 ];
 
 export const aboutMeCards = [
-  {
-    icon: "fa-solid fa-user",
-    title: "About Me",
-    description:
-      "Security Operations Center (SOC) Analyst with hands-on experience in SIEM/EDR investigations, alert triage, log and IOC analysis, and incident handling. Passionate about improving detection accuracy and reducing alert fatigue through continuous threat-driven analysis.",
-  },
   {
     icon: "fa-solid fa-earth-americas",
     title: "Languages",
@@ -157,12 +126,6 @@ export const aboutMeCards = [
     title: "Achievements",
     description:
       "Best Cybersecurity Technical Award (GDG), Ranked 44th/400 in joint CTF (ITI & Cybertalents), Top 5 in National University CTF, 4.9/5 trainer rating (120+ learners).",
-  },
-  {
-    icon: "fa-solid fa-code",
-    title: "Projects & Experience",
-    description:
-      "Insider Threat Detection, Malware Analysis with Wazuh SIEM, SOC Environment deployment. Proficiency in Wazuh, ELK Stack, Splunk, Suricata, YARA, VirusTotal, and pfSense.",
   },
   {
     icon: "fa-solid fa-briefcase",
