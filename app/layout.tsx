@@ -1,7 +1,7 @@
 import "./globals.css";
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
-import { Overlock } from "next/font/google";
+import { Overlock, Yuji_Syuku } from "next/font/google";
 
 // ─── Viewport ─────────────────────────────────────────────────────────────────
 
@@ -26,12 +26,24 @@ export const metadata: Metadata = {
 
 // ─── Fonts ────────────────────────────────────────────────────────────────────
 
+// Font objects are created once at module load by next/font/google —
+// calling these outside the component is the correct and required pattern.
 const overlock = Overlock({
   weight: ["400", "700", "900"],
   subsets: ["latin"],
   variable: "--font-overlock",
   display: "swap",
 });
+
+const yujiSyuku = Yuji_Syuku({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-yuji-syuku",
+  display: "swap",
+});
+
+// Derived once — the class string never changes between renders.
+const BODY_CLASS = `bg-black text-white ${overlock.variable} ${yujiSyuku.variable}`;
 
 // ─── Layout ───────────────────────────────────────────────────────────────────
 
@@ -46,7 +58,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
         />
       </head>
-      <body className={`${overlock.variable} font-sans`}>{children}</body>
+      <body className={BODY_CLASS}>{children}</body>
     </html>
   );
 }
