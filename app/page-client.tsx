@@ -8,6 +8,9 @@ import HomeSection from "@/app/components/home/sensei-home";
 // ─── Dynamic imports ──────────────────────────────────────────────────────────
 // ssr: false prevents hydration mismatches with Framer Motion and canvas APIs.
 // Each section is code-split — only downloaded when needed.
+const LoadingScreen = dynamic(() => import("@/app/components/loader/sensei_loader")
+, { ssr: false }
+);
 
 const AnimatedBackground = dynamic(
   () => import("@/app/components/animated_background/animated_background"),
@@ -40,6 +43,7 @@ const SkillsSection = dynamic(
 const MainClient = memo(function MainClient() {
   return (
     <main>
+      <LoadingScreen />
       <AnimatedBackground />
       <AppBar />
       <HomeSection />
