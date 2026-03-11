@@ -17,9 +17,6 @@ import { aboutMeCards } from "@/app/core/data";
 
 // ─── Statics ──────────────────────────────────────────────────────────────────
 
-// All static Framer Motion objects hoisted at module level — created once,
-// never reallocated during the component lifecycle.
-
 const SLIDE_EASE = cubicBezier(0.22, 1, 0.36, 1);
 
 const CONTAINER_VARIANTS: Variants = {
@@ -49,11 +46,9 @@ const ICON_ANIMATE    = { rotate: 0 }   as const;
 const ICON_HOVER      = { rotate: 360 } as const;
 const ICON_TRANSITION = { duration: 0.3 } as const;
 
-// Static button class strings — avoids template-literal allocation on every render.
 const BTN_1_CLASS = `${styles.btn} ${styles.btn1}`;
 const BTN_2_CLASS = `${styles.btn} ${styles.btn2}`;
 
-// Hidden spacer style — object literal hoisted to avoid inline allocation.
 const HIDDEN_STYLE = { visibility: "hidden" } as const;
 
 // ─── AboutMeCard ──────────────────────────────────────────────────────────────
@@ -68,7 +63,6 @@ type AboutMeCardProps = {
 const AboutMeCard = memo<AboutMeCardProps>(({ icon, title, description, index }) => {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
 
-  // Recomputes only when index changes — SLIDE_EASE is stable (module-level).
   const variants: Variants = useMemo(
     () => ({
       hidden: { opacity: 0, y: 50 },
@@ -112,9 +106,8 @@ AboutMeCard.displayName = "AboutMeCard";
 const SenseiHome = memo(function SenseiHome() {
   const { handleImageClick } = useRandomMedia();
 
-  // useAnimation + useEffect pattern replaced with direct animate prop.
-  // `triggerOnce: false` is preserved so re-entering the viewport re-triggers
-  // the animation, which was the intent of the original useEffect guard.
+  const isAvailable = true; 
+
   const [containerRef, containerInView] = useInView({
     triggerOnce: false,
     threshold: 0.1,
@@ -150,9 +143,16 @@ const SenseiHome = memo(function SenseiHome() {
           <h1>
             <span className={styles.highlight}>Ahmed Emad Nasr</span>
           </h1>
+
+          <motion.div className={styles.availabilityStatus} variants={ITEM_VARIANTS}>
+            <span className={`${styles.statusDot} ${isAvailable ? styles.dotAvailable : styles.dotUnavailable}`}></span>
+            <span>{isAvailable ? "Available for Opportunities" : "Currently Unavailable"}</span>
+          </motion.div>
+
           <h2 className={styles.typingText}>
             <span className={styles.typingHighlight} />
           </h2>
+
           <p>
             Computer Science student at Benha University specializing in Security Operations,
             Incident Response and Cybersecurity. Focused on monitoring, alert triage, DFIR,

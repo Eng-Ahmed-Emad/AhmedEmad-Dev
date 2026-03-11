@@ -52,10 +52,46 @@
   color: var(--main-color);
 }
 
+/* --- Availability Status Styles --- */
+.availabilityStatus {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.6rem 1.5rem;
+  border: 1px solid var(--main-color);
+  border-radius: 50px;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--text-color);
+  margin: 1rem 0 1.5rem 0; /* تم ضبط المسافات لتناسب الترتيب الجديد */
+  background-color: transparent;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  width: fit-content;
+}
+
+.statusDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.dotAvailable {
+  background-color: #00e676; 
+  box-shadow: 0 0 8px #00e676;
+  animation: pulseGreen 1.5s infinite;
+}
+
+.dotUnavailable {
+  background-color: #ff1744; 
+  box-shadow: 0 0 8px #ff1744;
+  animation: pulseRed 1.5s infinite;
+}
+
 .typingText {
   font-size: 34px;
   font-weight: 600;
   min-width: 300px;
+  margin-bottom: 1.5rem;
 }
 
 .typingHighlight {
@@ -79,6 +115,7 @@
   animation: cursor 0.6s infinite, typing 20s steps(14) infinite;
 }
 
+/* --- Keyframes --- */
 @keyframes cursor {
   to { border-left: 2px solid var(--main-color); }
 }
@@ -86,7 +123,7 @@
 @keyframes words {
   0%, 20% { content: "SOC Analyst"; }
   21%, 40% { content: "Cybersecurity Analyst"; }
-  41%, 61% { content: "Incident Responder "; } /* Corrected spelling from Resonse to Response here just in case! */
+  41%, 61% { content: "Incident Responder "; } 
   62%, 80% { content: "Cybersecurity Engineer"; }
   81%, 100% { content: "Cybersecurity Instructor"; }
 }
@@ -96,6 +133,19 @@
   5%, 20%, 25%, 40%, 45%, 60%, 65%, 80%, 85% { width: calc(100% + 7px); }
 }
 
+@keyframes pulseGreen {
+  0% { box-shadow: 0 0 0 0 #00e676; opacity: 1; }
+  70% { box-shadow: 0 0 0 8px transparent; opacity: 0.8; }
+  100% { box-shadow: 0 0 0 0 transparent; opacity: 1; }
+}
+
+@keyframes pulseRed {
+  0% { box-shadow: 0 0 0 0 #ff1744; opacity: 1; }
+  70% { box-shadow: 0 0 0 8px transparent; opacity: 0.8; }
+  100% { box-shadow: 0 0 0 0 transparent; opacity: 1; }
+}
+
+/* --- Rest of Styles --- */
 .homeContent p {
   font-size: 1.9rem;
   font-weight: 500;
@@ -190,6 +240,7 @@
   .homeContent p { text-align: justify; margin-left: auto; margin-right: auto; }
   .homeContent h3 { font-size: 2.5rem; }
   .btn { padding: 1rem 2rem; font-size: 1.7rem; }
+  .availabilityStatus { margin: 1rem auto 1.5rem auto; } /* Centering for mobile */
 }
 
 @media (max-width: 1017px) { .homeContent h1 { font-size: 5.4rem; } }
