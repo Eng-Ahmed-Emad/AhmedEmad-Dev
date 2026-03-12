@@ -51,12 +51,12 @@ const MainClient = memo(function MainClient() {
       <AnimatedBackground />
       <AppBar />
       <HomeSection />
-      <ServicesSection />
       <ExperienceSection />
-      <ProjectsSection />
       <SkillsSection />
-      <ArtGallerySection />
+      <ProjectsSection />
+      <ServicesSection />
       <ContactSection />
+      <ArtGallerySection />
     </main>
   );
 });

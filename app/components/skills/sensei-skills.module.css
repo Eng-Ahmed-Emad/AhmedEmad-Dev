@@ -1,6 +1,6 @@
 /*
  * @Author: Ahmed Emad Nasr
- * @Description: Modern Glassmorphism Skills Section - With Interactive Tags
+ * @Description: Modern Glassmorphism Skills Section - With Interactive Tags & Progress Bars
  */
 
 .skills-section {
@@ -56,7 +56,80 @@
   max-width: 1550px;
 }
 
-/* --- Grid Layout --- */
+/* ─── Core Skills (Progress Bars) ────────────────────────────────────────── */
+.core-skills-wrapper {
+  background: rgba(15, 15, 15, 0.6);
+  backdrop-filter: blur(15px) saturate(180%);
+  border: 1px solid rgba(var(--main-color-rgb), 0.2);
+  border-radius: 25px;
+  padding: 4rem 3rem;
+  margin-bottom: 4rem;
+  transition: all 0.4s ease;
+}
+
+.core-skills-wrapper:hover {
+  border-color: rgba(var(--main-color-rgb), 0.5);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5),
+              0 0 20px rgba(var(--main-color-rgb), 0.1);
+}
+
+.core-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--text-color);
+  margin-bottom: 3rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.core-title svg,
+.core-title i {
+  color: var(--main-color);
+}
+
+.progress-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem 5rem;
+}
+
+.progress-item {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.progress-percent {
+  color: var(--main-color);
+  font-weight: 700;
+}
+
+.progress-bg {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--main-color);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(var(--main-color-rgb), 0.8);
+  transform-origin: left;
+}
+
+/* --- Grid Layout (For Tags Cards) --- */
 .skills-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -158,24 +231,22 @@
 }
 
 .skill-tag {
-  background: rgba(0, 0, 0, 0.05); /* لون خفيف في الوضع العادي (الفاتح) */
+  background: rgba(0, 0, 0, 0.05);
   color: #222222;
   padding: 0.6rem 1.2rem;
-  border-radius: 8px; /* شكل المربع ذو الحواف الدائرية */
+  border-radius: 8px;
   font-size: 1.3rem;
   font-weight: 600;
   transition: all 0.3s ease;
   border: 1px solid transparent;
 }
 
-/* تأثير عند عمل Hover على الكارت كله */
 .skill-card:hover .skill-tag {
   background: rgba(255, 255, 255, 0.05);
   color: rgba(255, 255, 255, 0.8);
   border-color: rgba(255, 255, 255, 0.1);
 }
 
-/* تأثير عند عمل Hover على الـ Tag نفسه (الأداة نفسها) */
 .skill-card:hover .skill-tag:hover {
   background: rgba(var(--main-color-rgb), 0.15);
   color: var(--main-color);
@@ -184,23 +255,14 @@
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
 }
 
-
 /* --- Responsive Adjustments --- */
 @media (max-width: 991px) {
-  .container {
-    padding: 0 4%;
-  }
-  .title {
-    font-size: 3rem;
-  }
-  .skills-grid {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 2rem;
-  }
+  .container { padding: 0 4%; }
+  .title { font-size: 3rem; }
+  .skills-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2rem; }
+  .progress-grid { grid-template-columns: 1fr; gap: 2rem; }
 }
 
 @media (max-width: 768px) {
-  .skills-grid {
-    grid-template-columns: 1fr; 
-  }
+  .skills-grid { grid-template-columns: 1fr; }
 }

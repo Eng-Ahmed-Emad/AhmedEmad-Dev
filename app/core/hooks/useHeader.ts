@@ -15,10 +15,10 @@ import type { IconProp } from "@fortawesome/fontawesome-svg-core";
 // Defined at module level so the object is never recreated on each hook call.
 const SECTION_ICONS: Record<string, IconProp> = {
   Home:       faHome,
-  Services:   faUserSecret,
   Experience: faBook,
-  Projects:   faFolder,
   Skills:     faBrain,
+  Projects:   faFolder,
+  Services:   faUserSecret,
   ArtGallery: faPalette,
 };
 

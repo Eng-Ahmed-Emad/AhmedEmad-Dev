@@ -121,11 +121,11 @@
 }
 
 @keyframes words {
-  0%, 20% { content: "SOC Analyst"; }
-  21%, 40% { content: "Cybersecurity Analyst"; }
-  41%, 61% { content: "Incident Responder "; } 
-  62%, 80% { content: "Cybersecurity Engineer"; }
-  81%, 100% { content: "Cybersecurity Instructor"; }
+  0%, 20% { content: "SOC Analyst."; }
+  21%, 40% { content: "Cybersecurity Analyst."; }
+  41%, 61% { content: "Incident Responder."; } 
+  62%, 80% { content: "Security Analyst."; }
+  81%, 100% { content: "Cybersecurity Instructor."; }
 }
 
 @keyframes typing {
@@ -152,7 +152,7 @@
   color: var(--text-color);
   margin-bottom: 2rem;
   text-align: justify;
-  max-width: 750px;
+  max-width: 700px;
 }
 
 .socialIcon {
@@ -389,4 +389,105 @@
 @media (max-width: 480px) {
   .about-me-section { padding: 40px 1rem; }
   .about-me-card { padding: 2rem; }
+}
+/* =========================================
+   Languages Section (Progress Bars)
+   ========================================= */
+.languages-container {
+  margin-top: 5rem;
+  background: rgba(15, 15, 15, 0.6);
+  backdrop-filter: blur(15px) saturate(180%);
+  border: 1px solid rgba(var(--main-color-rgb), 0.2);
+  border-radius: 20px;
+  padding: 4rem 5rem;
+  transition: all 0.4s ease;
+}
+
+.languages-container:hover {
+  border-color: rgba(var(--main-color-rgb), 0.5);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5),
+              0 0 20px rgba(var(--main-color-rgb), 0.1);
+}
+
+.languages-title {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--text-color);
+  margin-bottom: 3.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.languages-title svg {
+  color: var(--main-color);
+  font-size: 2.8rem;
+}
+
+.languages-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+}
+
+.lang-item {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.lang-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.lang-name-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.lang-name {
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+.lang-level {
+  font-size: 1.3rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 500;
+  margin-top: 0.4rem;
+}
+
+.lang-percent {
+  font-size: 1.6rem;
+  color: var(--main-color);
+  font-weight: 700;
+}
+
+.lang-progress-bg {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.lang-progress-fill {
+  height: 100%;
+  background: var(--main-color);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(var(--main-color-rgb), 0.8);
+  transform-origin: left;
+}
+
+@media (max-width: 991px) {
+  .languages-grid { gap: 3rem; }
+  .languages-container { padding: 3rem; }
+}
+
+@media (max-width: 768px) {
+  .languages-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  .languages-container { padding: 2.5rem 2rem; margin-top: 3rem; }
 }
