@@ -1,203 +1,126 @@
 /*
     @Author: Ahmed Emad Nasr
-    @Description: A React component that serves as the home section of the portfolio, featuring an image, social links, and animations.
+    @Description: Optimized React component for home section.
  */
- .home {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    padding: 2rem;
-  }
-  
-  .container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 4rem;
-    max-width: 1200px;
-    width: 100%;
-    min-height: 95vh;
-    padding: 5px 0;
-  }
-  
-  .homeImg {
-    flex: 0 0 auto;
-    max-width: 435px;
-    width: 100%;
-  }
-  
-  .homeImg img {
-    width: 100%;
-    height: auto;
-    border-radius: 16px;
-    box-shadow: 0 0 31px var(--main-color);
-    transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1), filter 0.8s ease; 
-    cursor: pointer;
-  }
-  
-  .homeImg img:hover {
-    transform: scale(1.05);
-    filter: drop-shadow(0 0 40px var(--main-color));
-  }
-  
-  .homeContent h1 { font-size: 5.5rem; font-weight: 700; line-height: 1.3; }
-  .highlight { color: var(--main-color); }
-  
-  /* --- Availability Status Styles --- */
-  .availabilityStatus {
-    display: inline-flex; align-items: center; gap: 0.8rem; padding: 0.6rem 1.5rem;
-    border: 1px solid var(--main-color); border-radius: 50px; font-size: 1.4rem;
-    font-weight: 600; color: var(--text-color); margin: 1rem 0 1.5rem 0;
-    background-color: transparent; box-shadow: 0 0 8px rgba(0, 0, 0, 0.1); width: fit-content;
-  }
-  
-  .statusDot { width: 10px; height: 10px; border-radius: 50%; }
-  .dotAvailable { background-color: #00e676; box-shadow: 0 0 8px #00e676; animation: pulseGreen 3s infinite; }
-  .dotUnavailable { background-color: #ff1744; box-shadow: 0 0 8px #ff1744; animation: pulseRed 3s infinite; }
-  
-  .typingText { font-size: 34px; font-weight: 600; min-width: 300px; margin-bottom: 1.5rem; }
-  .typingHighlight { position: relative; color: var(--main-color); }
-  .typingHighlight::before { content: " "; animation: words 20s infinite; }
-  .typingHighlight::after {
-    content: " "; position: absolute; background-color: black; width: calc(100% + 8px);
-    height: 100%; border-left: 3px solid var(--bg-color); right: 0;
-    animation: cursor 0.6s infinite, typing 20s steps(14) infinite;
-  }
-  
-  @keyframes cursor { to { border-left: 2px solid var(--main-color); } }
-  @keyframes words {
-    0%, 20% { content: "SOC Analyst"; }
-    21%, 40% { content: "Cybersecurity Analyst"; }
-    41%, 61% { content: "Incident Responder"; } 
-    62%, 80% { content: "Security Analyst"; }
-    81%, 100% { content: "Cybersecurity Instructor"; }
-  }
-  @keyframes typing {
-    10%, 15%, 30%, 35%, 50%, 55%, 70%, 75%, 90%, 95% { width: 0; }
-    5%, 20%, 25%, 40%, 45%, 60%, 65%, 80%, 85% { width: calc(100% + 7px); }
-  }
-  @keyframes pulseGreen {
-    0% { box-shadow: 0 0 0 0 #00e676; opacity: 1; }
-    70% { box-shadow: 0 0 0 12px transparent; opacity: 0.6; }
-    100% { box-shadow: 0 0 0 0 transparent; opacity: 1; }
-  }
-  @keyframes pulseRed {
-    0% { box-shadow: 0 0 0 0 #ff1744; opacity: 1; }
-    70% { box-shadow: 0 0 0 12px transparent; opacity: 0.6; }
-    100% { box-shadow: 0 0 0 0 transparent; opacity: 1; }
-  }
-  
-  .homeContent p {
-    font-size: 1.9rem; font-weight: 500; color: var(--text-color);
-    margin-bottom: 2rem; text-align: justify; max-width: 700px;
-  }
-  
-  .socialIcon { display: flex; gap: 1.5rem; margin-bottom: 2.5rem; }
-  .socialIcon a {
-    display: flex; justify-content: center; align-items: center; width: 4rem; height: 4rem;
-    background: transparent; border: 0.2rem solid var(--main-color); font-size: 2rem;
-    border-radius: 1rem; color: var(--main-color);
-    transition: all 0.7s cubic-bezier(0.22, 1, 0.36, 1); 
-  }
-  .socialIcon a:hover {
-    color: black; transform: scale(1.15) translateY(-5px);
-    background: var(--main-color); box-shadow: 0 10px 20px rgba(var(--main-color-rgb), 0.4);
-  }
-  
-  .homeButton { display: flex; gap: 1.5rem; }
-  .btn {
-    display: inline-flex; align-items: center; padding: 1rem 2.8rem; border-radius: 1rem;
-    font-size: 1.6rem; letter-spacing: 0.1rem; font-weight: 600;
-    transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1); 
-    cursor: pointer; text-decoration: none; box-shadow: 0 0 11px var(--main-color);
-  }
-  .btn svg { margin-left: 0.8rem; font-size: 1.8rem; }
-  .btn1 { background: transparent; color: var(--main-color); border: 2px solid var(--main-color); }
-  .btn1:hover {
-    background: var(--main-color); color: var(--bg-color); border: 2px solid transparent;
-    transform: translateY(-3px); box-shadow: 0 10px 20px rgba(var(--main-color-rgb), 0.5);
-  }
-  .btn2 { background: var(--main-color); color: black; border: 2px solid transparent; }
-  .btn2:hover {
-    background: transparent; color: var(--main-color); border: 2px solid var(--main-color);
-    box-shadow: 0 10px 20px rgba(var(--main-color-rgb), 0.5); transform: translateY(-3px);
-  }
-  
-  @media (max-width: 968px) {
-    .container { flex-direction: column; text-align: center; gap: 3rem; }
-    .homeImg { margin-top: 15rem; width: 100%; height: auto; max-width: 450px; }
-    .socialIcon, .homeButton { justify-content: center; }
-    .homeContent p { text-align: justify; margin-left: auto; margin-right: auto; }
-    .homeContent h3 { font-size: 2.5rem; }
-    .btn { padding: 1rem 2rem; font-size: 1.7rem; }
-    .availabilityStatus { margin: 1rem auto 1.5rem auto; } 
-  }
-  @media (max-width: 1017px) { .homeContent h1 { font-size: 5.4rem; } }
-  @media (max-width: 1003px) { .homeContent h1 { font-size: 5rem; } }
-  @media (max-width: 993px) { .homeContent h1, .homeContent h3 { font-size: 5rem; } }
-  @media (max-width: 768px) { .homeContent h1 { font-size: 4.8rem; } .homeContent h3 { font-size: 3rem; } .homeButton { flex-direction: row; align-items: center; } }
-  @media (max-width: 600px) { .homeContent h1 { font-size: 4.5rem; } .homeContent h3 { font-size: 3rem; } .btn { font-size: 1.7rem; } .homeImg { max-width: 310px; margin-top: 5rem; } }
-  @media (max-width: 547px) { .homeContent h1 { font-size: 4rem; } .homeContent h3 { font-size: 3rem; } .homeButton { flex-direction: column; align-items: stretch; } .btn { justify-content: center; } }
-  @media (max-width: 500px) { .homeContent h1 { font-size: 3.5rem; } .homeContent h3 { font-size: 3rem; } }
-  @media (max-width: 495px) { .homeContent h1 { font-size: 3rem; } .homeContent h3 { font-size: 3rem; } .homeButton { flex-direction: column; align-items: stretch; } }
-  
-  /* =========================================
-     About Me Cards Section Styles (NEW)
-     ========================================= */
-  .about-me-section { width: 100%; padding: 25px 5rem 30px 5rem; max-width: 1550px; margin: 0 auto;}
-  .about-me-header { display: block; text-align: center; margin-bottom: 4rem; }
-  .about-me-title { font-size: 3.5rem; font-weight: 800; color: var(--text-color); position: relative; display: inline-block; }
-  .about-me-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2.5rem; width: 100%; }
-  
-  .about-me-card {
-    background: var(--main-color);
-    border-radius: 20px;
-    overflow: hidden;
-    padding: 2.5rem;
-    text-align: left;
-    
-    /* Anti-Jitter Magic Fix */
-    transition: background-color 0.9s cubic-bezier(0.22, 1, 0.36, 1),
-                border-color 0.9s cubic-bezier(0.22, 1, 0.36, 1),
-                box-shadow 0.9s cubic-bezier(0.22, 1, 0.36, 1),
-                transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-    backface-visibility: hidden;
-    transform: translateZ(0);
-    will-change: transform, box-shadow, border-color, background-color;
-    
-    border: 1px solid var(--main-color);
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .about-me-card:hover {
-    background: rgba(15, 15, 15, 0.85); 
-    backdrop-filter: blur(15px);
-    transform: translateY(-8px);
-    border-color: rgba(var(--main-color-rgb), 0.5);
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6),
-                0 0 25px rgba(var(--main-color-rgb), 0.15);
-  }
-  
-  .card-part-1 { padding-bottom: 1.5rem; border-bottom: 1px solid rgba(0, 0, 0, 0.15); transition: border-color 0.8s ease; }
-  .about-me-card:hover .card-part-1 { border-bottom-color: rgba(var(--main-color-rgb), 0.4); }
-  
-  .card-part-1 i, .card-part-1 svg { font-size: 3.5rem; color: var(--bg-color); transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1); }
-  .about-me-card:hover .card-part-1 i, .about-me-card:hover .card-part-1 svg {
-    color: var(--main-color); transform: scale(1.1) rotate(10deg); filter: drop-shadow(0 0 15px rgba(var(--main-color-rgb), 0.5));
-  }
-  
-  .card-title { font-size: 1.8rem; margin: 1.5rem 0 0 0; color: var(--bg-color); font-weight: 700; transition: color 0.8s ease; }
-  .about-me-card:hover .card-title { color: var(--text-color); }
-  
-  .card-part-2 { padding-top: 1.5rem; flex-grow: 1;}
-  .card-description { margin-bottom: 0; color: #222; font-size: 1.4rem; line-height: 1.7; font-weight: 500; transition: color 0.8s ease; }
-  .about-me-card:hover .card-description { color: rgba(255, 255, 255, 0.7); }
-  
-  @media (max-width: 1200px) { .about-me-section { padding: 60px 3rem; } .about-me-grid { grid-template-columns: repeat(3, 1fr); } }
-  @media (max-width: 991px) { .about-me-section { padding: 60px 1.5rem; } .about-me-grid { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 768px) { .about-me-title { font-size: 2.5rem; } .about-me-grid { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; } .card-part-1 i { font-size: 3rem; } .card-title { font-size: 1.6rem; } }
-  @media (max-width: 600px) { .about-me-grid { grid-template-columns: 1fr; } }
-  @media (max-width: 480px) { .about-me-section { padding: 40px 1rem; } .about-me-card { padding: 2rem; } }
+.home { display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh; padding: 2rem; }
+.container { display: flex; justify-content: center; align-items: center; gap: 4rem; max-width: 1200px; width: 100%; min-height: 95vh; padding: 5px 0; }
+.homeImg { flex: 0 0 auto; max-width: 435px; width: 100%; }
+
+.homeImg img {
+  width: 100%; height: auto; border-radius: 16px; box-shadow: 0 0 31px var(--main-color);
+  transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), filter 0.3s ease; 
+  cursor: pointer; will-change: transform, filter;
+}
+.homeImg img:hover { transform: scale(1.03); filter: drop-shadow(0 0 40px var(--main-color)); }
+
+.homeContent h1 { font-size: 5.5rem; font-weight: 700; line-height: 1.3; }
+.highlight { color: var(--main-color); }
+
+.availabilityStatus {
+  display: inline-flex; align-items: center; gap: 0.8rem; padding: 0.6rem 1.5rem;
+  border: 1px solid var(--main-color); border-radius: 50px; font-size: 1.4rem;
+  font-weight: 600; color: var(--text-color); margin: 1rem 0 1.5rem 0;
+  background-color: transparent; box-shadow: 0 0 8px rgba(0, 0, 0, 0.1); width: fit-content;
+}
+
+.statusDot { width: 10px; height: 10px; border-radius: 50%; }
+.dotAvailable { background-color: #00e676; box-shadow: 0 0 8px #00e676; animation: pulseGreen 3s infinite; }
+.dotUnavailable { background-color: #ff1744; box-shadow: 0 0 8px #ff1744; animation: pulseRed 3s infinite; }
+
+.typingText { font-size: 34px; font-weight: 600; min-width: 300px; margin-bottom: 1.5rem; }
+.typingHighlight { position: relative; color: var(--main-color); }
+.typingHighlight::before { content: " "; animation: words 20s infinite; }
+.typingHighlight::after {
+  content: " "; position: absolute; background-color: black; width: calc(100% + 8px);
+  height: 100%; border-left: 3px solid var(--bg-color); right: 0;
+  animation: cursor 0.6s infinite, typing 20s steps(14) infinite;
+}
+
+@keyframes cursor { to { border-left: 2px solid var(--main-color); } }
+@keyframes words {
+  0%, 20% { content: "SOC Analyst"; } 21%, 40% { content: "Cybersecurity Analyst"; }
+  41%, 61% { content: "Incident Responder"; } 62%, 80% { content: "Security Analyst"; }
+  81%, 100% { content: "Cybersecurity Instructor"; }
+}
+@keyframes typing {
+  10%, 15%, 30%, 35%, 50%, 55%, 70%, 75%, 90%, 95% { width: 0; }
+  5%, 20%, 25%, 40%, 45%, 60%, 65%, 80%, 85% { width: calc(100% + 7px); }
+}
+@keyframes pulseGreen { 0% { box-shadow: 0 0 0 0 #00e676; opacity: 1; } 70% { box-shadow: 0 0 0 12px transparent; opacity: 0.6; } 100% { box-shadow: 0 0 0 0 transparent; opacity: 1; } }
+@keyframes pulseRed { 0% { box-shadow: 0 0 0 0 #ff1744; opacity: 1; } 70% { box-shadow: 0 0 0 12px transparent; opacity: 0.6; } 100% { box-shadow: 0 0 0 0 transparent; opacity: 1; } }
+
+.homeContent p { font-size: 1.9rem; font-weight: 500; color: var(--text-color); margin-bottom: 2rem; text-align: justify; max-width: 700px; }
+
+.socialIcon { display: flex; gap: 1.5rem; margin-bottom: 2.5rem; }
+.socialIcon a {
+  display: flex; justify-content: center; align-items: center; width: 4rem; height: 4rem;
+  background: transparent; border: 0.2rem solid var(--main-color); font-size: 2rem;
+  border-radius: 1rem; color: var(--main-color);
+  transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease; 
+  will-change: transform;
+}
+.socialIcon a:hover {
+  color: black; transform: scale(1.1) translateY(-3px);
+  background: var(--main-color); box-shadow: 0 10px 20px rgba(var(--main-color-rgb), 0.4);
+}
+
+.homeButton { display: flex; gap: 1.5rem; }
+.btn {
+  display: inline-flex; align-items: center; padding: 1rem 2.8rem; border-radius: 1rem;
+  font-size: 1.6rem; letter-spacing: 0.1rem; font-weight: 600;
+  transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease; 
+  cursor: pointer; text-decoration: none; box-shadow: 0 0 11px var(--main-color);
+  will-change: transform;
+}
+.btn svg { margin-left: 0.8rem; font-size: 1.8rem; }
+.btn1 { background: transparent; color: var(--main-color); border: 2px solid var(--main-color); }
+.btn1:hover { background: var(--main-color); color: var(--bg-color); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(var(--main-color-rgb), 0.5); }
+.btn2 { background: var(--main-color); color: black; border: 2px solid transparent; }
+.btn2:hover { background: transparent; color: var(--main-color); border: 2px solid var(--main-color); box-shadow: 0 10px 20px rgba(var(--main-color-rgb), 0.5); transform: translateY(-3px); }
+
+@media (max-width: 968px) { .container { flex-direction: column; text-align: center; gap: 3rem; } .homeImg { margin-top: 15rem; width: 100%; height: auto; max-width: 450px; } .socialIcon, .homeButton { justify-content: center; } .homeContent p { text-align: justify; margin-left: auto; margin-right: auto; } .homeContent h3 { font-size: 2.5rem; } .btn { padding: 1rem 2rem; font-size: 1.7rem; } .availabilityStatus { margin: 1rem auto 1.5rem auto; } }
+@media (max-width: 1017px) { .homeContent h1 { font-size: 5.4rem; } }
+@media (max-width: 1003px) { .homeContent h1 { font-size: 5rem; } }
+@media (max-width: 993px) { .homeContent h1, .homeContent h3 { font-size: 5rem; } }
+@media (max-width: 768px) { .homeContent h1 { font-size: 4.8rem; } .homeContent h3 { font-size: 3rem; } .homeButton { flex-direction: row; align-items: center; } }
+@media (max-width: 600px) { .homeContent h1 { font-size: 4.5rem; } .homeContent h3 { font-size: 3rem; } .btn { font-size: 1.7rem; } .homeImg { max-width: 310px; margin-top: 5rem; } }
+@media (max-width: 547px) { .homeContent h1 { font-size: 4rem; } .homeContent h3 { font-size: 3rem; } .homeButton { flex-direction: column; align-items: stretch; } .btn { justify-content: center; } }
+@media (max-width: 500px) { .homeContent h1 { font-size: 3.5rem; } .homeContent h3 { font-size: 3rem; } }
+@media (max-width: 495px) { .homeContent h1 { font-size: 3rem; } .homeContent h3 { font-size: 3rem; } .homeButton { flex-direction: column; align-items: stretch; } }
+
+/* === About Me Cards === */
+.about-me-section { width: 100%; padding: 25px 5rem 30px 5rem; max-width: 1550px; margin: 0 auto;}
+.about-me-header { display: block; text-align: center; margin-bottom: 4rem; }
+.about-me-title { font-size: 3.5rem; font-weight: 800; color: var(--text-color); position: relative; display: inline-block; }
+.about-me-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2.5rem; width: 100%; }
+
+.about-me-card {
+  background: var(--main-color); border-radius: 20px; overflow: hidden; padding: 2.5rem; text-align: left;
+  transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+  backface-visibility: hidden; transform: translateZ(0); will-change: transform, box-shadow, border-color, background-color;
+  border: 1px solid var(--main-color); display: flex; flex-direction: column;
+}
+
+.about-me-card:hover {
+  background: rgba(15, 15, 15, 0.85); backdrop-filter: blur(15px); transform: translateY(-5px);
+  border-color: rgba(var(--main-color-rgb), 0.5); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(var(--main-color-rgb), 0.15);
+}
+
+.card-part-1 { padding-bottom: 1.5rem; border-bottom: 1px solid rgba(0, 0, 0, 0.15); transition: border-color 0.3s ease; }
+.about-me-card:hover .card-part-1 { border-bottom-color: rgba(var(--main-color-rgb), 0.4); }
+
+.card-part-1 i, .card-part-1 svg { font-size: 3.5rem; color: var(--bg-color); transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), color 0.3s ease, filter 0.3s ease; }
+.about-me-card:hover .card-part-1 i, .about-me-card:hover .card-part-1 svg { color: var(--main-color); transform: scale(1.08) rotate(5deg); filter: drop-shadow(0 0 10px rgba(var(--main-color-rgb), 0.5)); }
+
+.card-title { font-size: 1.8rem; margin: 1.5rem 0 0 0; color: var(--bg-color); font-weight: 700; transition: color 0.3s ease; }
+.about-me-card:hover .card-title { color: var(--text-color); }
+
+.card-part-2 { padding-top: 1.5rem; flex-grow: 1;}
+.card-description { margin-bottom: 0; color: #222; font-size: 1.4rem; line-height: 1.7; font-weight: 500; transition: color 0.3s ease; }
+.about-me-card:hover .card-description { color: rgba(255, 255, 255, 0.7); }
+
+@media (max-width: 1200px) { .about-me-section { padding: 60px 3rem; } .about-me-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 991px) { .about-me-section { padding: 60px 1.5rem; } .about-me-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 768px) { .about-me-title { font-size: 2.5rem; } .about-me-grid { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; } .card-part-1 i { font-size: 3rem; } .card-title { font-size: 1.6rem; } }
+@media (max-width: 600px) { .about-me-grid { grid-template-columns: 1fr; } }
+@media (max-width: 480px) { .about-me-section { padding: 40px 1rem; } .about-me-card { padding: 2rem; } }

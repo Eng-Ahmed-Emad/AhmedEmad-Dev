@@ -7,7 +7,6 @@
   position: fixed;
   inset: 0;
   z-index: 9999;
-  backdrop-filter: blur(12px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -30,15 +29,6 @@
 }
 
 .spinner {
-  width: 150px;
-  height: 150px;
-  filter: drop-shadow(0 0 30px var(--main-color));
-  animation: spinLoader 2s linear infinite;
-  will-change: transform;
-}
-
-@keyframes spinLoader {
-  0%   { transform: rotate(0deg)   scale(1);    }
-  50%  { transform: rotate(180deg) scale(1.08); }
-  100% { transform: rotate(360deg) scale(1);    }
+width: 250px;  /* يجب تعديل العرض هنا */
+  height: 250px; /* يجب تعديل الطول هنا */
 }

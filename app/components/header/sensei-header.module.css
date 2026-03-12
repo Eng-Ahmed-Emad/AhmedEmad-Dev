@@ -1,7 +1,7 @@
 /*
  * sensei-header.module.css
  * @Author Ahmed Emad Nasr
- * @Description Modern, High-Contrast Floating Navbar with Glow & Borders (Transparent)
+ * @Description Optimized High-Contrast Floating Navbar
  */
 
 .header {
@@ -12,7 +12,6 @@
   width: 92%;
   padding: 1rem 2.5rem;
   
-  /* الشفافية الكاملة: خلفية شفافة وإلغاء تأثير الزجاج للحفاظ على الأداء */
   background: transparent;
   backdrop-filter: none;
   
@@ -24,7 +23,7 @@
   border: 1.5px solid rgba(var(--main-color-rgb), 0.4);
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9), 
               0 0 15px rgba(var(--main-color-rgb), 0.15);
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .logo {
@@ -35,12 +34,13 @@
   letter-spacing: -1.5px;
   cursor: pointer;
   white-space: nowrap;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), text-shadow 0.3s ease;
+  will-change: transform;
 }
 
 .logo:hover {
   transform: scale(1.03);
-  text-shadow: 0 0 20px var(--main-color);
+  text-shadow: 0 0 15px rgba(var(--main-color-rgb), 0.8);
 }
 
 .navbar {
@@ -50,26 +50,29 @@
 }
 
 .navbar a {
-  /* رجعنا الحجم الأصلي للخط هنا */
   font-size: 1.4rem; 
   color: var(--text-color);
   padding: 0.8rem 1.6rem;
   border-radius: 40px;
   font-weight: 600;
   letter-spacing: 0.8px;
-  transition: all 0.3s ease;
   display: flex;
   align-items: center;
   gap: 0.7rem;
   text-transform: capitalize;
   position: relative;
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
 }
 
 .navbar a:hover,
 .navbar a.active {
   background: var(--main-color);
   color: var(--bg-color);
-  box-shadow: 0 5px 20px rgba(var(--main-color-rgb), 0.4);
+  box-shadow: 0 5px 15px rgba(var(--main-color-rgb), 0.4);
+}
+
+.navbar a:active {
+  transform: scale(0.95); /* تأثير ضغطة سريع */
 }
 
 /* --- Mobile Menu Icon --- */
@@ -87,7 +90,7 @@
   height: 3px;
   background: var(--main-color);
   border-radius: 10px;
-  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.3s ease;
 }
 
 /* --- Mobile Adjustments --- */
@@ -98,13 +101,8 @@
     border-radius: 25px;
   }
 
-  .logo {
-    font-size: 2.1rem;
-  }
-
-  .MenuIcon {
-    display: flex;
-  }
+  .logo { font-size: 2.1rem; }
+  .MenuIcon { display: flex; }
 
   .navbar {
     position: absolute;
@@ -112,26 +110,23 @@
     right: 0;
     width: 100%;
     background: rgba(15, 15, 15, 0.98);
-    backdrop-filter: blur(25px);
+    backdrop-filter: blur(15px); /* قللت الـ blur لـ 15 بدلاً من 25 للأداء */
     flex-direction: column;
     padding: 2.5rem 0;
     border-radius: 25px;
     border: 1px solid rgba(var(--main-color-rgb), 0.3);
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9),
-                0 0 20px rgba(var(--main-color-rgb), 0.1);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), 0 0 20px rgba(var(--main-color-rgb), 0.1);
     display: none;
     opacity: 0;
-    transform: translateY(-20px) scale(0.95);
+    transform: translateY(-15px) scale(0.98);
     pointer-events: none;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    will-change: transform, opacity;
   }
 
   .navbar.active {
     display: flex;
-    opacity: 1;
-    transform: translateY(0) scale(1);
     pointer-events: auto;
-    animation: slideDownIn 0.5s ease forwards;
+    animation: slideDownIn 0.3s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
   }
 
   .navbar a {
@@ -143,47 +138,28 @@
   }
 
   .navbar.active a {
-    animation: fadeInLinks 0.4s ease forwards;
+    animation: fadeInLinks 0.3s ease forwards;
   }
 
-  .navbar.active a:nth-child(1) { animation-delay: 0.1s; }
-  .navbar.active a:nth-child(2) { animation-delay: 0.2s; }
-  .navbar.active a:nth-child(3) { animation-delay: 0.3s; }
-  .navbar.active a:nth-child(4) { animation-delay: 0.4s; }
-  .navbar.active a:nth-child(5) { animation-delay: 0.5s; }
+  .navbar.active a:nth-child(1) { animation-delay: 0.05s; }
+  .navbar.active a:nth-child(2) { animation-delay: 0.1s; }
+  .navbar.active a:nth-child(3) { animation-delay: 0.15s; }
+  .navbar.active a:nth-child(4) { animation-delay: 0.2s; }
+  .navbar.active a:nth-child(5) { animation-delay: 0.25s; }
 }
 
 /* --- Animations Keyframes --- */
 @keyframes slideDownIn {
-  0% {
-    opacity: 0;
-    transform: translateY(-30px) rotateX(-15deg);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) rotateX(0);
-  }
+  0% { opacity: 0; transform: translateY(-20px) rotateX(-10deg); }
+  100% { opacity: 1; transform: translateY(0) rotateX(0); }
 }
 
 @keyframes fadeInLinks {
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  0% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 
 /* Menu Icon active state */
-.MenuIcon.active span:nth-child(1) {
-  transform: translateY(9px) rotate(45deg);
-}
-.MenuIcon.active span:nth-child(2) {
-  opacity: 0;
-  transform: translateX(-20px);
-}
-.MenuIcon.active span:nth-child(3) {
-  transform: translateY(-9px) rotate(-45deg);
-}
+.MenuIcon.active span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+.MenuIcon.active span:nth-child(2) { opacity: 0; transform: translateX(-15px); }
+.MenuIcon.active span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }

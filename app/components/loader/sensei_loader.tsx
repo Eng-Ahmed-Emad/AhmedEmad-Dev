@@ -13,19 +13,22 @@ function SenseiLoader(): JSX.Element | null {
 
   const handlePageLoader = useCallback(() => {
     setIsFadingOut(true);
+    // بعد انتهاء التلاشي (500ms)، نقوم بحذف العنصر تماماً لتوفير الذاكرة
     const timeoutId = setTimeout(() => setShowLoader(false), 500);
     return timeoutId;
   }, []);
 
-useEffect(() => {
-    // إجبار الـ Loader إنه يفضل ظاهر لفترة بسيطة حتى لو الصفحة جاهزة
-    // عشان نضمن إن الـ Animations والـ Mounting خلصوا
+  useEffect(() => {
+    // تم تقليل الوقت إلى 500ms ليكون أسرع وأخف، يمكنك تغييره حسب الحاجة
     const timeoutId = setTimeout(() => {
       handlePageLoader();
-    }, 1200); // 1.5 ثانية وقت كافي يظهر فيه الـ Loader بشكل شيك
+    }, 500); 
 
     return () => clearTimeout(timeoutId);
   }, [handlePageLoader]);
+
+  // هذه الإضافة تضمن مسح الـ Loader من الـ DOM بالكامل بعد اختفائه
+  if (!showLoader) return null;
 
   return (
     <div
@@ -36,9 +39,9 @@ useEffect(() => {
       <div className={styles.loaderContent}>
         <img
           src={loadingGif.src}
-          alt=""
-          width={150}
-          height={150}
+          alt="Loading..."
+          width={350}
+          height={350}
           loading="eager"
           decoding="async"
           className={styles.spinner}

@@ -1,144 +1,74 @@
 "use client";
 import { memo, useMemo } from "react";
-import { motion, type Variants, cubicBezier } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShieldHalved, faBrain, faBookOpen, faNetworkWired } from "@fortawesome/free-solid-svg-icons";
+import { faShieldHalved, faBrain, faBookOpen, faNetworkWired, faBug, faUserSecret } from "@fortawesome/free-solid-svg-icons";
 import { faLinux } from "@fortawesome/free-brands-svg-icons";
 import styles from "./sensei-skills.module.css";
 import SectionHeader from "@/app/core/components/SectionHeader";
-import { faBug, faUserSecret } from "@fortawesome/free-solid-svg-icons"; // ضيف الأيقونات دي فوق
 
-// ─── Statics & Data ───────────────────────────────────────────────────────────
+const SLIDE_EASE: [number, number, number, number] = [0.25, 0.1, 0.25, 1];
 
-const SLIDE_EASE = cubicBezier(0.22, 1, 0.36, 1);
-
-const HEADER_INITIAL     = { opacity: 0, y: -50 } as const;
+const HEADER_INITIAL     = { opacity: 0, y: -30 } as const;
 const HEADER_ANIMATE_IN  = { opacity: 1, y: 0 }   as const;
 const HEADER_ANIMATE_OUT = {}                      as const;
-const HEADER_TRANSITION  = { duration: 0.3 }       as const;
+const HEADER_TRANSITION  = { duration: 0.3, ease: SLIDE_EASE } as const;
 
 const ICON_ANIMATE    = { rotate: 0 }  as const;
-const ICON_HOVER      = { rotate: 15 } as const;
-const ICON_TRANSITION = { duration: 0.2 } as const;
+const ICON_HOVER      = { rotate: 10 } as const;
+const ICON_TRANSITION = { duration: 0.2, ease: "easeOut" } as const;
 
-// 1. المهارات التقنية (Progress Bars)
 const TECHNICAL_SKILLS = [
-  { name: "Incident Handling & Response", percentage: 85 },
-  { name: "SOC Operations & Monitoring", percentage: 90 },
-  { name: "Digital Forensics (DFIR)", percentage: 75 },
-  { name: "Network Security & CCNA", percentage: 80 },
-  { name: "Threat Hunting", percentage: 65 },
-  { name: "Malware Analysis", percentage: 70 },
+  { name: "Incident Handling & Response", percentage: 85 }, { name: "SOC Operations & Monitoring", percentage: 90 },
+  { name: "Digital Forensics (DFIR)", percentage: 75 }, { name: "Network Security & CCNA", percentage: 80 },
+  { name: "Threat Hunting", percentage: 65 }, { name: "Malware Analysis", percentage: 70 },
 ];
 
-// 2. المهارات الشخصية (Progress Bars)
 const PROFESSIONAL_SKILLS = [
-  { name: "Analytical & Critical Thinking", percentage: 90 },
-  { name: "Problem Solving", percentage: 85 },
-  { name: "Effective Communication", percentage: 80 },
-  { name: "Team Collaboration", percentage: 85 },
+  { name: "Analytical & Critical Thinking", percentage: 90 }, { name: "Problem Solving", percentage: 85 },
+  { name: "Effective Communication", percentage: 80 }, { name: "Team Collaboration", percentage: 85 },
 ];
 
-// 3. الأدوات والتقنيات (Cards/Badges)
 const BADGES_DATA = [
-  {
-    category: "SIEM & Security Tools",
-    icon: faShieldHalved,
-    skills: "Splunk, Wazuh, IBM QRadar, Microsoft Sentinel",
-  },
-  {
-    category: "Frameworks & Standards",
-    icon: faBookOpen,
-    skills: "MITRE ATT&CK, NIST, Cyber Kill Chain, ISO 27001",
-  },
-  {
-    category: "Networking & Traffic Analysis",
-    icon: faNetworkWired,
-    skills: "Wireshark, Zeek, Suricata, Cisco Packet Tracer",
-  },
-  {
-    category: "Operating Systems",
-    icon: faLinux,
-    skills: "Kali Linux, Ubuntu, Windows Server, Active Directory",
-  },
-  {
-    category: "Threat Intelligence",
-    icon: faUserSecret,
-    skills: "Threat Intel Platforms, Insider Threat Detection, Deception",
-  },
-  {
-    category: "Offensive Security",
-    icon: faBug,
-    skills: "Vulnerability Assessment, Penetration Testing, Web App Security",
-  },
+  { category: "SIEM & Security Tools", icon: faShieldHalved, skills: "Splunk, Wazuh, IBM QRadar, Microsoft Sentinel" },
+  { category: "Frameworks & Standards", icon: faBookOpen, skills: "MITRE ATT&CK, NIST, Cyber Kill Chain, ISO 27001" },
+  { category: "Networking & Traffic Analysis", icon: faNetworkWired, skills: "Wireshark, Zeek, Suricata, Cisco Packet Tracer" },
+  { category: "Operating Systems", icon: faLinux, skills: "Kali Linux, Ubuntu, Windows Server, Active Directory" },
+  { category: "Threat Intelligence", icon: faUserSecret, skills: "Threat Intel Platforms, Insider Threat Detection, Deception" },
+  { category: "Offensive Security", icon: faBug, skills: "Vulnerability Assessment, Penetration Testing, Web App Security" },
 ];
 
-// ─── Types ────────────────────────────────────────────────────────────────────
-
-type SkillCardProps = {
-  category: string;
-  icon: any; 
-  skills: string;
-  index: number;
-};
-
-// ─── SkillCard (The Badges) ───────────────────────────────────────────────────
+type SkillCardProps = { category: string; icon: any; skills: string; index: number; };
 
 const SkillCard = memo<SkillCardProps>(({ category, icon, skills, index }) => {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
+  const variants: Variants = useMemo(() => ({
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.3, delay: index * 0.05, ease: SLIDE_EASE } },
+  }), [index]);
 
-  const variants: Variants = useMemo(
-    () => ({
-      hidden: { opacity: 0, y: 30 },
-      visible: {
-        opacity: 1,
-        y: 0,
-        transition: { duration: 0.2, delay: index * 0.05, ease: SLIDE_EASE },
-      },
-    }),
-    [index]
-  );
-
-  const skillsArray = useMemo(() => {
-    return skills.split(",").map(skill => skill.trim()).filter(Boolean);
-  }, [skills]);
+  const skillsArray = useMemo(() => skills.split(",").map(s => s.trim()).filter(Boolean), [skills]);
 
   return (
-    <motion.div
-      ref={ref}
-      className={styles["skill-card"]}
-      initial="hidden"
-      animate={inView ? "visible" : "hidden"}
-      variants={variants}
-    >
+    <motion.div ref={ref} className={styles["skill-card"]} initial="hidden" animate={inView ? "visible" : "hidden"} variants={variants}>
       <div className={styles["card-header"]}>
-        <motion.div
-          animate={ICON_ANIMATE}
-          whileHover={ICON_HOVER}
-          transition={ICON_TRANSITION}
-        >
+        <motion.div animate={ICON_ANIMATE} whileHover={ICON_HOVER} transition={ICON_TRANSITION}>
           <FontAwesomeIcon icon={icon} className={styles.cardIcon} />
         </motion.div>
         <h3 className={styles.category}>{category}</h3>
       </div>
-      
       <div className={styles["card-body"]}>
         <div className={styles["skills-tags-container"]}>
           {skillsArray.map((skillItem, i) => (
-            <span key={`${category}-${i}`} className={styles["skill-tag"]}>
-              {skillItem}
-            </span>
+            <span key={`${category}-${i}`} className={styles["skill-tag"]}>{skillItem}</span>
           ))}
         </div>
       </div>
     </motion.div>
   );
 });
-
 SkillCard.displayName = "SkillCard";
-
-// ─── SkillsSection ────────────────────────────────────────────────────────────
 
 const SkillsSection = memo(function SkillsSection() {
   const [headerRef, headerInView] = useInView({ triggerOnce: true, threshold: 0.1 });
@@ -148,97 +78,47 @@ const SkillsSection = memo(function SkillsSection() {
   return (
     <section className={styles["skills-section"]} id="Skills">
       <div className={styles.container}>
-        
-        {/* 1. Header */}
-        <motion.div
-          ref={headerRef}
-          className={styles["header-section"]}
-          initial={HEADER_INITIAL}
-          animate={headerInView ? HEADER_ANIMATE_IN : HEADER_ANIMATE_OUT}
-          transition={HEADER_TRANSITION}
-        >
-          <SectionHeader
-            japaneseText="技能 スキル"
-            englishText="Skills & Expertise"
-            titleClassName={styles.title}
-          />
+        <motion.div ref={headerRef} className={styles["header-section"]} initial={HEADER_INITIAL} animate={headerInView ? HEADER_ANIMATE_IN : HEADER_ANIMATE_OUT} transition={HEADER_TRANSITION}>
+          <SectionHeader japaneseText="技能 スキル" englishText="Skills & Expertise" titleClassName={styles.title} />
         </motion.div>
 
-        {/* 2. Technical Skills (Progress Bars) */}
-        <motion.div 
-          ref={techRef}
-          className={styles["core-skills-wrapper"]}
-          initial={{ opacity: 0, y: 30 }}
-          animate={techInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          transition={{ duration: 0.5, ease: SLIDE_EASE }}
-        >
-          <h3 className={styles["core-title"]}>
-            <FontAwesomeIcon icon={faShieldHalved} /> Technical Competencies
-          </h3>
+        <motion.div ref={techRef} className={styles["core-skills-wrapper"]} initial={{ opacity: 0, y: 20 }} animate={techInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }} transition={{ duration: 0.3, ease: SLIDE_EASE }}>
+          <h3 className={styles["core-title"]}><FontAwesomeIcon icon={faShieldHalved} /> Technical Competencies</h3>
           <div className={styles["progress-grid"]}>
             {TECHNICAL_SKILLS.map((skill, index) => (
               <div key={index} className={styles["progress-item"]}>
                 <div className={styles["progress-header"]}>
-                  <span>{skill.name}</span>
-                  <span className={styles["progress-percent"]}>{skill.percentage}%</span>
+                  <span>{skill.name}</span><span className={styles["progress-percent"]}>{skill.percentage}%</span>
                 </div>
                 <div className={styles["progress-bg"]}>
-                  <motion.div 
-                    className={styles["progress-fill"]}
-                    initial={{ width: 0 }}
-                    animate={techInView ? { width: `${skill.percentage}%` } : { width: 0 }}
-                    transition={{ duration: 1.5, ease: "easeOut", delay: 0.1 + (index * 0.05) }}
-                  />
+                  <motion.div className={styles["progress-fill"]} initial={{ width: 0 }} animate={techInView ? { width: `${skill.percentage}%` } : { width: 0 }} transition={{ duration: 0.8, ease: "easeOut", delay: index * 0.05 }} />
                 </div>
               </div>
             ))}
           </div>
         </motion.div>
 
-        {/* 3. Professional / Soft Skills (Progress Bars) */}
-        <motion.div 
-          ref={profRef}
-          className={styles["core-skills-wrapper"]}
-          initial={{ opacity: 0, y: 30 }}
-          animate={profInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          transition={{ duration: 0.5, ease: SLIDE_EASE }}
-        >
-          <h3 className={styles["core-title"]}>
-            <FontAwesomeIcon icon={faBrain} /> Professional Skills
-          </h3>
+        <motion.div ref={profRef} className={styles["core-skills-wrapper"]} initial={{ opacity: 0, y: 20 }} animate={profInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }} transition={{ duration: 0.3, ease: SLIDE_EASE }}>
+          <h3 className={styles["core-title"]}><FontAwesomeIcon icon={faBrain} /> Professional Skills</h3>
           <div className={styles["progress-grid"]}>
             {PROFESSIONAL_SKILLS.map((skill, index) => (
               <div key={index} className={styles["progress-item"]}>
                 <div className={styles["progress-header"]}>
-                  <span>{skill.name}</span>
-                  <span className={styles["progress-percent"]}>{skill.percentage}%</span>
+                  <span>{skill.name}</span><span className={styles["progress-percent"]}>{skill.percentage}%</span>
                 </div>
                 <div className={styles["progress-bg"]}>
-                  <motion.div 
-                    className={styles["progress-fill"]}
-                    initial={{ width: 0 }}
-                    animate={profInView ? { width: `${skill.percentage}%` } : { width: 0 }}
-                    transition={{ duration: 1.5, ease: "easeOut", delay: 0.1 + (index * 0.05) }}
-                  />
+                  <motion.div className={styles["progress-fill"]} initial={{ width: 0 }} animate={profInView ? { width: `${skill.percentage}%` } : { width: 0 }} transition={{ duration: 0.8, ease: "easeOut", delay: index * 0.05 }} />
                 </div>
               </div>
             ))}
           </div>
         </motion.div>
 
-        {/* 4. Tools & Frameworks (Badges Grid) */}
         <div className={styles["skills-grid"]}>
           {BADGES_DATA.map((skill, index) => (
-            <SkillCard
-              key={`badge-${index}`}
-              category={skill.category}
-              icon={skill.icon}
-              skills={skill.skills}
-              index={index}
-            />
+            <SkillCard key={`badge-${index}`} category={skill.category} icon={skill.icon} skills={skill.skills} index={index} />
           ))}
         </div>
-
       </div>
     </section>
   );

@@ -7,34 +7,11 @@ import { useInView } from "react-intersection-observer";
 import "yet-another-react-lightbox/styles.css";
 import styles from "./sensei-art.module.css";
 
-/**
- * @Author: Ahmed Emad Nasr
- * @Description: A responsive art gallery component with lightbox support,
- * accessibility-aware animations.
- */
+const Lightbox = dynamic(() => import("yet-another-react-lightbox"), { ssr: false });
 
-// ─── Dynamic import ───────────────────────────────────────────────────────────
+interface GalleryImage { src: string; thumb: string; }
+interface ImageItemProps { image: GalleryImage; index: number; setOpen: (index: number) => void; }
 
-const Lightbox = dynamic(() => import("yet-another-react-lightbox"), {
-  ssr: false,
-});
-
-// ─── Types ────────────────────────────────────────────────────────────────────
-
-interface GalleryImage {
-  src: string;
-  thumb: string;
-}
-
-interface ImageItemProps {
-  image: GalleryImage;
-  index: number;
-  setOpen: (index: number) => void;
-}
-
-// ─── Statics ──────────────────────────────────────────────────────────────────
-
-// Both arrays are derived from pure data — generated once at module load.
 const GALLERY_IMAGES: GalleryImage[] = Array.from({ length: 24 }, (_, k) => ({
   src: `Assets/art-gallery/Images/image_display/${k + 1}.png`,
   thumb: `Assets/art-gallery/Images/image_display_thumb/${k + 1}.webp`,
@@ -42,59 +19,35 @@ const GALLERY_IMAGES: GalleryImage[] = Array.from({ length: 24 }, (_, k) => ({
 
 const LIGHTBOX_SLIDES = GALLERY_IMAGES.map((image) => ({ src: image.src }));
 
-// Static easing tuple — hoisted so it isn't reallocated inside useMemo.
-const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
-
-// ─── ImageItem ────────────────────────────────────────────────────────────────
+// Snappy Ease
+const EASE: [number, number, number, number] = [0.25, 0.1, 0.25, 1]; 
 
 const ImageItem = memo(({ image, index, setOpen }: ImageItemProps) => {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
   const prefersReducedMotion = useReducedMotion();
 
-  // Rebuilds only when the accessibility preference changes.
-  const variants: Variants = useMemo(
-    () => ({
-      hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 30 },
-      visible: (i: number) => ({
-        opacity: 1,
-        y: 0,
-        transition: prefersReducedMotion
-          ? { duration: 0.2 }
-          : { delay: i * 0.1, duration: 0.5, ease: EASE },
-      }),
+  const variants: Variants = useMemo(() => ({
+    hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 20 },
+    visible: (i: number) => ({
+      opacity: 1, y: 0,
+      transition: prefersReducedMotion ? { duration: 0.2 } : { delay: i * 0.05, duration: 0.3, ease: EASE },
     }),
-    [prefersReducedMotion]
-  );
+  }), [prefersReducedMotion]);
 
   const handleClick = useCallback(() => setOpen(index), [setOpen, index]);
 
   return (
-    <motion.div
-      ref={ref}
-      className={styles.art_pic}
-      custom={index}
-      initial="hidden"
-      animate={inView ? "visible" : "hidden"}
-      variants={variants}
-    >
+    <motion.div ref={ref} className={styles.art_pic} custom={index} initial="hidden" animate={inView ? "visible" : "hidden"} variants={variants}>
       <Image
-        src={image.thumb}
-        alt={`Art piece ${index + 1}`}
-        width={350}
-        height={350}
+        src={image.thumb} alt={`Art piece ${index + 1}`} width={350} height={350}
         sizes="(max-width: 767px) 100vw, (max-width: 991px) 50vw, (max-width: 1199px) 33vw, 25vw"
-        onClick={handleClick}
-        loading="lazy"
-        quality={75} /* رفعت الجودة شوية عشان الصور تطلع أنقى، وتقدر ترجعها 10 لو حابب تقليل الحجم جداً */
-        className={styles.galleryImg}
+        onClick={handleClick} loading="lazy" quality={75} className={styles.galleryImg}
       />
     </motion.div>
   );
 });
 
 ImageItem.displayName = "ImageItem";
-
-// ─── SenseiArt ────────────────────────────────────────────────────────────────
 
 const SenseiArt = memo(function SenseiArt() {
   const [index, setIndex] = useState(-1);
@@ -103,78 +56,31 @@ const SenseiArt = memo(function SenseiArt() {
   const [headerRef, headerInView] = useInView({ triggerOnce: true, threshold: 0.1 });
   const prefersReducedMotion = useReducedMotion();
 
-  // Rebuilds only when the accessibility preference changes.
-  const headerVariants: Variants = useMemo(
-    () => ({
-      hidden: { opacity: 0, y: prefersReducedMotion ? 0 : -30 },
-      visible: {
-        opacity: 1,
-        y: 0,
-        transition: prefersReducedMotion
-          ? { duration: 0.2 }
-          : { duration: 0.5, ease: EASE },
-      },
-    }),
-    [prefersReducedMotion]
-  );
+  const headerVariants: Variants = useMemo(() => ({
+    hidden: { opacity: 0, y: prefersReducedMotion ? 0 : -20 },
+    visible: { opacity: 1, y: 0, transition: prefersReducedMotion ? { duration: 0.2 } : { duration: 0.3, ease: EASE } },
+  }), [prefersReducedMotion]);
 
-  const galleryVariants: Variants = useMemo(
-    () => ({
-      hidden: { opacity: 0 },
-      visible: {
-        opacity: 1,
-        transition: prefersReducedMotion
-          ? { duration: 0.2 }
-          : { staggerChildren: 0.1, delayChildren: 0.2 },
-      },
-    }),
-    [prefersReducedMotion]
-  );
+  const galleryVariants: Variants = useMemo(() => ({
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: prefersReducedMotion ? { duration: 0.2 } : { staggerChildren: 0.05, delayChildren: 0.1 } },
+  }), [prefersReducedMotion]);
 
-  // Stable close handler — setIndex is a stable React dispatcher.
   const handleCloseLightbox = useCallback(() => setIndex(-1), []);
 
   return (
     <section className={styles["art-gallery-section"]} id="ArtGallery">
       <div className={styles.container}>
-        <motion.div
-          ref={headerRef}
-          className={styles["header-section"]}
-          initial="hidden"
-          animate={headerInView ? "visible" : "hidden"}
-          variants={headerVariants}
-        >
-          <h2 className={styles.title}>
-            <span lang="ja">画廊 •</span>
-            <span lang="en"> Art Gallery</span>
-          </h2>
+        <motion.div ref={headerRef} className={styles["header-section"]} initial="hidden" animate={headerInView ? "visible" : "hidden"} variants={headerVariants}>
+          <h2 className={styles.title}><span lang="ja">画廊 •</span><span lang="en"> Art Gallery</span></h2>
         </motion.div>
-        <motion.div
-          className={styles["art-gallery-content"]}
-          initial="hidden"
-          animate="visible"
-          variants={galleryVariants}
-        >
+        <motion.div className={styles["art-gallery-content"]} initial="hidden" animate="visible" variants={galleryVariants}>
           <div className={styles.Gallery}>
-            {GALLERY_IMAGES.map((image, i) => (
-              <ImageItem
-                key={image.src}
-                image={image}
-                index={i}
-                setOpen={setIndex}
-              />
-            ))}
+            {GALLERY_IMAGES.map((image, i) => <ImageItem key={image.src} image={image} index={i} setOpen={setIndex} />)}
           </div>
         </motion.div>
       </div>
-      
-      {/* Lightbox component handles keyboard navigation naturally */}
-      <Lightbox
-        slides={LIGHTBOX_SLIDES}
-        open={open}
-        index={index}
-        close={handleCloseLightbox}
-      />
+      <Lightbox slides={LIGHTBOX_SLIDES} open={open} index={index} close={handleCloseLightbox} />
     </section>
   );
 });
