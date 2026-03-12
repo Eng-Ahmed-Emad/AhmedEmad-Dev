@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { memo } from "react";
 import { motion, MotionProps } from "framer-motion";
 
 type MotionInViewProps = MotionProps & {
@@ -10,7 +10,7 @@ type MotionInViewProps = MotionProps & {
   triggerOnce?: boolean;
 } & React.HTMLAttributes<HTMLDivElement>;
 
-const MotionInView: React.FC<MotionInViewProps> = ({
+const MotionInView = memo<MotionInViewProps>(({
   children,
   variants,
   className,
@@ -30,6 +30,7 @@ const MotionInView: React.FC<MotionInViewProps> = ({
       {children}
     </motion.div>
   );
-};
+});
 
+MotionInView.displayName = "MotionInView";
 export default MotionInView;

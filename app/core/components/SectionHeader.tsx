@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { memo } from "react";
 import { motion, MotionProps } from "framer-motion";
 
 interface SectionHeaderProps {
@@ -9,7 +10,7 @@ interface SectionHeaderProps {
   englishMotionProps?: MotionProps;
 }
 
-const SectionHeader: React.FC<SectionHeaderProps> = ({
+const SectionHeader = memo<SectionHeaderProps>(({
   japaneseText,
   englishText,
   titleClassName,
@@ -35,6 +36,7 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({
       )}
     </h2>
   );
-};
+});
 
+SectionHeader.displayName = "SectionHeader";
 export default SectionHeader;
