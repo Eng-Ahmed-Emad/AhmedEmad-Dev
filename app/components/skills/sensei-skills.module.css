@@ -1,6 +1,6 @@
 /*
  * @Author: Ahmed Emad Nasr
- * @Description: Modern Glassmorphism Skills Section - With Interactive Tags & Progress Bars
+ * @Description: Modern Glassmorphism Skills Section - Progress Bars & Interactive Tags
  */
 
 .skills-section {
@@ -83,8 +83,7 @@
   gap: 1rem;
 }
 
-.core-title svg,
-.core-title i {
+.core-title svg {
   color: var(--main-color);
 }
 
@@ -129,7 +128,7 @@
   transform-origin: left;
 }
 
-/* --- Grid Layout (For Tags Cards) --- */
+/* ─── Grid Layout (For Tags Cards) ─────────────────────────────────────── */
 .skills-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -137,6 +136,7 @@
   width: 100%;
   position: relative;
   align-items: stretch; 
+  margin-top: 2rem;
 }
 
 /* --- The Cards --- */
@@ -155,7 +155,6 @@
   will-change: transform, opacity;
 }
 
-/* --- Hover Effect --- */
 .skill-card:hover {
   background: rgba(15, 15, 15, 0.85); 
   backdrop-filter: blur(15px) saturate(180%);
@@ -182,12 +181,10 @@
   border-bottom-color: rgba(var(--main-color-rgb), 0.4);
 }
 
-.card-header i,
-.card-header svg {
+.cardIcon {
   font-size: 3rem;
   width: 3rem;
   height: 3rem;
-  min-width: 3rem;
   color: var(--bg-color); 
   display: flex;
   align-items: center;
@@ -195,11 +192,9 @@
   transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.skill-card:hover .card-header i,
-.skill-card:hover .card-header svg {
+.skill-card:hover .cardIcon {
   color: var(--main-color); 
   transform: rotate(360deg) scale(1.15); 
-  text-shadow: 0 0 15px var(--main-color);
   filter: drop-shadow(0 0 10px var(--main-color));
 }
 

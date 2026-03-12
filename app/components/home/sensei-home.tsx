@@ -134,6 +134,7 @@ const SenseiHome = memo(function SenseiHome() {
             className={styles.image}
             width={350}
             height={350}
+            fetchPriority="high"
             loading="lazy"
             decoding="async"
             onClick={handleImageClick}

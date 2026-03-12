@@ -3,10 +3,11 @@ import { memo, useMemo } from "react";
 import { motion, type Variants, cubicBezier } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShieldHalved } from "@fortawesome/free-solid-svg-icons";
+import { faShieldHalved, faBrain, faBookOpen, faNetworkWired } from "@fortawesome/free-solid-svg-icons";
+import { faLinux } from "@fortawesome/free-brands-svg-icons";
 import styles from "./sensei-skills.module.css";
 import SectionHeader from "@/app/core/components/SectionHeader";
-import { technicalSkills } from "@/app/core/data";
+import { faBug, faUserSecret } from "@fortawesome/free-solid-svg-icons"; // ضيف الأيقونات دي فوق
 
 // ─── Statics & Data ───────────────────────────────────────────────────────────
 
@@ -21,19 +22,63 @@ const ICON_ANIMATE    = { rotate: 0 }  as const;
 const ICON_HOVER      = { rotate: 15 } as const;
 const ICON_TRANSITION = { duration: 0.2 } as const;
 
-// المهارات الأساسية اللي هتظهر كأشرطة تقدم (Progress Bars)
-const CORE_SKILLS = [
-  { name: "Incident Handling & Response", percentage: 50 },
-  { name: "SOC Operations & Monitoring", percentage: 70 },
-  { name: "Malware Analysis", percentage: 30 },
-  { name: "Network Security & CCNA", percentage: 65 },
+// 1. المهارات التقنية (Progress Bars)
+const TECHNICAL_SKILLS = [
+  { name: "Incident Handling & Response", percentage: 85 },
+  { name: "SOC Operations & Monitoring", percentage: 90 },
+  { name: "Digital Forensics (DFIR)", percentage: 75 },
+  { name: "Network Security & CCNA", percentage: 80 },
+  { name: "Threat Hunting", percentage: 65 },
+  { name: "Malware Analysis", percentage: 70 },
+];
+
+// 2. المهارات الشخصية (Progress Bars)
+const PROFESSIONAL_SKILLS = [
+  { name: "Analytical & Critical Thinking", percentage: 90 },
+  { name: "Problem Solving", percentage: 85 },
+  { name: "Effective Communication", percentage: 80 },
+  { name: "Team Collaboration", percentage: 85 },
+];
+
+// 3. الأدوات والتقنيات (Cards/Badges)
+const BADGES_DATA = [
+  {
+    category: "SIEM & Security Tools",
+    icon: faShieldHalved,
+    skills: "Splunk, Wazuh, IBM QRadar, Microsoft Sentinel",
+  },
+  {
+    category: "Frameworks & Standards",
+    icon: faBookOpen,
+    skills: "MITRE ATT&CK, NIST, Cyber Kill Chain, ISO 27001",
+  },
+  {
+    category: "Networking & Traffic Analysis",
+    icon: faNetworkWired,
+    skills: "Wireshark, Zeek, Suricata, Cisco Packet Tracer",
+  },
+  {
+    category: "Operating Systems",
+    icon: faLinux,
+    skills: "Kali Linux, Ubuntu, Windows Server, Active Directory",
+  },
+  {
+    category: "Threat Intelligence",
+    icon: faUserSecret,
+    skills: "Threat Intel Platforms, Insider Threat Detection, Deception",
+  },
+  {
+    category: "Offensive Security",
+    icon: faBug,
+    skills: "Vulnerability Assessment, Penetration Testing, Web App Security",
+  },
 ];
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 type SkillCardProps = {
   category: string;
-  icon: string;
+  icon: any; 
   skills: string;
   index: number;
 };
@@ -68,13 +113,13 @@ const SkillCard = memo<SkillCardProps>(({ category, icon, skills, index }) => {
       variants={variants}
     >
       <div className={styles["card-header"]}>
-        <motion.i
-          className={icon}
+        <motion.div
           animate={ICON_ANIMATE}
           whileHover={ICON_HOVER}
           transition={ICON_TRANSITION}
-          aria-hidden="true"
-        />
+        >
+          <FontAwesomeIcon icon={icon} className={styles.cardIcon} />
+        </motion.div>
         <h3 className={styles.category}>{category}</h3>
       </div>
       
@@ -97,7 +142,8 @@ SkillCard.displayName = "SkillCard";
 
 const SkillsSection = memo(function SkillsSection() {
   const [headerRef, headerInView] = useInView({ triggerOnce: true, threshold: 0.1 });
-  const [coreRef, coreInView] = useInView({ triggerOnce: true, threshold: 0.1 });
+  const [techRef, techInView] = useInView({ triggerOnce: true, threshold: 0.1 });
+  const [profRef, profInView] = useInView({ triggerOnce: true, threshold: 0.1 });
 
   return (
     <section className={styles["skills-section"]} id="Skills">
@@ -113,24 +159,24 @@ const SkillsSection = memo(function SkillsSection() {
         >
           <SectionHeader
             japaneseText="技能 スキル"
-            englishText="Skills"
+            englishText="Skills & Expertise"
             titleClassName={styles.title}
           />
         </motion.div>
 
-        {/* 2. Core Competencies (Progress Bars Section) */}
+        {/* 2. Technical Skills (Progress Bars) */}
         <motion.div 
-          ref={coreRef}
+          ref={techRef}
           className={styles["core-skills-wrapper"]}
           initial={{ opacity: 0, y: 30 }}
-          animate={coreInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+          animate={techInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: 0.5, ease: SLIDE_EASE }}
         >
           <h3 className={styles["core-title"]}>
-            <FontAwesomeIcon icon={faShieldHalved} /> Core Competencies
+            <FontAwesomeIcon icon={faShieldHalved} /> Technical Competencies
           </h3>
           <div className={styles["progress-grid"]}>
-            {CORE_SKILLS.map((skill, index) => (
+            {TECHNICAL_SKILLS.map((skill, index) => (
               <div key={index} className={styles["progress-item"]}>
                 <div className={styles["progress-header"]}>
                   <span>{skill.name}</span>
@@ -140,8 +186,8 @@ const SkillsSection = memo(function SkillsSection() {
                   <motion.div 
                     className={styles["progress-fill"]}
                     initial={{ width: 0 }}
-                    animate={coreInView ? { width: `${skill.percentage}%` } : { width: 0 }}
-                    transition={{ duration: 1.5, ease: "easeOut", delay: 0.2 + (index * 0.1) }}
+                    animate={techInView ? { width: `${skill.percentage}%` } : { width: 0 }}
+                    transition={{ duration: 1.5, ease: "easeOut", delay: 0.1 + (index * 0.05) }}
                   />
                 </div>
               </div>
@@ -149,11 +195,42 @@ const SkillsSection = memo(function SkillsSection() {
           </div>
         </motion.div>
 
-        {/* 3. Technical Tools Grid (Tags/Badges Section) */}
+        {/* 3. Professional / Soft Skills (Progress Bars) */}
+        <motion.div 
+          ref={profRef}
+          className={styles["core-skills-wrapper"]}
+          initial={{ opacity: 0, y: 30 }}
+          animate={profInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+          transition={{ duration: 0.5, ease: SLIDE_EASE }}
+        >
+          <h3 className={styles["core-title"]}>
+            <FontAwesomeIcon icon={faBrain} /> Professional Skills
+          </h3>
+          <div className={styles["progress-grid"]}>
+            {PROFESSIONAL_SKILLS.map((skill, index) => (
+              <div key={index} className={styles["progress-item"]}>
+                <div className={styles["progress-header"]}>
+                  <span>{skill.name}</span>
+                  <span className={styles["progress-percent"]}>{skill.percentage}%</span>
+                </div>
+                <div className={styles["progress-bg"]}>
+                  <motion.div 
+                    className={styles["progress-fill"]}
+                    initial={{ width: 0 }}
+                    animate={profInView ? { width: `${skill.percentage}%` } : { width: 0 }}
+                    transition={{ duration: 1.5, ease: "easeOut", delay: 0.1 + (index * 0.05) }}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* 4. Tools & Frameworks (Badges Grid) */}
         <div className={styles["skills-grid"]}>
-          {technicalSkills.map((skill, index) => (
+          {BADGES_DATA.map((skill, index) => (
             <SkillCard
-              key={`technical-${skill.category}-${index}`}
+              key={`badge-${index}`}
               category={skill.category}
               icon={skill.icon}
               skills={skill.skills}

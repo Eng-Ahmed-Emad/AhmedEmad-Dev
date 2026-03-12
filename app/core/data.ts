@@ -63,39 +63,6 @@ export const knowledgeEducationItems = [
   },
 ];
 
-export const technicalSkills = [
-  {
-    category: "Security Operations",
-    icon: "fa-solid fa-shield-halved",
-    skills: "Incident Response, Threat Hunting, Alert Triage, Detection Engineering, IOC Analysis, Playbook Execution",
-  },
-  {
-    category: "Tools & Platforms",
-    icon: "fa-solid fa-wrench",
-    skills: "Wazuh, ELK Stack, Splunk, Sysmon, Suricata, pfSense, VirusTotal, YARA, Wireshark",
-  },
-  {
-    category: "Malware Analysis",
-    icon: "fa-solid fa-virus",
-    skills: "Static Analysis, Dynamic Analysis, Sandbox Execution, YARA Rules, IOC Extraction",
-  },
-  {
-    category: "Log Analysis & SIEM",
-    icon: "fa-solid fa-chart-line",
-    skills: "Log Parsing, Event Correlation, Alert Tuning, Compliance Reporting, Data Visualization",
-  },
-  {
-    category: "Networking & Frameworks",
-    icon: "fa-solid fa-network-wired",
-    skills: "TCP/IP, Network Traffic Analysis (NTA), IDS/IPS, MITRE ATT&CK, Incident Response Lifecycle",
-  },
-  {
-    category: "Professional Skills & Reporting",
-    icon: "fa-solid fa-file-lines",
-    skills: "Technical Writing, Crisis Management, Incident Reports, Cross-functional Collaboration, Quick Decision Making",
-  },
-];
-
 export const aboutMeCards = [
   {
     icon: "fa-solid fa-earth-americas",
