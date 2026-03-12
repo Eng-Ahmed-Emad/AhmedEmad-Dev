@@ -4,7 +4,7 @@ import { motion, type Variants, cubicBezier } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLinkedin, faWhatsapp, faXTwitter } from "@fortawesome/free-brands-svg-icons";
-import { faUserSecret, faFilePdf, faGlobe } from "@fortawesome/free-solid-svg-icons";
+import { faUserSecret, faFilePdf } from "@fortawesome/free-solid-svg-icons";
 import styles from "./sensei-home.module.css";
 import { useRandomMedia } from "@/app/core/hooks/useRandomMedia";
 import { aboutMeCards } from "@/app/core/data";
@@ -12,10 +12,10 @@ import { aboutMeCards } from "@/app/core/data";
 /**
  * @Author Ahmed Emad Nasr
  * @Description A React component that serves as the home section of the portfolio,
- * featuring an image, social links, animations, and Languages progress bars.
+ * featuring an image, social links, and animations.
  */
 
-// ─── Statics & Data ───────────────────────────────────────────────────────────
+// ─── Statics ──────────────────────────────────────────────────────────────────
 
 const SLIDE_EASE = cubicBezier(0.22, 1, 0.36, 1);
 
@@ -49,11 +49,7 @@ const ICON_TRANSITION = { duration: 0.3 } as const;
 const BTN_1_CLASS = `${styles.btn} ${styles.btn1}`;
 const BTN_2_CLASS = `${styles.btn} ${styles.btn2}`;
 
-// بيانات اللغات اللي هتتعرض في الـ Progress Bars
-const LANGUAGES = [
-  { name: "Arabic", level: "Native", percentage: 100 },
-  { name: "English", level: "Professional Working Proficiency", percentage: 85 },
-];
+const HIDDEN_STYLE = { visibility: "hidden" } as const;
 
 // ─── AboutMeCard ──────────────────────────────────────────────────────────────
 
@@ -109,15 +105,21 @@ AboutMeCard.displayName = "AboutMeCard";
 
 const SenseiHome = memo(function SenseiHome() {
   const { handleImageClick } = useRandomMedia();
+
   const isAvailable = true; 
 
-  const [containerRef, containerInView] = useInView({ triggerOnce: false, threshold: 0.1 });
-  const [headerRef, headerInView] = useInView({ triggerOnce: true, threshold: 0.1 });
-  const [langRef, langInView] = useInView({ triggerOnce: true, threshold: 0.1 });
+  const [containerRef, containerInView] = useInView({
+    triggerOnce: false,
+    threshold: 0.1,
+  });
+
+  const [headerRef, headerInView] = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  });
 
   return (
     <section className={styles.home} id="Home">
-      {/* Top Hero Section */}
       <motion.div
         ref={containerRef}
         className={styles.container}
@@ -151,36 +153,55 @@ const SenseiHome = memo(function SenseiHome() {
             <span className={styles.typingHighlight} />
           </h2>
 
-          <p>
-            Computer Science student at Benha University, specializing in SOC, Incident Response, and Cybersecurity. Experienced in monitoring, alert triage, DFIR, and system defense through DEPI & ITI training and SOC projects. Passionate about securing digital environments.
-          </p>
+<p>
+Computer Science student at Benha University, specializing in SOC, Incident Response, and Cybersecurity. Experienced in monitoring, alert triage, DFIR, and system defense through DEPI & ITI training and SOC projects. Passionate about securing digital environments.
+</p>
 
           <motion.div className={styles.socialIcon} variants={ITEM_VARIANTS}>
-            <a href="https://www.linkedin.com/in/ahmed-emad-nasr/" target="_blank" rel="noopener noreferrer" title="Linkedin">
+            <a
+              href="https://www.linkedin.com/in/ahmed-emad-nasr/"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Linkedin"
+            >
               <FontAwesomeIcon icon={faLinkedin} />
             </a>
-            <a href="https://wa.me/201018166445" target="_blank" rel="noopener noreferrer" title="WhatsApp">
+            <a
+              href="https://wa.me/201018166445"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="WhatsApp"
+            >
               <FontAwesomeIcon icon={faWhatsapp} />
             </a>
-            <a href="https://x.com/0x3omda" target="_blank" rel="noopener noreferrer" title="X">
+            <a
+              href="https://x.com/0x3omda"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="X"
+            >
               <FontAwesomeIcon icon={faXTwitter} />
             </a>
           </motion.div>
 
           <motion.div className={styles.homeButton} variants={ITEM_VARIANTS}>
             <a href="#Contact" className={BTN_1_CLASS}>
-              Hire Me <FontAwesomeIcon icon={faUserSecret} />
+              Hire Me
+              <FontAwesomeIcon icon={faUserSecret} />
             </a>
-            <a href="Assets/cv/AhmedEmad_SOCAnalyst_CV.pdf" download className={BTN_2_CLASS}>
+            <a
+              href="Assets/cv/AhmedEmad_SOCAnalyst_CV.pdf"
+              download
+              className={BTN_2_CLASS}
+            >
               Download CV <FontAwesomeIcon icon={faFilePdf} />
             </a>
           </motion.div>
         </motion.div>
       </motion.div>
 
-      {/* About Me & Languages Section */}
+      {/* About Me Cards Section */}
       <div className={styles["about-me-section"]}>
-        {/* Title */}
         <motion.div
           ref={headerRef}
           className={styles["about-me-header"]}
@@ -193,48 +214,11 @@ const SenseiHome = memo(function SenseiHome() {
             <span lang="en"> About Me</span>
           </h2>
         </motion.div>
-
-        {/* 1. About Me Cards Grid */}
         <div className={styles["about-me-grid"]}>
           {aboutMeCards.map((card, index) => (
             <AboutMeCard key={`${card.title}-${index}`} {...card} index={index} />
           ))}
         </div>
-
-        {/* 2. Languages Progress Bars */}
-        <motion.div 
-          ref={langRef}
-          className={styles["languages-container"]}
-          initial={{ opacity: 0, y: 30 }}
-          animate={langInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          transition={{ duration: 0.5, ease: SLIDE_EASE }}
-        >
-          <h3 className={styles["languages-title"]}>
-            <FontAwesomeIcon icon={faGlobe} /> Languages
-          </h3>
-          <div className={styles["languages-grid"]}>
-            {LANGUAGES.map((lang, index) => (
-              <div key={index} className={styles["lang-item"]}>
-                <div className={styles["lang-header"]}>
-                  <div className={styles["lang-name-box"]}>
-                    <span className={styles["lang-name"]}>{lang.name}</span>
-                    <span className={styles["lang-level"]}>{lang.level}</span>
-                  </div>
-                  <span className={styles["lang-percent"]}>{lang.percentage}%</span>
-                </div>
-                <div className={styles["lang-progress-bg"]}>
-                  <motion.div 
-                    className={styles["lang-progress-fill"]}
-                    initial={{ width: 0 }}
-                    animate={langInView ? { width: `${lang.percentage}%` } : { width: 0 }}
-                    transition={{ duration: 1.5, ease: "easeOut", delay: 0.2 + (index * 0.1) }}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-        </motion.div>
-
       </div>
     </section>
   );
