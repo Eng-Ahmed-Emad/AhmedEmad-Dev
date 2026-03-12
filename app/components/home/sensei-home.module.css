@@ -121,11 +121,11 @@
 }
 
 @keyframes words {
-  0%, 20% { content: "SOC Analyst."; }
-  21%, 40% { content: "Cybersecurity Analyst."; }
-  41%, 61% { content: "Incident Responder."; } 
-  62%, 80% { content: "Security Analyst."; }
-  81%, 100% { content: "Cybersecurity Instructor."; }
+  0%, 20% { content: "SOC Analyst"; }
+  21%, 40% { content: "Cybersecurity Analyst"; }
+  41%, 61% { content: "Incident Responder"; } 
+  62%, 80% { content: "Security Analyst"; }
+  81%, 100% { content: "Cybersecurity Instructor"; }
 }
 
 @keyframes typing {
@@ -257,7 +257,7 @@
   .homeContent h1 { font-size: 4.5rem; }
   .homeContent h3 { font-size: 3rem; }
   .btn { font-size: 1.7rem; }
-  .homeImg { max-width: 300px; margin-bottom: 1rem; margin-top: 5rem; }
+  .homeImg { max-width: 310px; margin-top: 5rem; }
 }
 
 @media (max-width: 547px) {

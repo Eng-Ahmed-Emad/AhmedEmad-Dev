@@ -89,7 +89,7 @@ const SenseiHeader = memo(function SenseiHeader() {
     <header className={styles.header}>
       {/* Logo */}
       <a href="#" className={styles.logo} onClick={handleLogoClick}>
-        <span lang="ja">エンジニア・アハメド</span>
+        <span lang="ja">アーメド エマド</span>
       </a>
 
       {/* Hamburger Menu Icon (Mobile Only) */}

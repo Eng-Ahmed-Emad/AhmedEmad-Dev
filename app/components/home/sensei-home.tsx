@@ -142,7 +142,7 @@ const SenseiHome = memo(function SenseiHome() {
 
         <motion.div className={styles.homeContent} variants={ITEM_VARIANTS}>
           <h1>
-            <span className={styles.highlight}>Ahmed Emad Nasr</span>
+            <span className={styles.highlight}><b>Ahmed Emad Nasr</b></span>
           </h1>
 
           <motion.div className={styles.availabilityStatus} variants={ITEM_VARIANTS}>
