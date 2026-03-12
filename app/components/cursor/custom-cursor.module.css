@@ -1,0 +1,43 @@
+/*
+ * custom-cursor.module.css
+ * @Description: Modern Custom Cursor — Dot + Click Ripple + Magnetic Pull
+ */
+
+/* ── Dot ──────────────────────────────────────────────────────────────────── */
+.cursorDot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 9999;
+  border-radius: 50%;
+  will-change: transform;
+
+  width: 8px;
+  height: 8px;
+  background-color: var(--main-color);
+  box-shadow: 0 0 10px var(--main-color);
+}
+
+/* ── Click Ripple ─────────────────────────────────────────────────────────── */
+/*
+ * The ripple is positioned with left/top set to the exact click coordinates,
+ * so we use negative margin to center it on the click point.
+ */
+.ripple {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  margin-left: -10px; /* center on click X */
+  margin-top: -10px;  /* center on click Y */
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998; /* just below the dot */
+
+  border: 1.5px solid var(--main-color);
+  background: transparent;
+  will-change: transform, opacity;
+}

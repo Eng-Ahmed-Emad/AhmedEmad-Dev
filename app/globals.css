@@ -85,3 +85,10 @@ section {
     scroll-behavior: auto;
   }
 }
+
+/*--------- 6. Custom Cursor Overlay ---------*/
+@media (pointer: fine) {
+  * {
+    cursor: none !important;
+  }
+}

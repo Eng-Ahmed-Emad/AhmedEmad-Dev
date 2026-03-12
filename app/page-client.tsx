@@ -16,6 +16,10 @@ const AnimatedBackground = dynamic(
   () => import("@/app/components/animated_background/animated_background"),
   { ssr: false }
 );
+const CustomCursor = dynamic(
+  () => import("@/app/components/cursor/CustomCursor"),
+  { ssr: false }
+);
 const ServicesSection = dynamic(
   () => import("@/app/components/services/sensei-services-projects"),
   { ssr: false }
@@ -48,6 +52,7 @@ const MainClient = memo(function MainClient() {
   return (
     <main>
       <LoadingScreen />
+      <CustomCursor />
       <AnimatedBackground />
       <AppBar />
       <HomeSection />
