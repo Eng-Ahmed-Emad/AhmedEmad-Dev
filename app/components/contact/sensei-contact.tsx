@@ -4,12 +4,14 @@ import { motion, type Variants, cubicBezier } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faPhone, faLocationDot, faPaperPlane, faSpinner } from "@fortawesome/free-solid-svg-icons";
+// 👇 تم إضافة أيقونات السوشيال ميديا هنا 👇
+import { faLinkedin, faWhatsapp, faXTwitter, faInstagram, faTelegram } from "@fortawesome/free-brands-svg-icons";
 import styles from "./sensei-contact.module.css";
 import SectionHeader from "@/app/core/components/SectionHeader";
 
 /**
  * @Author Ahmed Emad Nasr
- * @Description High-performance Glassmorphism Contact Section with Formspree Integration.
+ * @Description High-performance Glassmorphism Contact Section with Formspree Integration and Social Links.
  */
 
 // ─── Statics ──────────────────────────────────────────────────────────────────
@@ -128,6 +130,26 @@ const SenseiContact = memo(function SenseiContact() {
                 <p>Banha, Egypt</p>
               </div>
             </div>
+
+            {/* 👇 Social Links Section 👇 */}
+            <div className={styles["contact-socials"]}>
+              <a href="https://wa.me/201018166445" target="_blank" rel="noopener noreferrer" title="WhatsApp">
+                <FontAwesomeIcon icon={faWhatsapp} />
+              </a>
+              <a href="https://www.linkedin.com/in/ahmed-emad-nasr/" target="_blank" rel="noopener noreferrer" title="LinkedIn">
+                <FontAwesomeIcon icon={faLinkedin} />
+              </a>
+              <a href="https://x.com/0x3omda" target="_blank" rel="noopener noreferrer" title="X (Twitter)">
+                <FontAwesomeIcon icon={faXTwitter} />
+              </a>
+              <a href="https://instagram.com/ahmed.em.nasr" target="_blank" rel="noopener noreferrer" title="Instagram">
+                <FontAwesomeIcon icon={faInstagram} />
+              </a>
+              <a href="https://t.me/ahmed_em_nasr" target="_blank" rel="noopener noreferrer" title="Telegram">
+                <FontAwesomeIcon icon={faTelegram} />
+              </a>
+            </div>
+
           </motion.div>
 
           {/* Right Side: Contact Form */}

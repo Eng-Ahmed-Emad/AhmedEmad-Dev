@@ -200,3 +200,39 @@ textarea.input-field {
   .info-card, .form-card { padding: 3rem 2rem; }
   .info-item { flex-direction: column; align-items: flex-start; gap: 1rem; }
 }
+/* --- Social Links in Contact Info --- */
+.contact-socials {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 4rem;
+  padding-top: 3rem;
+  border-top: 1px solid rgba(var(--main-color-rgb), 0.2);
+}
+
+.contact-socials a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 4.5rem;
+  height: 4.5rem;
+  background: rgba(var(--main-color-rgb), 0.05);
+  border: 1px solid rgba(var(--main-color-rgb), 0.3);
+  font-size: 2rem;
+  border-radius: 50%;
+  color: var(--text-color);
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.contact-socials a:hover {
+  background: var(--main-color);
+  color: var(--bg-color);
+  border-color: var(--main-color);
+  transform: translateY(-5px) scale(1.1);
+  box-shadow: 0 5px 15px rgba(var(--main-color-rgb), 0.5);
+}
+
+@media (max-width: 480px) {
+  .contact-socials {
+    justify-content: center;
+  }
+}
