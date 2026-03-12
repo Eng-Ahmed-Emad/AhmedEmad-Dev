@@ -4,8 +4,6 @@ import { memo } from "react";
 import dynamic from "next/dynamic";
 import AppBar from "@/app/components/header/sensei-header";
 import HomeSection from "@/app/components/home/sensei-home";
-
-// ─── استدعاء الـ Loader بشكل عادي عشان يظهر فوراً في اللحظة صفر ───
 import LoadingScreen from "@/app/components/loader/sensei_loader";
 
 // ─── Dynamic imports ──────────────────────────────────────────────────────────

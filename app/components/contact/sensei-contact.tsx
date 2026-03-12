@@ -4,7 +4,6 @@ import { motion, type Variants, cubicBezier } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faPhone, faLocationDot, faPaperPlane, faSpinner } from "@fortawesome/free-solid-svg-icons";
-// 👇 تم إضافة أيقونات السوشيال ميديا هنا 👇
 import { faLinkedin, faWhatsapp, faXTwitter, faInstagram, faTelegram } from "@fortawesome/free-brands-svg-icons";
 import styles from "./sensei-contact.module.css";
 import SectionHeader from "@/app/core/components/SectionHeader";
