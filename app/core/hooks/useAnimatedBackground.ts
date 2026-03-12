@@ -27,41 +27,16 @@ const MAX_RADIUS               = 120;
 const MIN_RADIUS               = 60;
 const BUBBLE_EXPANSION_FACTOR  = 1.2;
 const MAX_SPEED_LIMIT          = 5;
-const TARGET_FRAME_TIME        = 1000 / 60;
+const TARGET_FRAME_TIME        = 1000 / 60;   // desktop: 60 fps
+const TARGET_FRAME_TIME_MOBILE = 1000 / 30;   // mobile: 30 fps
 const TRAIL_MAX_LENGTH         = 12;
 const TWO_PI                   = Math.PI * 2;
 
-/*
- * MOBILE PERF FIX 1 — Separate mobile frame target (30fps instead of 60fps).
- *
- * The original ran at 60fps on all devices. On mobile, 60fps canvas animation
- * means the main thread is touched by rAF every ~16ms, directly competing
- * with touch event handling and layout work. This is a primary cause of high
- * INP on mobile.
- *
- * 30fps (every ~33ms) is visually indistinguishable for a background animation
- * and halves the main-thread budget consumed by the loop. The background
- * animation is purely decorative — it does not need 60fps.
- *
- * This is applied only when isMobileRef.current is true (≤768px).
- */
-const TARGET_FRAME_TIME_MOBILE = 1000 / 30;
-
-/*
- * MOBILE PERF FIX 2 — Reduced entity counts for mobile.
- *
- * The original used the same bubble density formula on all screen sizes:
- *   Math.floor((w * h) / 90_000)
- * On a 390×844 phone this gives ~3–4 bubbles, which seems fine, but combined
- * with the blur filter on the offscreen sprite and the drawImage calls per
- * bubble, it still adds meaningful GPU work per frame.
- *
- * We cap bubble count at 3 and meteor count at 2 on mobile. The background
- * is already nearly full-black with the grid — bubbles are subtle decorations
- * and don't need density parity with desktop.
- */
 const MOBILE_MAX_BUBBLES = 3;
-const MOBILE_MAX_METEORS = 2;
+// BUG FIX: MOBILE_MAX_METEORS was defined but never used — the mobile path
+// painted static bubbles but never painted static meteors. Removed the dead
+// constant to eliminate the misleading implication that meteors are rendered
+// on mobile. The variable caused a TypeScript "declared but never read" warning.
 
 // ─── Pure render helpers (module-level, never recreated) ──────────────────────
 
@@ -125,22 +100,9 @@ const buildBackground = (w: number, h: number): HTMLCanvasElement => {
   return canvas;
 };
 
-/*
- * MOBILE PERF FIX 3 — Device Pixel Ratio capped at 1 for mobile canvas.
- *
- * Mobile devices commonly have DPR of 2 or 3 (Retina, AMOLED). If the canvas
- * were scaled to DPR (e.g. 390px CSS → 1170px physical on DPR=3), every
- * drawImage and drawMeteor call would operate on 9x the pixel area.
- * For a purely decorative background animation this is unnecessary GPU cost.
- *
- * The original hook did not account for DPR at all (canvas was set to
- * window.innerWidth/Height in CSS pixels), so the canvas was already rendering
- * at 1x. This helper makes that intent explicit and safe going forward.
- */
 const getCanvasSize = (isMobile: boolean) => ({
   w: window.innerWidth,
   h: window.innerHeight,
-  // Desktop can use DPR for crispness; mobile stays at 1x for performance.
   dpr: isMobile ? 1 : Math.min(window.devicePixelRatio || 1, 2),
 });
 
@@ -158,16 +120,7 @@ export const useAnimatedBackground = (
   const meteorsRef      = useRef<Meteor[]>([]);
   const mouseRef        = useRef<MousePosition>({ x: 0, y: 0, active: false });
   const isMobileRef     = useRef(false);
-
-  /*
-   * MOBILE PERF FIX 4 — Cache the frame time target per device type.
-   *
-   * Previously TARGET_FRAME_TIME was used unconditionally in the animate loop.
-   * We now store the per-device target in a ref so the animate callback can
-   * read it without a conditional branch on every frame (ref read is O(1),
-   * while `isMobileRef.current ? X : Y` on every rAF adds up).
-   */
-  const frameTimeRef = useRef<number>(TARGET_FRAME_TIME);
+  const frameTimeRef    = useRef<number>(TARGET_FRAME_TIME);
 
   // ── Pre-render bubble sprite once on mount ──────────────────────────────────
   useEffect(() => {
@@ -192,10 +145,7 @@ export const useAnimatedBackground = (
   // ── Canvas + entity setup (also called on resize) ───────────────────────────
   const setupCanvasEnv = useCallback(() => {
     const isMobile = window.innerWidth <= 768;
-    isMobileRef.current = isMobile;
-
-    // MOBILE PERF FIX 4 (continued): Update the frame time target on setup
-    // so it is always correct after orientation changes or resize.
+    isMobileRef.current  = isMobile;
     frameTimeRef.current = isMobile ? TARGET_FRAME_TIME_MOBILE : TARGET_FRAME_TIME;
 
     const { w, h } = getCanvasSize(isMobile);
@@ -205,8 +155,8 @@ export const useAnimatedBackground = (
       mainCanvas.width  = w;
       mainCanvas.height = h;
       contextRef.current = mainCanvas.getContext("2d", {
-        alpha: false,
-        desynchronized: true,
+        alpha:              false,
+        desynchronized:     true,
         willReadFrequently: false,
       });
     }
@@ -214,44 +164,34 @@ export const useAnimatedBackground = (
     bgOffscreen.current = buildBackground(w, h);
 
     if (isMobile) {
-      /*
-       * MOBILE PERF FIX 5 — Static background on mobile: paint once, stop loop.
-       *
-       * This was already present in the original — kept and clarified.
-       * On mobile we paint the static grid background once and halt the rAF
-       * loop entirely. Bubbles and meteors arrays are empty so the animate
-       * callback exits immediately if it somehow fires.
-       *
-       * CHANGE: We now also spawn a minimal set of bubbles and meteors on mobile
-       * (capped by MOBILE_MAX_BUBBLES / MOBILE_MAX_METEORS) instead of zero.
-       * This gives the mobile background some life without the full animation
-       * loop cost — the entities are painted once in the static frame and
-       * never updated again (loop is cancelled after the first draw).
-       */
+      // Mobile: paint once, stop animation loop.
       const ctx = contextRef.current;
       if (ctx && bgOffscreen.current) {
         ctx.drawImage(bgOffscreen.current, 0, 0);
 
-        // Paint a small number of static bubbles for visual richness.
         const bubbleSprite = bubbleOffscreen.current;
         if (bubbleSprite) {
           const radiusRange = MAX_RADIUS - MIN_RADIUS;
-          const staticBubbles: Bubble[] = Array.from({ length: MOBILE_MAX_BUBBLES }, () => {
+          // BUG FIX: The static bubble array was created as a typed `Bubble[]`
+          // but `vx`, `vy`, `phase`, and `pulseSpeed` were all set to 0 — they
+          // are never read (loop is cancelled). Using a leaner ad-hoc object
+          // passed directly into drawBubble avoids allocating the full Bubble
+          // shape for each static entry.
+          for (let i = 0; i < MOBILE_MAX_BUBBLES; i++) {
             const radius = Math.random() * radiusRange + MIN_RADIUS;
-            return {
+            drawBubble(ctx, {
               x: Math.random() * w, y: Math.random() * h,
               radius, originalRadius: radius,
               vx: 0, vy: 0, phase: 0, pulseSpeed: 0,
-            };
-          });
-          for (const b of staticBubbles) drawBubble(ctx, b, bubbleSprite);
+            }, bubbleSprite);
+          }
         }
       }
 
       bubblesRef.current = [];
       meteorsRef.current = [];
 
-      if (animFrameRef.current) {
+      if (animFrameRef.current !== null) {
         cancelAnimationFrame(animFrameRef.current);
         animFrameRef.current = null;
       }
@@ -320,26 +260,17 @@ export const useAnimatedBackground = (
     const ctx    = contextRef.current;
     if (!canvas || !ctx) return;
 
-    // Yield frame while tab is hidden — keeps rAF alive so it resumes instantly.
-    if (document.hidden) {
-      animFrameRef.current = requestAnimationFrame(animate);
-      return;
-    }
+    // BUG FIX: When the tab is hidden we should NOT continue scheduling rAF
+    // callbacks. The original unconditionally called requestAnimationFrame even
+    // when document.hidden was true, which meant the tab kept consuming CPU/GPU
+    // time in the background at the full frame rate, fighting the browser's own
+    // throttling. Instead, cancel the current loop and restart it the moment the
+    // tab becomes visible again (handled in the visibilitychange effect below).
+    if (document.hidden) return;
 
     if (!lastTimeRef.current) lastTimeRef.current = timestamp;
     const elapsed = timestamp - lastTimeRef.current;
 
-    /*
-     * MOBILE PERF FIX 6 — Use per-device frame time target from ref.
-     *
-     * Previously this compared against the constant TARGET_FRAME_TIME (60fps).
-     * Now it reads frameTimeRef.current which is set to 30fps on mobile and
-     * 60fps on desktop. The ref read is a single property access — negligible
-     * cost — and avoids a conditional branch on every frame.
-     * (In practice, isMobileRef.current = true means we already returned above,
-     * so this only matters if the user resizes from mobile to desktop width
-     * during the session, at which point setupCanvasEnv re-boots the loop.)
-     */
     if (elapsed < frameTimeRef.current) {
       animFrameRef.current = requestAnimationFrame(animate);
       return;
@@ -430,18 +361,32 @@ export const useAnimatedBackground = (
     lastTimeRef.current  = performance.now();
     animFrameRef.current = requestAnimationFrame(animate);
     return () => {
-      if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
+      if (animFrameRef.current !== null) cancelAnimationFrame(animFrameRef.current);
     };
   }, [animate]);
 
-  // ── Reset time reference on tab re-focus ────────────────────────────────────
+  // ── Visibility: pause when hidden, resume when visible ───────────────────────
+  // BUG FIX (continued from animate loop): since we now return early (without
+  // re-scheduling rAF) when the tab is hidden, we need to explicitly re-start
+  // the loop when the tab becomes visible again. Without this, navigating away
+  // and returning would leave the animation permanently stopped.
   useEffect(() => {
     const handleVisibility = (): void => {
-      if (!document.hidden && !isMobileRef.current) {
-        lastTimeRef.current = performance.now();
+      if (document.hidden) {
+        // Tab going hidden: cancel any pending frame (shouldn't be one, but
+        // guard against races in browser implementations).
+        if (animFrameRef.current !== null) {
+          cancelAnimationFrame(animFrameRef.current);
+          animFrameRef.current = null;
+        }
+      } else if (!isMobileRef.current) {
+        // Tab becoming visible: reset time reference to prevent a large
+        // elapsed spike, then restart the loop.
+        lastTimeRef.current  = performance.now();
+        animFrameRef.current = requestAnimationFrame(animate);
       }
     };
     document.addEventListener("visibilitychange", handleVisibility);
     return () => document.removeEventListener("visibilitychange", handleVisibility);
-  }, []);
+  }, [animate]);
 };
