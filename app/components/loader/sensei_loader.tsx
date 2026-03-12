@@ -22,7 +22,7 @@ useEffect(() => {
     // عشان نضمن إن الـ Animations والـ Mounting خلصوا
     const timeoutId = setTimeout(() => {
       handlePageLoader();
-    }, 1000); // 1.5 ثانية وقت كافي يظهر فيه الـ Loader بشكل شيك
+    }, 1200); // 1.5 ثانية وقت كافي يظهر فيه الـ Loader بشكل شيك
 
     return () => clearTimeout(timeoutId);
   }, [handlePageLoader]);
