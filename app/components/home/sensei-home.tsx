@@ -135,6 +135,7 @@ const SenseiHome = memo(function SenseiHome() {
             width={350}
             height={350}
             loading="lazy"
+            decoding="async"
             onClick={handleImageClick}
           />
         </motion.div>
