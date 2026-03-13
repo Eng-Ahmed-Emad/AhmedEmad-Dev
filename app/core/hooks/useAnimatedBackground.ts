@@ -32,8 +32,6 @@ const TARGET_FRAME_TIME_MOBILE = 1000 / 30;
 const MOBILE_MAX_BUBBLES       = 3;
 const TRAIL_MAX_LENGTH         = 12;
 const TWO_PI                   = Math.PI * 2;
-
-// Increased density: was w/250, now w/120 → roughly 2× more meteors
 const METEOR_DENSITY_DIVISOR   = 120;
 
 // ─── Pure render helpers ──────────────────────────────────────────────────────
