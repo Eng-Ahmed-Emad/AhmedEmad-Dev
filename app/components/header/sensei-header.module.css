@@ -90,7 +90,8 @@
   height: 3px;
   background: var(--main-color);
   border-radius: 10px;
-  transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.3s ease;
+  /* تم إزالة الـ transition لجعل تحول الأيقونة إلى X فورياً */
+  transition: none;
 }
 
 /* --- Mobile Adjustments & Overrides --- */
@@ -116,17 +117,11 @@
     border-radius: 25px;
     border: 1px solid rgba(var(--main-color-rgb), 0.3);
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), 0 0 20px rgba(var(--main-color-rgb), 0.1);
-    display: none;
-    opacity: 0;
-    transform: translateY(-15px) scale(0.98);
-    pointer-events: none;
-    will-change: transform, opacity;
+    display: none; /* مخفية افتراضياً */
   }
 
   .navbar.active {
-    display: flex;
-    pointer-events: auto;
-    animation: slideDownIn 0.3s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+    display: flex; /* تظهر فوراً عند إضافة كلاس active */
   }
 
   .navbar a {
@@ -134,37 +129,15 @@
     width: 85%;
     justify-content: center;
     margin: 0.5rem 0;
-    opacity: 0;
   }
 
-  .navbar.active a {
-    animation: fadeInLinks 0.3s ease forwards;
-  }
-
-  .navbar.active a:nth-child(1) { animation-delay: 0.05s; }
-  .navbar.active a:nth-child(2) { animation-delay: 0.1s; }
-  .navbar.active a:nth-child(3) { animation-delay: 0.15s; }
-  .navbar.active a:nth-child(4) { animation-delay: 0.2s; }
-  .navbar.active a:nth-child(5) { animation-delay: 0.25s; }
-
-  /* تعطيل حركات الـ Hover الانتقالية فقط للحفاظ على Keyframes وحركة المنيو */
+  /* تعطيل حركات الـ Hover الانتقالية للحفاظ على الأداء */
   .logo, .navbar a { transition: none !important; }
   .logo:hover { transform: none !important; text-shadow: none !important; }
   .navbar a:active { transform: none !important; }
 }
 
-/* --- Animations Keyframes --- */
-@keyframes slideDownIn {
-  0% { opacity: 0; transform: translateY(-20px) rotateX(-10deg); }
-  100% { opacity: 1; transform: translateY(0) rotateX(0); }
-}
-
-@keyframes fadeInLinks {
-  0% { opacity: 0; transform: translateY(10px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-
-/* Menu Icon active state */
+/* Menu Icon active state (X shape) */
 .MenuIcon.active span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
 .MenuIcon.active span:nth-child(2) { opacity: 0; transform: translateX(-15px); }
 .MenuIcon.active span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }

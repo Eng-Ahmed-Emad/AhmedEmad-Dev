@@ -1,7 +1,13 @@
 "use client";
 import { useState, useEffect, useCallback } from "react";
 import {
-  faHome, faUserSecret, faBook, faFolder, faPalette, faBrain,
+  faHome, 
+  faUserSecret, 
+  faBook, 
+  faFolder, 
+  faPalette, 
+  faBrain,
+  faEnvelope // 1. تم استدعاء أيقونة قسم التواصل
 } from "@fortawesome/free-solid-svg-icons";
 import type { IconProp } from "@fortawesome/fontawesome-svg-core";
 
@@ -11,6 +17,7 @@ const SECTION_ICONS: Record<string, IconProp> = {
   Skills:     faBrain,
   Projects:   faFolder,
   Services:   faUserSecret,
+  Contact:    faEnvelope, 
   ArtGallery: faPalette,
 };
 
