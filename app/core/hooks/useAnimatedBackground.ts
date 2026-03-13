@@ -27,22 +27,20 @@ const MAX_RADIUS               = 120;
 const MIN_RADIUS               = 60;
 const BUBBLE_EXPANSION_FACTOR  = 1.2;
 const MAX_SPEED_LIMIT          = 5;
-const TARGET_FRAME_TIME        = 1000 / 60;   // desktop: 60 fps
-const TARGET_FRAME_TIME_MOBILE = 1000 / 30;   // mobile: 30 fps
+const TARGET_FRAME_TIME        = 1000 / 60;
+const TARGET_FRAME_TIME_MOBILE = 1000 / 30;
+const MOBILE_MAX_BUBBLES       = 3;
 const TRAIL_MAX_LENGTH         = 12;
 const TWO_PI                   = Math.PI * 2;
 
-const MOBILE_MAX_BUBBLES = 3;
-// BUG FIX: MOBILE_MAX_METEORS was defined but never used — the mobile path
-// painted static bubbles but never painted static meteors. Removed the dead
-// constant to eliminate the misleading implication that meteors are rendered
-// on mobile. The variable caused a TypeScript "declared but never read" warning.
+// Increased density: was w/250, now w/120 → roughly 2× more meteors
+const METEOR_DENSITY_DIVISOR   = 120;
 
-// ─── Pure render helpers (module-level, never recreated) ──────────────────────
+// ─── Pure render helpers ──────────────────────────────────────────────────────
 
 const drawBubble = (
   ctx: CanvasRenderingContext2D,
-  bubble: Bubble,
+  bubble: Pick<Bubble, "x" | "y" | "radius">,
   offscreen: HTMLCanvasElement
 ): void => {
   const scale    = bubble.radius / MAX_RADIUS;
@@ -100,12 +98,6 @@ const buildBackground = (w: number, h: number): HTMLCanvasElement => {
   return canvas;
 };
 
-const getCanvasSize = (isMobile: boolean) => ({
-  w: window.innerWidth,
-  h: window.innerHeight,
-  dpr: isMobile ? 1 : Math.min(window.devicePixelRatio || 1, 2),
-});
-
 // ─── Hook ─────────────────────────────────────────────────────────────────────
 
 export const useAnimatedBackground = (
@@ -148,7 +140,8 @@ export const useAnimatedBackground = (
     isMobileRef.current  = isMobile;
     frameTimeRef.current = isMobile ? TARGET_FRAME_TIME_MOBILE : TARGET_FRAME_TIME;
 
-    const { w, h } = getCanvasSize(isMobile);
+    const w = window.innerWidth;
+    const h = window.innerHeight;
 
     const mainCanvas = canvasRef.current;
     if (mainCanvas) {
@@ -164,33 +157,21 @@ export const useAnimatedBackground = (
     bgOffscreen.current = buildBackground(w, h);
 
     if (isMobile) {
-      // Mobile: paint once, stop animation loop.
-      const ctx = contextRef.current;
+      const ctx          = contextRef.current;
+      const bubbleSprite = bubbleOffscreen.current;
       if (ctx && bgOffscreen.current) {
         ctx.drawImage(bgOffscreen.current, 0, 0);
-
-        const bubbleSprite = bubbleOffscreen.current;
         if (bubbleSprite) {
           const radiusRange = MAX_RADIUS - MIN_RADIUS;
-          // BUG FIX: The static bubble array was created as a typed `Bubble[]`
-          // but `vx`, `vy`, `phase`, and `pulseSpeed` were all set to 0 — they
-          // are never read (loop is cancelled). Using a leaner ad-hoc object
-          // passed directly into drawBubble avoids allocating the full Bubble
-          // shape for each static entry.
           for (let i = 0; i < MOBILE_MAX_BUBBLES; i++) {
             const radius = Math.random() * radiusRange + MIN_RADIUS;
-            drawBubble(ctx, {
-              x: Math.random() * w, y: Math.random() * h,
-              radius, originalRadius: radius,
-              vx: 0, vy: 0, phase: 0, pulseSpeed: 0,
-            }, bubbleSprite);
+            drawBubble(ctx, { x: Math.random() * w, y: Math.random() * h, radius }, bubbleSprite);
           }
         }
       }
 
       bubblesRef.current = [];
       meteorsRef.current = [];
-
       if (animFrameRef.current !== null) {
         cancelAnimationFrame(animFrameRef.current);
         animFrameRef.current = null;
@@ -198,9 +179,9 @@ export const useAnimatedBackground = (
       return;
     }
 
-    // Desktop: full dynamic entity setup.
-    const bubbleCount = Math.floor((w * h) / 85000);
+    // Desktop: dynamic entity setup.
     const radiusRange = MAX_RADIUS - MIN_RADIUS;
+    const bubbleCount = Math.floor((w * h) / 85000);
 
     bubblesRef.current = Array.from({ length: bubbleCount }, () => {
       const radius = Math.random() * radiusRange + MIN_RADIUS;
@@ -216,7 +197,9 @@ export const useAnimatedBackground = (
       };
     });
 
-    meteorsRef.current = Array.from({ length: Math.floor(w / 250) }, () => ({
+    // Increased: floor(w / 120) ≈ 2× the original floor(w / 250)
+    const meteorCount = Math.floor(w / METEOR_DENSITY_DIVISOR);
+    meteorsRef.current = Array.from({ length: meteorCount }, () => ({
       x:         (~~(Math.random() * (w / GRID_SIZE))) * GRID_SIZE,
       y:         (~~(Math.random() * (h / GRID_SIZE))) * GRID_SIZE,
       size:      Math.random() * 2 + 1,
@@ -245,9 +228,9 @@ export const useAnimatedBackground = (
     window.addEventListener("mouseleave", handleMouseLeave, { passive: true });
 
     return () => {
-      window.removeEventListener("resize",      debouncedSetup);
-      window.removeEventListener("mousemove",   handleMouseMove);
-      window.removeEventListener("mouseleave",  handleMouseLeave);
+      window.removeEventListener("resize",     debouncedSetup);
+      window.removeEventListener("mousemove",  handleMouseMove);
+      window.removeEventListener("mouseleave", handleMouseLeave);
       debouncedSetup.cancel();
     };
   }, [setupCanvasEnv]);
@@ -260,12 +243,6 @@ export const useAnimatedBackground = (
     const ctx    = contextRef.current;
     if (!canvas || !ctx) return;
 
-    // BUG FIX: When the tab is hidden we should NOT continue scheduling rAF
-    // callbacks. The original unconditionally called requestAnimationFrame even
-    // when document.hidden was true, which meant the tab kept consuming CPU/GPU
-    // time in the background at the full frame rate, fighting the browser's own
-    // throttling. Instead, cancel the current loop and restart it the moment the
-    // tab becomes visible again (handled in the visibilitychange effect below).
     if (document.hidden) return;
 
     if (!lastTimeRef.current) lastTimeRef.current = timestamp;
@@ -293,9 +270,9 @@ export const useAnimatedBackground = (
 
     for (let i = 0, len = bubbles.length; i < len; i++) {
       const b = bubbles[i];
+
       b.x += b.vx * dt;
       b.y += b.vy * dt;
-
       if (b.x + b.radius > cvsW || b.x - b.radius < 0) b.vx *= -1;
       if (b.y + b.radius > cvsH || b.y - b.radius < 0) b.vy *= -1;
 
@@ -317,7 +294,6 @@ export const useAnimatedBackground = (
 
       b.vx += (Math.random() - 0.5) * 1.2 * dt;
       b.vy += (Math.random() - 0.5) * 1.2 * dt;
-
       const speed = Math.sqrt(b.vx * b.vx + b.vy * b.vy);
       if (speed > MAX_SPEED_LIMIT) {
         const inv = MAX_SPEED_LIMIT / speed;
@@ -332,6 +308,7 @@ export const useAnimatedBackground = (
     const meteors = meteorsRef.current;
     for (let i = 0, len = meteors.length; i < len; i++) {
       const m = meteors[i];
+
       if (m.direction === "horizontal") {
         m.x += m.speed * dt;
         if (m.x > cvsW) { m.x = 0; m.trail = []; }
@@ -365,23 +342,15 @@ export const useAnimatedBackground = (
     };
   }, [animate]);
 
-  // ── Visibility: pause when hidden, resume when visible ───────────────────────
-  // BUG FIX (continued from animate loop): since we now return early (without
-  // re-scheduling rAF) when the tab is hidden, we need to explicitly re-start
-  // the loop when the tab becomes visible again. Without this, navigating away
-  // and returning would leave the animation permanently stopped.
+  // ── Pause when tab hidden, resume when visible ───────────────────────────────
   useEffect(() => {
     const handleVisibility = (): void => {
       if (document.hidden) {
-        // Tab going hidden: cancel any pending frame (shouldn't be one, but
-        // guard against races in browser implementations).
         if (animFrameRef.current !== null) {
           cancelAnimationFrame(animFrameRef.current);
           animFrameRef.current = null;
         }
       } else if (!isMobileRef.current) {
-        // Tab becoming visible: reset time reference to prevent a large
-        // elapsed spike, then restart the loop.
         lastTimeRef.current  = performance.now();
         animFrameRef.current = requestAnimationFrame(animate);
       }
