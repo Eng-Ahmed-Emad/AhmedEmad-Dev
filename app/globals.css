@@ -81,13 +81,6 @@ section {
   padding: 6rem 6% 5rem;
 }
 
-@media (max-width: 991px) {
-  section {
-    min-height: 100vh;
-    padding: 0 1.5rem 5%;
-  }
-}
-
 /*--------- 5. Accessibility Overrides ---------*/
 @media (prefers-reduced-motion: reduce) {
   html {
@@ -99,5 +92,21 @@ section {
 @media (pointer: fine) {
   * {
     cursor: none !important;
+  }
+}
+
+/*--------- 7. Mobile Overrides (Global Fallback) ---------*/
+@media (max-width: 991px) {
+  section {
+    min-height: 100vh;
+    padding: 0 1.5rem 5%;
+  }
+  
+  /* * Safety Net: 
+   * إيقاف أي Transition لأي عنصر على الموبايل كقاعدة عامة
+   * مع السماح للـ Keyframes (animations) بالعمل بشكل طبيعي
+   */
+  * {
+    transition: none !important;
   }
 }
