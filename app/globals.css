@@ -88,14 +88,7 @@ section {
   }
 }
 
-/*--------- 6. Custom Cursor Overlay ---------*/
-@media (pointer: fine) {
-  * {
-    cursor: none !important;
-  }
-}
-
-/*--------- 7. Mobile Overrides (Global Fallback) ---------*/
+/*--------- 6. Mobile Overrides (Global Fallback) ---------*/
 @media (max-width: 991px) {
   section {
     min-height: 100vh;
