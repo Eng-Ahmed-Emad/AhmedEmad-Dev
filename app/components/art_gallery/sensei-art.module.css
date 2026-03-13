@@ -28,6 +28,24 @@
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 0 15px rgba(var(--main-color-rgb), 0.2); z-index: 2;
 }
 
-@media (max-width: 1199px) { .Gallery { grid-template-columns: repeat(3, 1fr); } .art-gallery-content { padding: 0 3rem 5%; } }
-@media (max-width: 991px) { .Gallery { grid-template-columns: repeat(2, 1fr); } .art-gallery-content { padding: 0 2rem 5%; } .title { font-size: 3rem; } }
-@media (max-width: 767px) { .Gallery { grid-template-columns: 1fr; gap: 25px; } .art-gallery-content { padding: 0 1.5rem 5%; } }
+/* === Media Queries & Mobile Overrides === */
+@media (max-width: 1199px) { 
+  .Gallery { grid-template-columns: repeat(3, 1fr); } 
+  .art-gallery-content { padding: 0 3rem 5%; } 
+}
+
+@media (max-width: 991px) { 
+  .Gallery { grid-template-columns: repeat(2, 1fr); } 
+  .art-gallery-content { padding: 0 2rem 5%; } 
+  .title { font-size: 3rem; } 
+
+  /* تعطيل كل الحركات وتأثيرات Framer Motion على الموبايل والتابلت */
+  .header-section, .galleryImg {
+    transform: none !important; opacity: 1 !important; transition: none !important;
+  }
+}
+
+@media (max-width: 767px) { 
+  .Gallery { grid-template-columns: 1fr; gap: 25px; } 
+  .art-gallery-content { padding: 0 1.5rem 5%; } 
+}

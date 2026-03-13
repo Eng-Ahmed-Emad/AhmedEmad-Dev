@@ -52,5 +52,20 @@
 .skill-card:hover .skill-tag { background: rgba(255, 255, 255, 0.05); color: rgba(255, 255, 255, 0.8); border-color: rgba(255, 255, 255, 0.1); }
 .skill-card:hover .skill-tag:hover { background: rgba(var(--main-color-rgb), 0.15); color: var(--main-color); border-color: rgba(var(--main-color-rgb), 0.4); transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); }
 
-@media (max-width: 991px) { .container { padding: 0 4%; } .title { font-size: 3rem; } .skills-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2rem; } .progress-grid { grid-template-columns: 1fr; gap: 2rem; } }
-@media (max-width: 768px) { .skills-grid { grid-template-columns: 1fr; } }
+/* === Media Queries & Mobile Overrides === */
+@media (max-width: 991px) { 
+  .container { padding: 0 4%; } 
+  .title { font-size: 3rem; } 
+  .skills-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2rem; } 
+  .progress-grid { grid-template-columns: 1fr; gap: 2rem; } 
+
+  /* تعطيل كل الحركات وتأثيرات Framer Motion على الموبايل والتابلت */
+  .header-section, .core-skills-wrapper, .skill-card, .card-header, 
+  .cardIcon, .category, .skill-tag {
+    transform: none !important; opacity: 1 !important; transition: none !important; filter: none !important;
+  }
+}
+
+@media (max-width: 768px) { 
+  .skills-grid { grid-template-columns: 1fr; } 
+}

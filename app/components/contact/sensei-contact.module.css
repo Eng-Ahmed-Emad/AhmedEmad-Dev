@@ -69,5 +69,19 @@ textarea.input-field { resize: vertical; min-height: 150px; }
 }
 .contact-socials a:hover { background: var(--main-color); color: var(--bg-color); border-color: var(--main-color); transform: translateY(-3px) scale(1.05); box-shadow: 0 10px 20px rgba(var(--main-color-rgb), 0.4); }
 
-@media (max-width: 991px) { .contact-wrapper { grid-template-columns: 1fr; gap: 3rem; } .title { font-size: 3rem; } }
-@media (max-width: 480px) { .info-card, .form-card { padding: 3rem 2rem; } .info-item { flex-direction: column; align-items: flex-start; gap: 1rem; } .contact-socials { justify-content: center; } }
+/* === Media Queries & Mobile Overrides === */
+@media (max-width: 991px) { 
+  .contact-wrapper { grid-template-columns: 1fr; gap: 3rem; } 
+  .title { font-size: 3rem; } 
+
+  /* تعطيل كل الحركات وتأثيرات Framer Motion على الموبايل والتابلت */
+  .info-card, .form-card, .info-item, .icon-box, .input-field, .submit-btn, .contact-socials a {
+    transform: none !important; opacity: 1 !important; transition: none !important;
+  }
+}
+
+@media (max-width: 480px) { 
+  .info-card, .form-card { padding: 3rem 2rem; } 
+  .info-item { flex-direction: column; align-items: flex-start; gap: 1rem; } 
+  .contact-socials { justify-content: center; } 
+}

@@ -72,7 +72,7 @@
 }
 
 .navbar a:active {
-  transform: scale(0.95); /* تأثير ضغطة سريع */
+  transform: scale(0.95); 
 }
 
 /* --- Mobile Menu Icon --- */
@@ -93,7 +93,7 @@
   transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.3s ease;
 }
 
-/* --- Mobile Adjustments --- */
+/* --- Mobile Adjustments & Overrides --- */
 @media (max-width: 994px) {
   .header {
     width: calc(100% - 2rem);
@@ -110,7 +110,7 @@
     right: 0;
     width: 100%;
     background: rgba(15, 15, 15, 0.98);
-    backdrop-filter: blur(15px); /* قللت الـ blur لـ 15 بدلاً من 25 للأداء */
+    backdrop-filter: blur(15px); 
     flex-direction: column;
     padding: 2.5rem 0;
     border-radius: 25px;
@@ -146,6 +146,11 @@
   .navbar.active a:nth-child(3) { animation-delay: 0.15s; }
   .navbar.active a:nth-child(4) { animation-delay: 0.2s; }
   .navbar.active a:nth-child(5) { animation-delay: 0.25s; }
+
+  /* تعطيل حركات الـ Hover الانتقالية فقط للحفاظ على Keyframes وحركة المنيو */
+  .logo, .navbar a { transition: none !important; }
+  .logo:hover { transform: none !important; text-shadow: none !important; }
+  .navbar a:active { transform: none !important; }
 }
 
 /* --- Animations Keyframes --- */

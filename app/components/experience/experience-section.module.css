@@ -63,4 +63,17 @@
 .content:hover .experience-time { color: var(--main-color); text-shadow: 0 0 8px rgba(var(--main-color-rgb), 0.4); }
 .content:hover .date-range { color: rgba(255, 255, 255, 0.6); }
 
-@media (max-width: 991px) { .timeline-container { width: 100%; padding-left: 7rem; padding-right: 2rem; } .timeline-container.left, .timeline-container.right { left: 0; } .time-line::after { left: 3rem; } .timeline-container.left::after, .timeline-container.right::after { left: 3rem; right: auto; transform: translateX(-50%); } .content { padding: 2.5rem 2rem; } .date-details { align-items: flex-start; } }
+/* === Media Queries & Mobile Overrides === */
+@media (max-width: 991px) { 
+  .timeline-container { width: 100%; padding-left: 7rem; padding-right: 2rem; } 
+  .timeline-container.left, .timeline-container.right { left: 0; } 
+  .time-line::after { left: 3rem; } 
+  .timeline-container.left::after, .timeline-container.right::after { left: 3rem; right: auto; transform: translateX(-50%); } 
+  .content { padding: 2.5rem 2rem; } 
+  .date-details { align-items: flex-start; } 
+
+  /* تعطيل كل الحركات وتأثيرات Framer Motion على الموبايل والتابلت */
+  .header-section, .timeline-container, .content, .timeline-container::after {
+    transform: none !important; opacity: 1 !important; transition: none !important;
+  }
+}
