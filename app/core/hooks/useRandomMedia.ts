@@ -4,7 +4,7 @@
 
 // Hoisted at module level — the URL never changes, so there's no reason to
 // recreate it inside the hook on every call.
-const VIDEO_URL = "https://youtu.be/9gK7uyTGxz8?si=N6eSrfE-wHK6UsI6&t=212";
+const VIDEO_URL = "https://youtu.be/9gK7uyTGxz8?si=GiQOXFyaSJjVO2HR&t=230";
 
 // ─── Hook ─────────────────────────────────────────────────────────────────────
 
