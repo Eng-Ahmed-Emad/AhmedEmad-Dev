@@ -1,12 +1,13 @@
 "use client";
 
-import { memo, useState, useEffect, useCallback } from "react";
+import { memo, useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import AppBar from "@/app/components/header/sensei-header";
 import HomeSection from "@/app/components/home/sensei-home";
 import LoadingScreen from "@/app/components/loader/sensei_loader";
+import { useWelcomePopup } from "@/app/core/hooks/useWelcomePopup";
 
-// ─── Dynamic imports ──────────────────────────────────────────────────────────
+// ─── Dynamic imports ───────────────────────────────────────────────────────────
 const AnimatedBackground = dynamic(
   () => import("@/app/components/animated_background/animated_background"),
   { ssr: false }
@@ -36,63 +37,72 @@ const ContactSection = dynamic(
   { ssr: false }
 );
 
+// ─── WelcomePopup ─────────────────────────────────────────────────────────────
+interface WelcomePopupProps {
+  isHiding: boolean;
+  onClose: () => void;
+}
+
+const WelcomePopup = memo(function WelcomePopup({ isHiding, onClose }: WelcomePopupProps) {
+  return (
+    <div
+      className={`welcome-popup${isHiding ? " hide" : ""}`}
+      role="status"
+      aria-live="polite"
+      aria-label="Welcome notification"
+    >
+      {/* Icon */}
+      <div className="welcome-popup__icon" aria-hidden="true">
+        👋
+      </div>
+
+      {/* Text */}
+      <div className="welcome-popup__body">
+        <span className="welcome-popup__label">Portfolio</span>
+        <p className="welcome-popup__title">Welcome, Ahmed Emad</p>
+        <p className="welcome-popup__subtitle">Glad you're here — enjoy the tour.</p>
+      </div>
+
+      {/* Close */}
+      <button
+        className="welcome-popup__close"
+        onClick={onClose}
+        aria-label="Dismiss welcome notification"
+      >
+        &times;
+      </button>
+
+      {/* Auto-dismiss progress bar */}
+      <div className="welcome-popup__progress" aria-hidden="true">
+        <div className="welcome-popup__progress-bar" />
+      </div>
+    </div>
+  );
+});
+
 // ─── MainClient ───────────────────────────────────────────────────────────────
+const APP_READY_DELAY_MS = 1200; // synced with loading screen
 
 const MainClient = memo(function MainClient() {
   const [isAppReady, setIsAppReady] = useState(false);
-  
-  // States الخاصة بالإشعار الترحيبي
-  const [showPopup, setShowPopup] = useState(false);
-  const [isPopupHiding, setIsPopupHiding] = useState(false);
+  const { showPopup, isHiding, close } = useWelcomePopup(isAppReady);
 
   useEffect(() => {
-    const handleAppReady = () => {
-      // ⏱️ تم ضبط الوقت لـ 1200 مللي ثانية ليتزامن تماماً مع شاشة التحميل
-      setTimeout(() => {
-        setIsAppReady(true);
-      }, 1200); 
+    let timer: NodeJS.Timeout;
+
+    const onReady = () => {
+      timer = setTimeout(() => setIsAppReady(true), APP_READY_DELAY_MS);
     };
 
     if (document.readyState === "complete") {
-      handleAppReady();
+      onReady();
     } else {
-      window.addEventListener("load", handleAppReady);
-      return () => window.removeEventListener("load", handleAppReady);
-    }
-  }, []);
-
-  // دالة إغلاق الإشعار (استخدمنا useCallback لضمان عملها بسلاسة داخل useEffect)
-  const handleClosePopup = useCallback(() => {
-    setIsPopupHiding(true); // تفعيل حركة الخروج في CSS
-    setTimeout(() => {
-      setShowPopup(false); // إزالة العنصر تماماً بعد انتهاء الحركة
-    }, 500);
-  }, []);
-
-  // تأثير (Effect) لإظهار الإشعار وإخفائه تلقائياً
-  useEffect(() => {
-    let showTimer: NodeJS.Timeout;
-    let hideTimer: NodeJS.Timeout;
-
-    if (isAppReady) {
-      // 1. إظهار الإشعار بعد ثانية واحدة من فتح الموقع بالكامل
-      showTimer = setTimeout(() => {
-        setShowPopup(true);
-        
-        // 2. إخفاء الإشعار تلقائياً بعد 5 ثوانٍ من ظهوره (5000 مللي ثانية)
-        hideTimer = setTimeout(() => {
-          handleClosePopup();
-        }, 2500);
-
-      }, 1000);
+      window.addEventListener("load", onReady);
+      return () => window.removeEventListener("load", onReady);
     }
 
-    // تنظيف المؤقتات إذا تم إغلاق الصفحة لمنع أي أخطاء
-    return () => {
-      clearTimeout(showTimer);
-      clearTimeout(hideTimer);
-    };
-  }, [isAppReady, handleClosePopup]);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <main style={{ position: "relative" }}>
@@ -102,9 +112,9 @@ const MainClient = memo(function MainClient() {
         style={{
           opacity: isAppReady ? 1 : 0,
           pointerEvents: isAppReady ? "auto" : "none",
-          height: isAppReady ? "auto" : "100vh", 
+          height: isAppReady ? "auto" : "100vh",
           overflow: isAppReady ? "visible" : "hidden",
-          transition: "opacity 0.8s ease-out", 
+          transition: "opacity 0.8s ease-out",
         }}
       >
         <AnimatedBackground />
@@ -117,19 +127,7 @@ const MainClient = memo(function MainClient() {
         <ContactSection />
         <ArtGallerySection />
 
-        {/* ─── Welcome Popup ─── */}
-        {showPopup && (
-          <div className={`welcome-popup ${isPopupHiding ? "hide" : ""}`}>
-            <p>Welcome To Ahmed Emad Portfolio</p>
-            <button 
-              className="close-btn" 
-              onClick={handleClosePopup} 
-              aria-label="Close Welcome Popup"
-            >
-              &times;
-            </button>
-          </div>
-        )}
+        {showPopup && <WelcomePopup isHiding={isHiding} onClose={close} />}
       </div>
     </main>
   );
