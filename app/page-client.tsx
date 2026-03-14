@@ -1,15 +1,12 @@
 "use client";
 
-import { memo } from "react";
+import { memo, useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import AppBar from "@/app/components/header/sensei-header";
 import HomeSection from "@/app/components/home/sensei-home";
 import LoadingScreen from "@/app/components/loader/sensei_loader";
 
 // ─── Dynamic imports ──────────────────────────────────────────────────────────
-// ssr: false prevents hydration mismatches with Framer Motion and canvas APIs.
-// Each section is code-split — only downloaded when needed.
-
 const AnimatedBackground = dynamic(
   () => import("@/app/components/animated_background/animated_background"),
   { ssr: false }
@@ -35,26 +32,54 @@ const SkillsSection = dynamic(
   { ssr: false }
 );
 const ContactSection = dynamic(
-  () => import("@/app/components/contact/sensei-contact"), // تأكد من المسار حسب ما سميت الفولدر
+  () => import("@/app/components/contact/sensei-contact"),
   { ssr: false }
 );
 
 // ─── MainClient ───────────────────────────────────────────────────────────────
 
-// Memoised to prevent cascading re-renders from any parent context changes.
 const MainClient = memo(function MainClient() {
+  const [isAppReady, setIsAppReady] = useState(false);
+
+  useEffect(() => {
+    const handleAppReady = () => {
+      // ⏱️ تم ضبط الوقت لـ 1200 مللي ثانية ليتزامن تماماً مع شاشة التحميل
+      setTimeout(() => {
+        setIsAppReady(true);
+      }, 1200); 
+    };
+
+    if (document.readyState === "complete") {
+      handleAppReady();
+    } else {
+      window.addEventListener("load", handleAppReady);
+      return () => window.removeEventListener("load", handleAppReady);
+    }
+  }, []);
+
   return (
-    <main>
-      <LoadingScreen />
-      <AnimatedBackground />
-      <AppBar />
-      <HomeSection />
-      <ExperienceSection />
-      <SkillsSection />
-      <ProjectsSection />
-      <ServicesSection />
-      <ContactSection />
-      <ArtGallerySection />
+    <main style={{ position: "relative" }}>
+      {!isAppReady && <LoadingScreen />}
+
+      <div
+        style={{
+          opacity: isAppReady ? 1 : 0,
+          pointerEvents: isAppReady ? "auto" : "none",
+          height: isAppReady ? "auto" : "100vh", 
+          overflow: isAppReady ? "visible" : "hidden",
+          transition: "opacity 0.8s ease-out", 
+        }}
+      >
+        <AnimatedBackground />
+        <AppBar />
+        <HomeSection />
+        <ExperienceSection />
+        <SkillsSection />
+        <ProjectsSection />
+        <ServicesSection />
+        <ContactSection />
+        <ArtGallerySection />
+      </div>
     </main>
   );
 });
