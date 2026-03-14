@@ -40,8 +40,8 @@ function SenseiLoader(): JSX.Element | null {
         <img
           src={loadingGif.src}
           alt="Loading..."
-          width={350}
-          height={350}
+          width={250}
+          height={250}
           loading="eager"
           decoding="async"
           className={styles.spinner}
