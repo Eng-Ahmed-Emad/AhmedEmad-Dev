@@ -38,7 +38,6 @@ html {
   font-size: 62.5%;
   overflow-x: hidden;
   scroll-behavior: smooth;
-  /* تم إرجاعها لصفر عشان مسافات السكاشن الخاصة بيك تشتغل صح وميبقاش فيه مسافة فاضية فوق */
   scroll-padding-top: 0; 
 }
 
@@ -95,11 +94,82 @@ section {
     padding: 0 1.5rem 5%;
   }
   
-  /* * Safety Net: 
-   * إيقاف أي Transition لأي عنصر على الموبايل كقاعدة عامة
-   * مع السماح للـ Keyframes (animations) بالعمل بشكل طبيعي
-   */
   * {
     transition: none !important;
+  }
+}
+
+/*--------- 7. Welcome Popup ---------*/
+.welcome-popup {
+  position: fixed;
+  bottom: 30px;
+  left: 30px;
+  background: rgba(10, 10, 10, 0.75);
+  border: 1px solid rgba(var(--main-color-rgb), 0.2);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
+  border-radius: 12px;
+  padding: 16px 24px;
+  z-index: 9999;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  
+  /* Animation settings */
+  transform: translateX(-150%);
+  animation: slideInPopup 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.welcome-popup.hide {
+  animation: slideOutPopup 0.5s ease-in forwards !important;
+}
+
+.welcome-popup p {
+  color: var(--main-color);
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.welcome-popup .close-btn {
+  color: #888;
+  font-size: 2.4rem;
+  line-height: 1;
+  cursor: pointer;
+  background: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* الاستثناء من قاعدة منع الـ hover على الموبايل لكي يعمل اللون بسلاسة */
+@media (hover: hover) {
+  .welcome-popup .close-btn {
+    transition: color 0.3s ease;
+  }
+  .welcome-popup .close-btn:hover {
+    color: #ff4d4d;
+  }
+}
+
+@keyframes slideInPopup {
+  0% { transform: translateX(-150%); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideOutPopup {
+  0% { transform: translateX(0); opacity: 1; }
+  100% { transform: translateX(-150%); opacity: 0; }
+}
+
+/* Mobile Responsive for Popup */
+@media (max-width: 768px) {
+  .welcome-popup {
+    bottom: 20px;
+    left: 20px;
+    right: 20px; /* لجعله يأخذ عرض الشاشة مع هوامش */
+    justify-content: space-between;
   }
 }
