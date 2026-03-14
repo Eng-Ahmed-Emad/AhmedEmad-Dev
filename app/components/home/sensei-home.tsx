@@ -72,7 +72,7 @@ const SenseiHome = memo(function SenseiHome() {
         </motion.div>
 
         <motion.div className={styles.homeContent} variants={ITEM_VARIANTS}>
-          <h1><span className={styles.highlight}><b>Ahmed Emad Nasr</b></span></h1>
+          <h1><span className={styles.highlight}>Ahmed Emad Nasr</span></h1>
           <motion.div className={styles.availabilityStatus} variants={ITEM_VARIANTS}>
             <span className={`${styles.statusDot} ${isAvailable ? styles.dotAvailable : styles.dotUnavailable}`}></span>
             <span>{isAvailable ? "Available for Opportunities" : "Currently Unavailable"}</span>

@@ -106,7 +106,8 @@ section {
     padding: 0 1.5rem 5%;
   }
 
-  * {
+  /* Kill all transitions on mobile — EXCEPT the welcome popup */
+  *:not(.welcome-popup):not(.welcome-popup *) {
     transition: none !important;
   }
 }
@@ -122,16 +123,16 @@ section {
   /* Layout */
   display: flex;
   align-items: flex-start;
-  gap: 14px;
-  width: clamp(28rem, 36rem, calc(100vw - 40px));
-  padding: 18px 16px 20px 18px;
+  gap: 16px;
+  width: clamp(36rem, 52rem, calc(100vw - 40px));
+  padding: 28px 26px 32px 28px;
 
   /* Glassmorphism */
   background: rgba(8, 8, 8, 0.82);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(var(--main-color-rgb), 0.18);
-  border-radius: 16px;
+  border-radius: 18px;
   box-shadow:
     0 8px 40px rgba(0, 0, 0, 0.7),
     0 0 0 1px rgba(var(--main-color-rgb), 0.06) inset;
@@ -149,15 +150,15 @@ section {
 /* ── Icon ── */
 .welcome-popup__icon {
   flex-shrink: 0;
-  width: 38px;
-  height: 38px;
-  border-radius: 10px;
+  width: 58px;
+  height: 58px;
+  border-radius: 14px;
   background: rgba(var(--main-color-rgb), 0.1);
   border: 1px solid rgba(var(--main-color-rgb), 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.8rem;
+  font-size: 2.8rem;
   margin-top: 1px;
 }
 
@@ -171,7 +172,7 @@ section {
 }
 
 .welcome-popup__label {
-  font-size: 1.05rem;
+  font-size: 1.1rem;
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -179,7 +180,7 @@ section {
 }
 
 .welcome-popup__title {
-  font-size: 1.5rem;
+  font-size: 1.65rem;
   font-weight: 700;
   color: var(--main-color);
   line-height: 1.3;
@@ -189,7 +190,7 @@ section {
 }
 
 .welcome-popup__subtitle {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   color: rgba(255, 255, 255, 0.45);
   line-height: 1.4;
 }

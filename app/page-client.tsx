@@ -58,8 +58,8 @@ const WelcomePopup = memo(function WelcomePopup({ isHiding, onClose }: WelcomePo
 
       {/* Text */}
       <div className="welcome-popup__body">
-        <span className="welcome-popup__label">Portfolio</span>
-        <p className="welcome-popup__title">Welcome, Ahmed Emad</p>
+        <span className="welcome-popup__label">Ahmed Emad Portfolio</span>
+        <p className="welcome-popup__title">Welcome</p>
         <p className="welcome-popup__subtitle">Glad you're here — enjoy the tour.</p>
       </div>
 
