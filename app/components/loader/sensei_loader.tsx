@@ -7,38 +7,44 @@ import loadingGif from "@/public/Assets/loading/loading.gif";
 /**
  * @Author Ahmed Emad Nasr
  * @Description Fast & Clean Loader Component - GPU Optimized
+ *
+ * الفرق عن النسخة القديمة:
+ *   - بدل ما اللودر يختفي بعد تايمر ثابت، دلوقتي بيستنى
+ *     حدث `window.load` الأول (يعني الموقع خلص تحميل فعلاً)،
+ *     وبعدين بس يبدأ الـ fade-out.
+ *   - لو الصفحة اتحملت بالفعل قبل ما الكومبوننت يتعمل mount
+ *     (مثلاً لو document.readyState === "complete") بيبدأ الـ
+ *     fade-out فوراً بدون ما ينتظر.
  */
 function SenseiLoader(): JSX.Element | null {
   const [showLoader, setShowLoader]   = useState(true);
   const [isFadingOut, setIsFadingOut] = useState(false);
-
-  // Bug fix: the original implementation used useCallback to wrap handlePageLoader,
-  // then called it from useEffect. The returned timeoutId from the callback was
-  // *never cleaned up* — if the component unmounted during the fade window the
-  // inner setTimeout would still fire on an unmounted component, causing a
-  // "Can't perform a React state update on an unmounted component" warning.
-  //
-  // Fix: track the inner timeout with a ref so it can be cancelled on unmount.
   const innerTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    // Start fade-out after 500 ms
-    const outerTimer = setTimeout(() => {
+    // دالة الـ fade-out — بتشغّل CSS transition وبعدها بتشيل العنصر من الـ DOM
+    const startFadeOut = () => {
       setIsFadingOut(true);
-
-      // Remove from DOM after the CSS transition completes (500 ms)
       innerTimerRef.current = setTimeout(() => setShowLoader(false), 500);
-    }, 500);
+    };
+
+    // لو الصفحة اتحملت بالفعل → fade فوراً
+    if (document.readyState === "complete") {
+      startFadeOut();
+      return;
+    }
+
+    // لسه بتتحمل → استنى حدث load
+    window.addEventListener("load", startFadeOut, { once: true });
 
     return () => {
-      clearTimeout(outerTimer);
+      window.removeEventListener("load", startFadeOut);
       if (innerTimerRef.current !== null) {
         clearTimeout(innerTimerRef.current);
       }
     };
-  }, []); // empty dep array – runs once on mount, cleans up on unmount
+  }, []);
 
-  // Unmount entirely after fade completes – saves memory & DOM nodes
   if (!showLoader) return null;
 
   return (
